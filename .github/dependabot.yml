@@ -1,0 +1,30 @@
+# Dependabot: weekly pull requests for npm packages and for the SHA-pinned GitHub Actions.
+# Every update PR runs CI, so incompatible bumps show up as failing checks.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      npm-minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      # TypeScript 7 and ESLint 10 are blocked by the lint toolchain: typescript-eslint
+      # only supports TypeScript <6.1, and Next's lint plugins (eslint-plugin-react,
+      # -import, -jsx-a11y) only accept ESLint up to 9. Revisit and remove these rules
+      # once typescript-eslint and those plugins support the new majors.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]

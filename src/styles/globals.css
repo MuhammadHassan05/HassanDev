@@ -1,0 +1,258 @@
+/*
+ * Global styles and design tokens. Every value comes from
+ * design-kit/canvas-source/*.dc.html; the token names are this project's own.
+ */
+@import "tailwindcss";
+
+/* `inline` makes utilities reference the variables at use time, so a
+   [data-track] wrapper can retheme everything inside it. */
+@theme inline {
+  /* Surface and text colors */
+  --color-bg: #070a10;
+  --color-ink: #f1f5f9;
+  --color-body: #cdd5df;
+  --color-muted: #a9b4c2;
+  --color-soft: #c8d1dc;
+  --color-faint: #7d8894;
+  --color-dim: #8b96a3;
+  --color-well: #0e141c;
+
+  /* Glass surfaces and hairlines */
+  --color-glass: rgba(255, 255, 255, 0.06);
+  --color-glass-border: rgba(255, 255, 255, 0.14);
+  --color-hairline: rgba(255, 255, 255, 0.12);
+  --color-outline-strong: rgba(255, 255, 255, 0.22);
+  --color-recess: rgba(0, 0, 0, 0.25);
+  --blur-glass: 16px;
+
+  /* Track colors, resolved from the nearest [data-track] */
+  --color-accent: var(--accent);
+  --color-glow: var(--glow);
+  --color-on-accent: var(--on-accent);
+
+  /* Radii, smallest to largest */
+  --radius-inner: 14px;
+  --radius-inset: 16px;
+  --radius-card-sm: 18px;
+  --radius-card: 20px;
+  --radius-card-lg: 22px;
+  --radius-panel: 24px;
+  --radius-shell: 28px;
+
+  /* Below 660px the design's one-row nav would wrap, so it switches to its
+     two-row phone layout. 660px is the narrowest width where one row fits. */
+  --breakpoint-nav: 41.25rem;
+
+  /* Layout widths and fluid spacing */
+  --container-page: 1200px;
+  --container-nav: 1240px;
+  --spacing-gutter: clamp(20px, 5vw, 40px);
+  --spacing-section: clamp(56px, 9vw, 88px);
+
+  /* Fonts, exposed as variables by src/styles/fonts.ts */
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-heading: var(--font-archivo), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-archivo), system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+/* Track themes. :root carries the engineer set so anything outside a
+   [data-track] wrapper still has valid colors. */
+:root,
+[data-track="engineer"] {
+  --accent: #4ade80;
+  --glow: #38bdf8;
+  --on-accent: #06210f;
+}
+
+[data-track="studio"] {
+  --accent: #fbbf24;
+  --glow: #f472b6;
+  --on-accent: #2a1a00;
+}
+
+/* The frosted panel used throughout the design. The -webkit- prefix is still
+   required by Safari. */
+@utility glass {
+  background-color: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+/* ---- Motion features. Every effect is opt-in behind a media query or a class
+   added by JavaScript, so with reduced motion or no JavaScript the page is
+   complete and still. ---- */
+
+/* BounceText: letters lift on hover. Hover only exists for mouse and trackpad
+   users, so touch screens never get a letter stuck mid-bounce. */
+.bounce-letter {
+  display: inline-block;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .bounce-letter {
+    transition: transform 0.32s cubic-bezier(0.34, 1.9, 0.5, 1);
+  }
+
+  .bounce-letter:hover {
+    transform: translateY(-0.22em);
+  }
+}
+
+/* TiltCard: TiltCard.tsx sets the transform and the --gx/--gy/--go glint
+   variables; without them the card is flat and the glint invisible. */
+.tilt-card {
+  transition: transform 0.25s ease;
+}
+
+.tilt-glint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: var(--go, 0);
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0) 55%
+  );
+}
+
+/* DrawOnScroll: .js-draw is only added once the observer is running, so
+   nothing is hidden unless it will also be revealed. Outlines draw over
+   1.5s; fills (attribute or theme class) and text fade in after 0.7s. */
+@media (prefers-reduced-motion: no-preference) {
+  .js-draw .draw-svg .draw-stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .js-draw .draw-svg.is-drawn .draw-stroke {
+    stroke-dashoffset: 0;
+  }
+
+  .js-draw .draw-svg :is([fill]:not([fill="none"]), .fill-accent, .fill-glow, text) {
+    opacity: 0;
+    transition: opacity 0.7s ease 0.7s;
+  }
+
+  .js-draw .draw-svg.is-drawn :is([fill]:not([fill="none"]), .fill-accent, .fill-glow, text) {
+    opacity: 1;
+  }
+
+  /* Glow morph on full page loads (e.g. opening a link in the same tab):
+     supporting browsers cross-fade the old page, glow included, into the new. */
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* Confetti (terminal easter egg): three falling paths from the design. The
+   component is never rendered with reduced motion; the rule below is a
+   second guard. */
+@keyframes confetti-a {
+  to {
+    transform: translate3d(60px, 880px, 0) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-b {
+  to {
+    transform: translate3d(-70px, 880px, 0) rotate(-620deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-c {
+  to {
+    transform: translate3d(10px, 880px, 0) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -24px;
+  border-radius: 2px;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  animation-fill-mode: forwards;
+}
+
+.confetti-a {
+  animation-name: confetti-a;
+}
+
+.confetti-b {
+  animation-name: confetti-b;
+}
+
+.confetti-c {
+  animation-name: confetti-c;
+}
+
+/* Chai counter: the steam above the cup drifts gently. */
+@keyframes chai-steam {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chai-steam {
+    animation: chai-steam 2.4s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    display: none;
+  }
+}
+
+/* Safety net: anything that animates must still end up in its final, complete state. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

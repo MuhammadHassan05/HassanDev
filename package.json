@@ -1,0 +1,44 @@
+{
+  "name": "hassandev",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portfolio site of Muhammad Hassan, software engineer.",
+  "license": "MIT",
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "next build && node scripts/csp.mjs out",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:export": "vitest run --config vitest.export.config.mts",
+    "check:forbidden": "node scripts/check-forbidden.mjs src",
+    "screenshots": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/screenshots.mjs",
+    "og-image": "node scripts/og-image.mjs",
+    "screenshots:approve": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/approve-screenshots.mjs",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:forbidden && npm run test"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.2",
+    "playwright": "1.64.1",
+    "prettier": "3.9.10",
+    "sharp": "0.35.5",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}
