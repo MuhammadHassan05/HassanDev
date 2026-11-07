@@ -1,12 +1,22 @@
 /**
- * Lookups over the case studies: their URLs, the "next" one, the ones a band
- * features and the one behind a project card. The list is passed in, so
- * everything here is testable with small fixtures.
+ * Lookups over the case studies: which are published, their URLs, the "next"
+ * one, the ones a band features and the one behind a project card. The list
+ * is passed in, so everything here is testable with small fixtures. Callers
+ * pass the published list wherever a draft must not appear.
  */
 import type { CaseStudy } from "@/content/caseStudies";
 
 /** Route of the case studies list. */
 export const CASE_STUDIES_PATH = "/case-studies/";
+
+/**
+ * The case studies that are finished and go into the build; drafts are left out.
+ *
+ * @param list - All case studies.
+ */
+export function publishedCaseStudies(list: readonly CaseStudy[]): CaseStudy[] {
+  return list.filter((study) => !study.draft);
+}
 
 /**
  * Route of one case study page, e.g. "/case-studies/yetti-ai/".
@@ -43,21 +53,24 @@ export function nextCaseStudy(list: readonly CaseStudy[], slug: string): CaseStu
 }
 
 /**
- * The case studies a band features, in the given order.
+ * The published case studies a band features, in the given order. Drafts are
+ * skipped, so a band shrinks (or falls back) until they are finished.
  *
- * @param list - All case studies.
+ * @param list - All case studies, drafts included.
  * @param slugs - Slugs to show.
- * @throws If a slug has no case study, so a typo fails the build.
+ * @throws If a slug has no case study at all, so a typo fails the build.
  */
 export function featuredCaseStudies(
   list: readonly CaseStudy[],
   slugs: readonly string[],
 ): CaseStudy[] {
-  return slugs.map((slug) => {
-    const study = findCaseStudy(list, slug);
-    if (!study) throw new Error(`Featured case study "${slug}" does not exist`);
-    return study;
-  });
+  return slugs
+    .map((slug) => {
+      const study = findCaseStudy(list, slug);
+      if (!study) throw new Error(`Featured case study "${slug}" does not exist`);
+      return study;
+    })
+    .filter((study) => !study.draft);
 }
 
 /**

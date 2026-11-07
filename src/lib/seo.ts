@@ -8,7 +8,7 @@ import { caseStudies, caseStudyLabels, type CaseStudy } from "@/content/caseStud
 import { profile } from "@/content/profile";
 import { shareImage, siteMetadata } from "@/content/site";
 import { tracks, type TrackId } from "@/content/tracks";
-import { CASE_STUDIES_PATH, caseStudyHref, listNames } from "./caseStudies";
+import { CASE_STUDIES_PATH, caseStudyHref, listNames, publishedCaseStudies } from "./caseStudies";
 import { absoluteUrl } from "./site";
 
 /**
@@ -36,12 +36,13 @@ export function caseStudyMetadata(study: CaseStudy): Metadata {
   );
 }
 
-/** Metadata for the case studies list, described by the case studies it holds. */
+/** Metadata for the case studies list, described by the published case studies it holds. */
 export function caseStudiesIndexMetadata(): Metadata {
-  const clients = listNames(caseStudies.map((study) => study.client));
+  const clients = listNames(publishedCaseStudies(caseStudies).map((study) => study.client));
+  const byline = `${caseStudyLabels.listTitle} by ${profile.fullName}`;
   return buildMetadata(
     `${caseStudyLabels.listTitle} · ${profile.fullName}`,
-    `${caseStudyLabels.listTitle} by ${profile.fullName}: ${clients}.`,
+    clients ? `${byline}: ${clients}.` : `${byline}.`,
     CASE_STUDIES_PATH,
   );
 }

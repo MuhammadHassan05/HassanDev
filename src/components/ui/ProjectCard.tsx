@@ -2,12 +2,12 @@
  * Project card: the illustration at the top, then the title, the one-line
  * description, the tags in the secondary text colour, and a text link (or a
  * plain label when there is nothing to open). Projects with a case study also
- * get a "Read case study ›" link.
+ * get a "Read case study ›" link, once that case study is published.
  */
 import { illustrations } from "@/components/illustrations";
 import { caseStudies, caseStudyLabels } from "@/content/caseStudies";
 import type { Project } from "@/content/projects";
-import { caseStudyForProject, caseStudyHref } from "@/lib/caseStudies";
+import { caseStudyForProject, caseStudyHref, publishedCaseStudies } from "@/lib/caseStudies";
 import { Button } from "./Button";
 import { Card } from "./Card";
 
@@ -27,7 +27,8 @@ export interface ProjectCardProps {
 export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCardProps) {
   const Illustration = illustrations[project.illustration];
   const { footer } = project;
-  const study = caseStudyForProject(caseStudies, project.illustration);
+  // Drafts have no page, so only a published case study gets a link.
+  const study = caseStudyForProject(publishedCaseStudies(caseStudies), project.illustration);
 
   return (
     <Card as="article" className="flex flex-col overflow-hidden">

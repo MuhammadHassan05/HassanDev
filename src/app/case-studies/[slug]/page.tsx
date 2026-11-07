@@ -1,6 +1,6 @@
 /**
- * One case study (/case-studies/<slug>/), generated for every case study at
- * build time. Big title, summary and a meta row; a large cover; then each
+ * One case study (/case-studies/<slug>/), generated for every published case
+ * study at build time; drafts get no page. Big title, summary and a meta row; a large cover; then each
  * section with its label on the left (stacked on phones); and links to the
  * next case study and back to the list.
  */
@@ -12,7 +12,13 @@ import { AppLink } from "@/components/ui/AppLink";
 import { CaseStudyCover } from "@/components/ui/CaseStudyCover";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import { caseStudies, caseStudyLabels, type CaseStudy } from "@/content/caseStudies";
-import { CASE_STUDIES_PATH, caseStudyHref, findCaseStudy, nextCaseStudy } from "@/lib/caseStudies";
+import {
+  CASE_STUDIES_PATH,
+  caseStudyHref,
+  findCaseStudy,
+  nextCaseStudy,
+  publishedCaseStudies,
+} from "@/lib/caseStudies";
 import { caseStudyMetadata } from "@/lib/seo";
 
 /** The route's parameters. */
@@ -23,9 +29,19 @@ interface CaseStudyParams {
 // Only the case studies below exist; a static export cannot render others on request.
 export const dynamicParams = false;
 
-/** One page per case study, generated at build time. */
+const published = publishedCaseStudies(caseStudies);
+
+/**
+ * A static export refuses a dynamic route with no pages, so while every case
+ * study is a draft this one placeholder is generated instead. It renders the
+ * 404 page, is not in the sitemap and nothing links to it.
+ */
+const NO_CASE_STUDIES_SLUG = "none";
+
+/** One page per published case study, generated at build time. */
 export function generateStaticParams() {
-  return caseStudies.map((study) => ({ slug: study.slug }));
+  if (published.length === 0) return [{ slug: NO_CASE_STUDIES_SLUG }];
+  return published.map((study) => ({ slug: study.slug }));
 }
 
 /**
@@ -34,7 +50,7 @@ export function generateStaticParams() {
  * @param props.params - The route's slug.
  */
 export async function generateMetadata({ params }: CaseStudyParams): Promise<Metadata> {
-  const study = findCaseStudy(caseStudies, (await params).slug);
+  const study = findCaseStudy(published, (await params).slug);
   return study ? caseStudyMetadata(study) : {};
 }
 
@@ -101,9 +117,9 @@ function MetaRow({ study }: { study: CaseStudy }) {
  * @param props.params - The route's slug.
  */
 export default async function CaseStudyPage({ params }: CaseStudyParams) {
-  const study = findCaseStudy(caseStudies, (await params).slug);
+  const study = findCaseStudy(published, (await params).slug);
   if (!study) notFound();
-  const next = nextCaseStudy(caseStudies, study.slug);
+  const next = nextCaseStudy(published, study.slug);
   const { sections } = caseStudyLabels;
 
   return (
@@ -160,16 +176,19 @@ export default async function CaseStudyPage({ params }: CaseStudyParams) {
         </CaseSection>
 
         <CaseSection id="result" label={sections.result}>
-          <ul className="m-0 grid list-none grid-cols-2 gap-x-6 gap-y-8 p-0 md:auto-cols-fr md:grid-flow-col md:grid-cols-none">
-            {study.result.metrics.map((metric) => (
-              <li key={metric.label} className="flex flex-col gap-1">
-                <span className="text-[clamp(40px,6vw,64px)] leading-none font-semibold tracking-[-0.03em]">
-                  {metric.value}
-                </span>
-                <span className="text-small text-ink-2">{metric.label}</span>
-              </li>
-            ))}
-          </ul>
+          {/* With no metrics, the result is the paragraph alone. */}
+          {study.result.metrics.length > 0 ? (
+            <ul className="m-0 grid list-none grid-cols-2 gap-x-6 gap-y-8 p-0 md:auto-cols-fr md:grid-flow-col md:grid-cols-none">
+              {study.result.metrics.map((metric) => (
+                <li key={metric.label} className="flex flex-col gap-1">
+                  <span className="text-[clamp(40px,6vw,64px)] leading-none font-semibold tracking-[-0.03em]">
+                    {metric.value}
+                  </span>
+                  <span className="text-small text-ink-2">{metric.label}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <p className="m-0">{study.result.summary}</p>
         </CaseSection>
 

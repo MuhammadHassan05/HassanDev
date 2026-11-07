@@ -13,13 +13,15 @@ import {
   findCaseStudy,
   listNames,
   nextCaseStudy,
+  publishedCaseStudies,
 } from "@/lib/caseStudies";
 import { linkKind } from "@/lib/links";
 
 /** A minimal case study for the lookup tests. */
-const fixture = (slug: string, project = "pikzels"): CaseStudy =>
-  ({ slug, project }) as unknown as CaseStudy;
+const fixture = (slug: string, project = "pikzels", draft = false): CaseStudy =>
+  ({ slug, project, draft }) as unknown as CaseStudy;
 const list = [fixture("a", "pikzels"), fixture("b", "yetti-ai"), fixture("c", "vtest")];
+const withDraft = [...list, fixture("d", "talentminer", true)];
 
 describe("case study lookups", () => {
   it("builds the page route", () => {
@@ -40,6 +42,11 @@ describe("case study lookups", () => {
   it("picks featured case studies in order and rejects unknown slugs", () => {
     expect(pickFeatured(list, ["c", "a"]).map((s) => s.slug)).toEqual(["c", "a"]);
     expect(() => pickFeatured(list, ["nope"])).toThrow(/nope/);
+  });
+
+  it("leaves drafts out of the published list and the featured ones", () => {
+    expect(publishedCaseStudies(withDraft).map((s) => s.slug)).toEqual(["a", "b", "c"]);
+    expect(pickFeatured(withDraft, ["d", "a"]).map((s) => s.slug)).toEqual(["a"]);
   });
 
   it("finds the case study behind a project card", () => {
@@ -82,10 +89,18 @@ describe("case study content", () => {
       }
       expect(study.decisions.length).toBeGreaterThanOrEqual(2);
       expect(study.decisions.length).toBeLessThanOrEqual(3);
-      expect(study.result.metrics.length).toBeGreaterThanOrEqual(2);
-      expect(study.result.metrics.length).toBeLessThanOrEqual(4);
+      // None (the paragraph alone), or 2 to 4 numbers.
+      const metrics = study.result.metrics.length;
+      expect(metrics === 0 || (metrics >= 2 && metrics <= 4), `${metrics} metrics`).toBe(true);
       expect(study.next.length).toBeGreaterThan(0);
       if (study.link) expect(linkKind(study.link.href)).toBe("external");
+    },
+  );
+
+  it.each(caseStudies.map((study) => [study.slug, study] as const))(
+    "%s is a draft if it still has TODO markers",
+    (_slug, study) => {
+      if (JSON.stringify(study).includes("[TODO")) expect(study.draft).toBe(true);
     },
   );
 

@@ -1,7 +1,8 @@
 /**
  * The Tiny Owlets cart before and after: the two mock carts, the slider's
  * labels, a caption and three highlights, taken word for word from the design
- * kit. It is the cover of the Tiny Owlets case study (src/content/caseStudies.ts).
+ * kit. It is the cover of the Tiny Owlets case study (src/content/caseStudies.ts),
+ * and the studio page's band while that case study is a draft.
  */
 
 /** One line item in a mock cart. */
@@ -29,6 +30,8 @@ export interface CartState {
 
 /** The whole before/after comparison. */
 export interface CartComparison {
+  /** Heading of the studio band while the case study is a draft. */
+  title: string;
   /** One line under the slider, inviting a drag. */
   caption: string;
   before: CartState;
@@ -45,6 +48,7 @@ export interface CartComparison {
 
 /** Tiny Owlets before/after content. */
 export const cartComparison: CartComparison = {
+  title: "Tiny Owlets: before and after",
   caption: "Drag across the store to compare the old cart with the one I rebuilt.",
   before: {
     tag: "Before",

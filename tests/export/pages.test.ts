@@ -2,17 +2,28 @@
  * Post-build check of what GitHub Pages needs in out/: the .nojekyll marker,
  * which stops Pages from running Jekyll and hiding the _next folder (Jekyll
  * skips folders that start with an underscore), the 404 page it serves for
- * missing paths, Google Search Console's ownership file, and a page for the
- * case studies list and every case study. Run with `npm run test:export`
- * after `npm run build`.
+ * missing paths, Google Search Console's ownership file, and the case study
+ * pages: one per published case study, none for drafts, and no draft text
+ * anywhere. Run with `npm run test:export` after `npm run build`.
  */
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "@/content/caseStudies";
+import { publishedCaseStudies } from "@/lib/caseStudies";
 
 const OUT = join(__dirname, "..", "..", "out");
 const SEARCH_CONSOLE_FILE = "google17bfe732dc5dcb5b.html";
+
+const published = publishedCaseStudies(caseStudies);
+const drafts = caseStudies.filter((study) => study.draft);
+
+/** Every text file in out/ (HTML, scripts, page data). */
+const textFiles = readdirSync(OUT, { recursive: true, withFileTypes: true })
+  .filter((entry) => entry.isFile() && /\.(html|js|txt|xml|json)$/.test(entry.name))
+  .map((entry) => join(entry.parentPath, entry.name));
+
+const html = (route: string) => readFileSync(join(OUT, route, "index.html"), "utf8");
 
 describe("GitHub Pages files", () => {
   it("includes an empty .nojekyll", () => {
@@ -33,11 +44,41 @@ describe("GitHub Pages files", () => {
     expect(existsSync(file), `out/${SEARCH_CONSOLE_FILE} is missing`).toBe(true);
     expect(readFileSync(file, "utf8")).toBe(`google-site-verification: ${SEARCH_CONSOLE_FILE}`);
   });
+});
 
-  it.each(["case-studies", ...caseStudies.map((study) => `case-studies/${study.slug}`)])(
-    "exports %s/index.html",
-    (route) => {
-      expect(existsSync(join(OUT, route, "index.html"))).toBe(true);
+describe("case study pages", () => {
+  it.runIf(published.length > 0).each(published.map((study) => study.slug))(
+    "exports the published case study %s",
+    (slug) => {
+      expect(existsSync(join(OUT, "case-studies", slug, "index.html"))).toBe(true);
     },
   );
+
+  it.runIf(drafts.length > 0).each(drafts.map((study) => study.slug))(
+    "exports no page for the draft %s",
+    (slug) => {
+      expect(existsSync(join(OUT, "case-studies", slug))).toBe(false);
+    },
+  );
+
+  it("lists the published case studies, or is a 404 while there are none", () => {
+    const list = html("case-studies");
+    if (published.length > 0) {
+      for (const study of published) expect(list).toContain(`/case-studies/${study.slug}/`);
+    } else {
+      expect(list).toContain('<meta name="robots" content="noindex"/>');
+    }
+  });
+
+  it("links to no draft and ships no draft text", () => {
+    for (const file of textFiles) {
+      const text = readFileSync(file, "utf8");
+      expect(text, file).not.toContain("[TODO");
+      for (const study of drafts) {
+        expect(text, `${file} links to the draft ${study.slug}`).not.toContain(
+          `/case-studies/${study.slug}/`,
+        );
+      }
+    }
+  });
 });

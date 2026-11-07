@@ -57,6 +57,8 @@ export interface HeroContent {
   /** One line in the secondary text colour. */
   summary: string;
   actions: readonly LinkAction[];
+  /** Replaces the first action while no case study is published, so it never points at nothing. */
+  actionWithoutCaseStudies?: LinkAction;
 }
 
 /** Card that points visitors to the other track. */
@@ -95,6 +97,8 @@ export const pitch: Record<TrackId, PagePitch> = {
         { label: "View case studies", href: "#case-studies" },
         { label: "Download resume", href: links.resume, newTab: true },
       ],
+      // The design kit's original first button.
+      actionWithoutCaseStudies: { label: "See projects", href: "#projects" },
     },
     crossLink: {
       eyebrow: "Also",

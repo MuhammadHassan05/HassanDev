@@ -3,8 +3,10 @@
  * on both track pages and the "Read case study" links on project cards.
  *
  * Written only from facts Hassan supplied. Anything not yet known is marked
- * with a TODO marker in square brackets; tests/content-todo.test.ts fails CI
- * and the deploy while any marker is left, so nothing unfinished can go live.
+ * with a TODO marker in square brackets, and a case study with any marker is
+ * a draft. Drafts are left out of the build entirely (no page, card, link or
+ * sitemap entry); tests/content-todo.test.ts fails CI and the deploy if a
+ * published case study still has a marker.
  */
 import type { IllustrationKey } from "./illustrations";
 import type { TrackId } from "./tracks";
@@ -36,6 +38,8 @@ export interface CaseStudyMetric {
 export interface CaseStudy {
   /** URL segment: /case-studies/<slug>/. */
   slug: string;
+  /** Left out of the build until it is finished. */
+  draft: boolean;
   title: string;
   /** One line, shown under the title and in cards. */
   summary: string;
@@ -55,7 +59,7 @@ export interface CaseStudy {
   /** 2 to 3 decisions. */
   decisions: readonly CaseStudyDecision[];
   result: {
-    /** 2 to 4 numbers. */
+    /** None, or 2 to 4 numbers. With none, only the summary is shown. */
     metrics: readonly CaseStudyMetric[];
     summary: string;
   };
@@ -87,6 +91,8 @@ export const caseStudiesIntro: SectionIntro = {
 export const caseStudies: readonly CaseStudy[] = [
   {
     slug: "yetti-ai",
+    // Open TODO markers below.
+    draft: true,
     title: "Yetti.ai: hardening and improving a live booking SaaS",
     summary: "QA, security and UI work on a live multi-tenant booking SaaS serving 37+ operators.",
     client: "Yetti.ai",
@@ -138,6 +144,8 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: "tiny-owlets",
+    // Open TODO markers below.
+    draft: true,
     title: "Tiny Owlets: a cart that converts",
     summary:
       "A Shopify cart reworked around a Place Order flow, with automatic item removal and WhatsApp order notifications.",
@@ -184,6 +192,8 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: "talentminer",
+    // Open TODO markers below.
+    draft: true,
     title: "TalentMiner: AI resume screening",
     summary:
       "An AI screening tool that extracts skills from resumes, matches them to a job description and ranks the candidates.",
@@ -229,6 +239,8 @@ export const caseStudies: readonly CaseStudy[] = [
   },
   {
     slug: "flatterlab",
+    // Open TODO markers below.
+    draft: true,
     title: "flatterlab.tech: a free platform for students",
     summary:
       "A free platform I co-founded that helps students build resumes and discover extracurriculars.",

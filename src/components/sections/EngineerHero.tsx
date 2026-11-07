@@ -3,6 +3,7 @@
  * page's h1), one line on what Hassan builds, one line on where he studies
  * and works, two calls to action, and the headline stats.
  */
+import { hasFeaturedCaseStudies } from "@/components/sections/CaseStudiesBand";
 import { Button } from "@/components/ui/Button";
 import { DownloadIcon } from "@/components/ui/icons";
 import { StatsRow } from "@/components/ui/StatsRow";
@@ -12,7 +13,11 @@ import { pitch, profile } from "@/content/profile";
 /** Renders the hero. The name is the page's only h1. */
 export function EngineerHero() {
   const { hero } = pitch.engineer;
-  const [primary, secondary] = hero.actions;
+  const [first, secondary] = hero.actions;
+  // The first button goes to the case studies band, which is absent while they are all drafts.
+  const primary = hasFeaturedCaseStudies("engineer")
+    ? first
+    : (hero.actionWithoutCaseStudies ?? first);
 
   return (
     <section className="mx-auto flex max-w-page flex-col gap-6 px-page pt-16 pb-section md:pt-28">

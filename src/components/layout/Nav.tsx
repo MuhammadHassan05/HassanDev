@@ -8,9 +8,11 @@ import { NavMenu } from "@/components/features/NavMenu";
 import { ThemeToggle } from "@/components/features/ThemeToggle";
 import { AppLink } from "@/components/ui/AppLink";
 import { Button } from "@/components/ui/Button";
+import { caseStudies } from "@/content/caseStudies";
 import { profile } from "@/content/profile";
 import { siteChrome } from "@/content/site";
 import { tracks, type NavSection } from "@/content/tracks";
+import { publishedCaseStudies } from "@/lib/caseStudies";
 import { cx } from "@/lib/cx";
 
 /** Props for {@link Nav}. */
@@ -34,7 +36,10 @@ export function Nav({ current, contactHref }: NavProps) {
       label: track.navLabel,
       current: track.id === current,
     })),
-    { ...siteChrome.caseStudiesLink, current: current === "case-studies" },
+    // Only once a case study is published; until then the list has nothing in it.
+    ...(publishedCaseStudies(caseStudies).length > 0
+      ? [{ ...siteChrome.caseStudiesLink, current: current === "case-studies" }]
+      : []),
   ];
   const contact = { href: contactHref, label: siteChrome.contactLabel };
 

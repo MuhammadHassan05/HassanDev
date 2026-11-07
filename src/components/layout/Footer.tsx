@@ -4,8 +4,10 @@
  * link row is also where the phone menu button leads when JavaScript is off.
  */
 import { AppLink } from "@/components/ui/AppLink";
+import { caseStudies } from "@/content/caseStudies";
 import { siteChrome } from "@/content/site";
 import { tracks } from "@/content/tracks";
+import { publishedCaseStudies } from "@/lib/caseStudies";
 import { SITE_LINKS_ID } from "@/lib/dom-ids";
 
 /** Props for {@link Footer}. */
@@ -23,7 +25,8 @@ export function Footer({ contactHref }: FooterProps) {
   const { copyright, location } = siteChrome.footer;
   const links = [
     ...tracks.map((track) => ({ label: track.navLabel, href: track.href })),
-    siteChrome.caseStudiesLink,
+    // Only once a case study is published; until then the list has nothing in it.
+    ...(publishedCaseStudies(caseStudies).length > 0 ? [siteChrome.caseStudiesLink] : []),
     { label: siteChrome.contactLabel, href: contactHref },
   ];
 

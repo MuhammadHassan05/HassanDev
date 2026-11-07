@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { JsonLd } from "@/components/ui/JsonLd";
 import sitemap from "@/app/sitemap";
 import { caseStudies } from "@/content/caseStudies";
+import { listNames, publishedCaseStudies } from "@/lib/caseStudies";
 import {
   caseStudiesIndexMetadata,
   caseStudyMetadata,
@@ -65,23 +66,36 @@ describe("case study metadata", () => {
     },
   );
 
-  it("describes the list by the case studies in it", () => {
+  it("describes the list by the published case studies in it", () => {
     const meta = caseStudiesIndexMetadata();
+    const clients = listNames(publishedCaseStudies(caseStudies).map((study) => study.client));
     expect(meta.alternates?.canonical).toBe(`${SITE_URL}/case-studies/`);
     expect(meta.description).toBe(
-      "Case studies by Muhammad Hassan: Yetti.ai, Tiny Owlets, TalentMiner and flatterlab.tech.",
+      clients ? `Case studies by Muhammad Hassan: ${clients}.` : "Case studies by Muhammad Hassan.",
     );
   });
 });
 
 describe("sitemap", () => {
-  it("lists both pages, the case studies list and every case study", () => {
+  it("lists both pages, then the case studies list and each case study once published", () => {
+    const published = publishedCaseStudies(caseStudies);
     expect(sitemap().map((entry) => entry.url)).toEqual([
       `${SITE_URL}/`,
       `${SITE_URL}/studio/`,
-      `${SITE_URL}/case-studies/`,
-      ...caseStudies.map((study) => `${SITE_URL}/case-studies/${study.slug}/`),
+      ...(published.length > 0
+        ? [
+            `${SITE_URL}/case-studies/`,
+            ...published.map((study) => `${SITE_URL}/case-studies/${study.slug}/`),
+          ]
+        : []),
     ]);
+  });
+
+  it("never lists a draft", () => {
+    const urls = sitemap().map((entry) => entry.url);
+    for (const study of caseStudies.filter((s) => s.draft)) {
+      expect(urls).not.toContain(`${SITE_URL}/case-studies/${study.slug}/`);
+    }
   });
 });
 
