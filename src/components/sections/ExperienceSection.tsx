@@ -5,6 +5,7 @@
  */
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
+import { CrossLink } from "@/components/ui/CrossLink";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { ExperienceSection as ExperienceContent } from "@/content/experience";
 import type { CrossLinkContent } from "@/content/profile";
@@ -55,16 +56,7 @@ export function ExperienceSection({ content, crossLink }: ExperienceSectionProps
             </li>
           ))}
         </ol>
-        {crossLink ? (
-          <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
-            <p className="m-0 text-ink-2">{crossLink.title}</p>
-            <div>
-              <Button href={crossLink.action.href} variant="text">
-                {crossLink.action.label}
-              </Button>
-            </div>
-          </div>
-        ) : null}
+        {crossLink ? <CrossLink text={crossLink.title} action={crossLink.action} /> : null}
       </div>
     </Section>
   );

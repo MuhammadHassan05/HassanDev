@@ -4,7 +4,7 @@
  */
 import type { TrackId } from "./tracks";
 
-/** One stat card: a big number and what it counts. */
+/** One stat: a big number and what it counts. */
 export interface Stat {
   value: string;
   label: string;

@@ -107,6 +107,7 @@ export const pitch: Record<TrackId, PagePitch> = {
       email: { label: profile.email, href: links.email },
       primary: { label: "Book a 30 min call", href: links.calendly },
       links: [
+        { label: "Resume (PDF)", href: links.resume, newTab: true },
         { label: "LinkedIn", href: links.linkedin },
         { label: "GitHub", href: links.github },
         { label: "Behance", href: links.behance },

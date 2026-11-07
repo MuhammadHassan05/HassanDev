@@ -1,10 +1,12 @@
 /**
  * Engineer page hero, left-aligned on the page background: the name (the
  * page's h1), one line on what Hassan builds, one line on where he studies
- * and works, and two calls to action.
+ * and works, two calls to action, and the headline stats.
  */
 import { Button } from "@/components/ui/Button";
 import { DownloadIcon } from "@/components/ui/icons";
+import { StatsRow } from "@/components/ui/StatsRow";
+import { stats } from "@/content/stats";
 import { pitch, profile } from "@/content/profile";
 
 /** Renders the hero. The name is the page's only h1. */
@@ -39,6 +41,9 @@ export function EngineerHero() {
             {secondary.label}
           </Button>
         ) : null}
+      </div>
+      <div className="pt-12">
+        <StatsRow stats={stats.engineer} />
       </div>
     </section>
   );

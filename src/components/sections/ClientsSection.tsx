@@ -1,6 +1,7 @@
 /**
  * Freelance clients on the studio page: the names as large plain text in the
- * secondary colour, in one centred row that wraps.
+ * secondary colour, each with its country in small text underneath, in one
+ * centred row that wraps.
  */
 import { Section } from "@/components/layout/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -12,9 +13,14 @@ export function ClientsSection() {
   return (
     <Section id="clients" labelledBy={titleId}>
       <SectionHeader {...clients.section} titleId={titleId} />
-      <ul className="m-0 flex list-none flex-wrap justify-center gap-x-10 gap-y-3 p-0 text-[clamp(26px,3.4vw,40px)] leading-tight font-semibold tracking-[-0.02em] text-ink-2">
+      <ul className="m-0 flex list-none flex-wrap justify-center gap-x-10 gap-y-6 p-0 text-center">
         {clients.clients.map((client) => (
-          <li key={client.name}>{client.name}</li>
+          <li key={client.name} className="flex flex-col gap-1">
+            <span className="text-[clamp(26px,3.4vw,40px)] leading-tight font-semibold tracking-[-0.02em] text-ink-2">
+              {client.name}
+            </span>
+            <span className="text-small text-ink-2">{client.country}</span>
+          </li>
         ))}
       </ul>
     </Section>

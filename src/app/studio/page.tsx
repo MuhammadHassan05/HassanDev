@@ -8,6 +8,7 @@ import { PageShell } from "@/components/layout/PageShell";
 import { CaseStudySection } from "@/components/sections/CaseStudySection";
 import { ClientsSection } from "@/components/sections/ClientsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { CrossLink } from "@/components/ui/CrossLink";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ProjectGridSection } from "@/components/sections/ProjectGridSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
@@ -33,6 +34,13 @@ export default function StudioPage() {
         projects={studioProjects.filter((p) => p.section === "ecommerce")}
       />
       <CaseStudySection />
+      <div className="mx-auto flex max-w-page justify-center px-page pt-16 text-center">
+        <CrossLink
+          text={pitch.studio.crossLink.eyebrow}
+          action={pitch.studio.crossLink.action}
+          className="justify-center"
+        />
+      </div>
       <ClientsSection />
       <ProjectGridSection
         id="design"

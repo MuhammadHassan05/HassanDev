@@ -55,10 +55,10 @@ export interface TerminalContent {
 
 /** Terminal copy in design order. */
 export const terminal: TerminalContent = {
-  // Title given by Hassan; the supporting line reuses the terminal's own hint.
+  // Given by Hassan.
   section: {
     title: "Prefer the command line?",
-    description: "Type 'help' or tap a command below.",
+    description: "Same portfolio, different interface. Try a few commands.",
   },
   title: "~/hassan · interactive",
   welcome: [

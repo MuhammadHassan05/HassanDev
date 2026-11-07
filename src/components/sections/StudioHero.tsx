@@ -1,8 +1,11 @@
 /**
  * Studio page hero, left-aligned like the engineer hero: the headline (the
- * page's h1), one line in the secondary text colour and two calls to action.
+ * page's h1), one line in the secondary text colour, two calls to action and
+ * the headline stats.
  */
 import { Button } from "@/components/ui/Button";
+import { StatsRow } from "@/components/ui/StatsRow";
+import { stats } from "@/content/stats";
 import { pitch } from "@/content/profile";
 
 /** Renders the studio hero. */
@@ -28,6 +31,9 @@ export function StudioHero() {
             {secondary.label}
           </Button>
         ) : null}
+      </div>
+      <div className="pt-12">
+        <StatsRow stats={stats.studio} />
       </div>
     </section>
   );
