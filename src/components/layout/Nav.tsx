@@ -1,7 +1,7 @@
 /**
  * Site nav: a 56px bar on a solid background with a hairline under it. The
- * name sits on the left. From 768px the right side holds the Engineering and
- * Studio links, the theme toggle and the Contact button; on phones it holds
+ * name sits on the left. From 768px the right side holds the Engineering,
+ * Studio and Case studies links, the theme toggle and the Contact button; on phones it holds
  * the theme toggle and a menu button that opens the links (NavMenu).
  */
 import { NavMenu } from "@/components/features/NavMenu";
@@ -10,29 +10,32 @@ import { AppLink } from "@/components/ui/AppLink";
 import { Button } from "@/components/ui/Button";
 import { profile } from "@/content/profile";
 import { siteChrome } from "@/content/site";
-import { tracks, type TrackId } from "@/content/tracks";
+import { tracks, type NavSection } from "@/content/tracks";
 import { cx } from "@/lib/cx";
 
 /** Props for {@link Nav}. */
 export interface NavProps {
-  /** Track of the page being viewed; null on pages that belong to neither (the 404). */
-  current: TrackId | null;
-  /** Where Contact goes: this page's contact section, or the home page's. */
+  /** The part of the site being viewed; null on pages that belong to none (the 404). */
+  current: NavSection | null;
+  /** Where Contact goes: this page's contact section, or a track page's. */
   contactHref: string;
 }
 
 /**
  * Renders the site header and its navigation.
  *
- * @param props.current - Track of the page being viewed, or null for none.
+ * @param props.current - The part of the site being viewed, or null for none.
  * @param props.contactHref - Target of the Contact button.
  */
 export function Nav({ current, contactHref }: NavProps) {
-  const links = tracks.map((track) => ({
-    href: track.href,
-    label: track.navLabel,
-    current: track.id === current,
-  }));
+  const links = [
+    ...tracks.map((track) => ({
+      href: track.href,
+      label: track.navLabel,
+      current: track.id === current,
+    })),
+    { ...siteChrome.caseStudiesLink, current: current === "case-studies" },
+  ];
   const contact = { href: contactHref, label: siteChrome.contactLabel };
 
   return (

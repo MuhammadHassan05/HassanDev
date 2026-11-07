@@ -5,7 +5,7 @@
  */
 import type { Metadata } from "next";
 import { PageShell } from "@/components/layout/PageShell";
-import { CaseStudySection } from "@/components/sections/CaseStudySection";
+import { CaseStudiesBand } from "@/components/sections/CaseStudiesBand";
 import { ClientsSection } from "@/components/sections/ClientsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { CrossLink } from "@/components/ui/CrossLink";
@@ -33,7 +33,7 @@ export default function StudioPage() {
         intro={studioProjectsIntro.ecommerce}
         projects={studioProjects.filter((p) => p.section === "ecommerce")}
       />
-      <CaseStudySection />
+      <CaseStudiesBand track="studio" />
       <div className="mx-auto flex max-w-page justify-center px-page pt-16 text-center">
         <CrossLink
           text={pitch.studio.crossLink.eyebrow}

@@ -5,6 +5,9 @@
 /** Identifier of a track; also the value of the data-track theme attribute. */
 export type TrackId = "engineer" | "studio";
 
+/** A part of the site the nav can mark as current: a track page or the case studies. */
+export type NavSection = TrackId | "case-studies";
+
 /** One track. */
 export interface Track {
   id: TrackId;

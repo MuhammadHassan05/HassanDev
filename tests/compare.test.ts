@@ -10,7 +10,7 @@ import {
   TOUCH_SLOP,
   touchIntent,
 } from "@/lib/compare";
-import { caseStudy } from "@/content/caseStudy";
+import { cartComparison } from "@/content/cartComparison";
 
 describe("compareValueText", () => {
   const template = "{before}% before, {after}% after";
@@ -31,8 +31,8 @@ describe("compareValueText", () => {
   });
 
   it("is used by the case study content with both placeholders", () => {
-    expect(caseStudy.sliderValueText).toContain("{before}");
-    expect(caseStudy.sliderValueText).toContain("{after}");
+    expect(cartComparison.sliderValueText).toContain("{before}");
+    expect(cartComparison.sliderValueText).toContain("{after}");
   });
 });
 

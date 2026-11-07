@@ -27,7 +27,7 @@ export default function HomePage() {
     <PageShell track="engineer">
       <JsonLd data={personJsonLd()} />
       <EngineerHero />
-      <CaseStudiesBand />
+      <CaseStudiesBand track="engineer" />
       <EngineerProjects />
       <ExperienceSection content={experience.engineer} crossLink={pitch.engineer.crossLink} />
       <TerminalSection />

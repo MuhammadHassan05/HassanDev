@@ -5,7 +5,8 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import * as caseStudy from "@/content/caseStudy";
+import * as cartComparison from "@/content/cartComparison";
+import * as caseStudiesModule from "@/content/caseStudies";
 import * as clients from "@/content/clients";
 import * as education from "@/content/education";
 import * as experience from "@/content/experience";
@@ -18,6 +19,7 @@ import * as site from "@/content/site";
 import * as skills from "@/content/skills";
 import * as stats from "@/content/stats";
 import * as tracks from "@/content/tracks";
+import { CASE_STUDIES_PATH, caseStudyHref } from "@/lib/caseStudies";
 import { linkKind } from "@/lib/links";
 
 const { engineerProjects, projects } = projectsModule;
@@ -26,7 +28,8 @@ const ROOT = join(__dirname, "..");
 const DESIGN_ILLUSTRATIONS = join(ROOT, "design-kit", "illustrations");
 
 const CONTENT_MODULES = {
-  caseStudy,
+  cartComparison,
+  caseStudies: caseStudiesModule,
   clients,
   education,
   experience,
@@ -104,10 +107,15 @@ describe("links", () => {
   );
 
   it.each(hrefs.filter(([, href]) => linkKind(href) === "route"))(
-    "%s points at a page in the track list",
+    "%s points at a page that exists",
     (_path, href) => {
       const route = href.split("#", 1)[0];
-      expect(tracks.tracks.map((track) => track.href)).toContain(route);
+      const pages = [
+        ...tracks.tracks.map((track) => track.href),
+        CASE_STUDIES_PATH,
+        ...caseStudiesModule.caseStudies.map((study) => caseStudyHref(study.slug)),
+      ];
+      expect(pages).toContain(route);
     },
   );
 });

@@ -11,7 +11,7 @@
 
 import { useId, useRef, useState, type PointerEvent } from "react";
 import { CartMock } from "@/components/ui/CartMock";
-import { caseStudy } from "@/content/caseStudy";
+import { cartComparison } from "@/content/cartComparison";
 import {
   clampPercent,
   COMPARE_START,
@@ -22,7 +22,7 @@ import {
 
 /** Renders the comparison area and its range control. */
 export function BeforeAfterSlider() {
-  const { before, after, sliderLabel, sliderValueText } = caseStudy;
+  const { before, after, sliderLabel, sliderValueText } = cartComparison;
   const rangeId = useId();
   const [position, setPosition] = useState(COMPARE_START);
   // "pending": a touch whose direction is not known yet; "dragging": moving the divider.

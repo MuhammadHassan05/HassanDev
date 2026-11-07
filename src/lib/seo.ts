@@ -4,20 +4,57 @@
  * all from src/content.
  */
 import type { Metadata } from "next";
+import { caseStudies, caseStudyLabels, type CaseStudy } from "@/content/caseStudies";
 import { profile } from "@/content/profile";
 import { shareImage, siteMetadata } from "@/content/site";
 import { tracks, type TrackId } from "@/content/tracks";
+import { CASE_STUDIES_PATH, caseStudyHref, listNames } from "./caseStudies";
 import { absoluteUrl } from "./site";
 
 /**
- * Metadata for one track's page. Every URL is absolute, because crawlers and
- * share previews do not resolve relative ones reliably.
+ * Metadata for one track's page.
  *
  * @param track - Which page.
  */
 export function pageMetadata(track: TrackId): Metadata {
   const { title, description } = siteMetadata.pages[track];
   const route = tracks.find((t) => t.id === track)?.href ?? "/";
+  return buildMetadata(title, description, route);
+}
+
+/**
+ * Metadata for one case study page: its title and summary, and its own
+ * canonical URL.
+ *
+ * @param study - The case study.
+ */
+export function caseStudyMetadata(study: CaseStudy): Metadata {
+  return buildMetadata(
+    `${study.title} · ${profile.fullName}`,
+    study.summary,
+    caseStudyHref(study.slug),
+  );
+}
+
+/** Metadata for the case studies list, described by the case studies it holds. */
+export function caseStudiesIndexMetadata(): Metadata {
+  const clients = listNames(caseStudies.map((study) => study.client));
+  return buildMetadata(
+    `${caseStudyLabels.listTitle} · ${profile.fullName}`,
+    `${caseStudyLabels.listTitle} by ${profile.fullName}: ${clients}.`,
+    CASE_STUDIES_PATH,
+  );
+}
+
+/**
+ * The shared shape of every page's metadata. Every URL is absolute, because
+ * crawlers and share previews do not resolve relative ones reliably.
+ *
+ * @param title - Page title.
+ * @param description - Search and share description.
+ * @param route - Root-relative route, e.g. "/studio/".
+ */
+function buildMetadata(title: string, description: string, route: string): Metadata {
   const url = absoluteUrl(route);
   const image = {
     url: absoluteUrl(shareImage.path),

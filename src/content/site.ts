@@ -76,7 +76,7 @@ export interface SiteChrome {
   contactLabel: string;
   /** Accessible name of the phone nav's menu button. */
   menuLabel: string;
-  /** The case studies band on the engineering page, linked from the footer. */
+  /** The case studies list, linked from the nav and the footer. */
   caseStudiesLink: { label: string; href: string };
   /** Accessible name of the footer's link row. */
   footerNavLabel: string;
@@ -96,7 +96,7 @@ export const siteChrome: SiteChrome = {
   // Not in the design: a standard label for the icon-only menu button.
   menuLabel: "Menu",
   // Given by Hassan.
-  caseStudiesLink: { label: "Case studies", href: "/#case-studies" },
+  caseStudiesLink: { label: "Case studies", href: "/case-studies/" },
   // Not in the design: a standard landmark name.
   footerNavLabel: "Footer",
   // Wording given by Hassan.

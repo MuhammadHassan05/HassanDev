@@ -5,7 +5,15 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { JsonLd } from "@/components/ui/JsonLd";
-import { pageMetadata, personJsonLd, serializeJsonLd } from "@/lib/seo";
+import sitemap from "@/app/sitemap";
+import { caseStudies } from "@/content/caseStudies";
+import {
+  caseStudiesIndexMetadata,
+  caseStudyMetadata,
+  pageMetadata,
+  personJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo";
 import { absoluteUrl, SITE_URL } from "@/lib/site";
 
 describe("absoluteUrl", () => {
@@ -42,6 +50,38 @@ describe("pageMetadata", () => {
   it("has a description for each page", () => {
     expect(pageMetadata("engineer").description).toMatch(/FAST-NUCES/);
     expect(pageMetadata("studio").description).toMatch(/Shopify/);
+  });
+});
+
+describe("case study metadata", () => {
+  it.each(caseStudies.map((study) => [study.slug, study] as const))(
+    "%s has its own title, description and canonical URL",
+    (slug, study) => {
+      const meta = caseStudyMetadata(study);
+      expect(meta.title).toBe(`${study.title} · Muhammad Hassan`);
+      expect(meta.description).toBe(study.summary);
+      expect(meta.alternates?.canonical).toBe(`${SITE_URL}/case-studies/${slug}/`);
+      expect(meta.openGraph?.url).toBe(`${SITE_URL}/case-studies/${slug}/`);
+    },
+  );
+
+  it("describes the list by the case studies in it", () => {
+    const meta = caseStudiesIndexMetadata();
+    expect(meta.alternates?.canonical).toBe(`${SITE_URL}/case-studies/`);
+    expect(meta.description).toBe(
+      "Case studies by Muhammad Hassan: Yetti.ai, Tiny Owlets, TalentMiner and flatterlab.tech.",
+    );
+  });
+});
+
+describe("sitemap", () => {
+  it("lists both pages, the case studies list and every case study", () => {
+    expect(sitemap().map((entry) => entry.url)).toEqual([
+      `${SITE_URL}/`,
+      `${SITE_URL}/studio/`,
+      `${SITE_URL}/case-studies/`,
+      ...caseStudies.map((study) => `${SITE_URL}/case-studies/${study.slug}/`),
+    ]);
   });
 });
 

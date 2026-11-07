@@ -5,7 +5,7 @@
  * Its colours are theme tokens, mapped the same way as the project
  * illustrations, so it reads correctly in light and dark mode.
  */
-import type { CartState } from "@/content/caseStudy";
+import type { CartState } from "@/content/cartComparison";
 import { cx } from "@/lib/cx";
 
 /** Props for {@link CartMock}. */
@@ -18,7 +18,7 @@ export interface CartMockProps {
 /**
  * Renders one cart.
  *
- * @param props.cart - Lines, button label and notes from src/content/caseStudy.ts.
+ * @param props.cart - Lines, button label and notes from src/content/cartComparison.ts.
  */
 export function CartMock({ cart, variant }: CartMockProps) {
   return (

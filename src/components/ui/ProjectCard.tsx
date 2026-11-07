@@ -1,10 +1,13 @@
 /**
  * Project card: the illustration at the top, then the title, the one-line
  * description, the tags in the secondary text colour, and a text link (or a
- * plain label when there is nothing to open).
+ * plain label when there is nothing to open). Projects with a case study also
+ * get a "Read case study ›" link.
  */
 import { illustrations } from "@/components/illustrations";
+import { caseStudies, caseStudyLabels } from "@/content/caseStudies";
 import type { Project } from "@/content/projects";
+import { caseStudyForProject, caseStudyHref } from "@/lib/caseStudies";
 import { Button } from "./Button";
 import { Card } from "./Card";
 
@@ -24,6 +27,7 @@ export interface ProjectCardProps {
 export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCardProps) {
   const Illustration = illustrations[project.illustration];
   const { footer } = project;
+  const study = caseStudyForProject(caseStudies, project.illustration);
 
   return (
     <Card as="article" className="flex flex-col overflow-hidden">
@@ -36,7 +40,13 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
         </Heading>
         <p className="m-0">{project.description}</p>
         <p className="m-0 text-small text-ink-2">{project.tags.join(" · ")}</p>
-        <div className="mt-auto pt-2">
+        <div className="mt-auto flex flex-wrap gap-x-6 pt-2">
+          {study ? (
+            <Button href={caseStudyHref(study.slug)} variant="text">
+              {caseStudyLabels.readCaseStudy}
+              <span className="sr-only">: {project.title}</span>
+            </Button>
+          ) : null}
           {footer.kind === "link" ? (
             <Button href={footer.href} newTab={footer.newTab} variant="text">
               {footer.label}

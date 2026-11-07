@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 /** Renders the 404 page. */
 export default function NotFound() {
   return (
-    <PageShell track="engineer" isTrackPage={false}>
+    <PageShell track="engineer" current={null}>
       <section className="mx-auto flex max-w-page flex-col items-center gap-8 px-page py-section text-center">
         <h1 className="m-0 text-title">{notFound.title}</h1>
         {/* Styled like the hero terminal: a flat mono card. */}
