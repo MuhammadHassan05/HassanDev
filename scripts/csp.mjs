@@ -22,6 +22,12 @@ const SCRIPT = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 const EXISTING_CSP = /<meta http-equiv="Content-Security-Policy"[^>]*>/gi;
 /** The charset meta must stay first; the policy goes straight after it. */
 const CHARSET = /<meta charSet="utf-8"\s*\/?>/i;
+/**
+ * Google Search Console's ownership file (public/google<token>.html). It is a
+ * one-line token, not a page: it has no markup or scripts to protect, and
+ * Google checks its exact contents, so it must stay untouched.
+ */
+const SEARCH_CONSOLE_FILE = /^google[0-9a-f]+\.html$/;
 
 /**
  * Builds the policy for one page.
@@ -91,11 +97,12 @@ async function protect(file) {
   return hashes.length;
 }
 
-/** Lists every .html file under a directory. */
+/** Lists every page (.html file) under a directory. */
 async function htmlFiles(dir) {
   const entries = await readdir(dir, { recursive: true, withFileTypes: true });
   return entries
     .filter((entry) => entry.isFile() && entry.name.endsWith(".html"))
+    .filter((entry) => !SEARCH_CONSOLE_FILE.test(entry.name))
     .map((entry) => join(entry.parentPath, entry.name));
 }
 

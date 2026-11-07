@@ -15,10 +15,14 @@ import { describe, expect, it } from "vitest";
 
 const OUT = join(__dirname, "..", "..", "out");
 
-/** Every exported HTML file, relative to out/. */
+/**
+ * Every exported page, relative to out/. Search Console's ownership file
+ * (google<token>.html) is a one-line token, not a page; pages.test.ts checks it.
+ */
 const pages = existsSync(OUT)
   ? readdirSync(OUT, { recursive: true, withFileTypes: true })
       .filter((entry) => entry.isFile() && entry.name.endsWith(".html"))
+      .filter((entry) => !/^google[0-9a-f]+\.html$/.test(entry.name))
       .map((entry) => relative(OUT, join(entry.parentPath, entry.name)))
   : [];
 

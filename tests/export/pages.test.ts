@@ -1,14 +1,15 @@
 /**
  * Post-build check of what GitHub Pages needs in out/: the .nojekyll marker,
  * which stops Pages from running Jekyll and hiding the _next folder (Jekyll
- * skips folders that start with an underscore), and the 404 page it serves
- * for missing paths. Run with `npm run test:export` after `npm run build`.
+ * skips folders that start with an underscore), the 404 page it serves for
+ * missing paths, and Google Search Console's ownership file. Run with `npm run test:export` after `npm run build`.
  */
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const OUT = join(__dirname, "..", "..", "out");
+const SEARCH_CONSOLE_FILE = "google17bfe732dc5dcb5b.html";
 
 describe("GitHub Pages files", () => {
   it("includes an empty .nojekyll", () => {
@@ -20,5 +21,13 @@ describe("GitHub Pages files", () => {
   it("includes the _next folder and the 404 page", () => {
     expect(existsSync(join(OUT, "_next"))).toBe(true);
     expect(existsSync(join(OUT, "404.html"))).toBe(true);
+  });
+
+  // Google re-checks this file to keep the site verified, so it must ship
+  // byte for byte as Google issued it.
+  it("includes the Search Console ownership file unchanged", () => {
+    const file = join(OUT, SEARCH_CONSOLE_FILE);
+    expect(existsSync(file), `out/${SEARCH_CONSOLE_FILE} is missing`).toBe(true);
+    expect(readFileSync(file, "utf8")).toBe(`google-site-verification: ${SEARCH_CONSOLE_FILE}`);
   });
 });
