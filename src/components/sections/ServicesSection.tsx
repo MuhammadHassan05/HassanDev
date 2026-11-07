@@ -1,9 +1,9 @@
 /**
- * Studio services: four glass cards, each with a line icon, title and description.
+ * Studio services: four cards, each with a line icon, title and description.
  */
 import type { ComponentType } from "react";
 import { Section } from "@/components/layout/Section";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ClockRefreshIcon, MonitorIcon, ShoppingBagIcon, SparkleIcon } from "@/components/ui/icons";
 import { services, type ServiceIcon } from "@/content/services";
@@ -26,13 +26,13 @@ export function ServicesSection() {
         {services.services.map((service) => {
           const Icon = ICONS[service.icon];
           return (
-            <GlassCard key={service.title} as="li" className="flex flex-col gap-3 p-[26px]">
-              <span className="inline-flex size-[46px] items-center justify-center rounded-inner border border-glass-border bg-white/8 text-accent">
+            <Card key={service.title} as="li" className="flex flex-col gap-3 p-[26px]">
+              <span className="inline-flex size-[46px] items-center justify-center rounded-inner border border-line bg-surface-2 text-accent-ink">
                 <Icon />
               </span>
               <h3 className="m-0 font-heading text-[20px] font-bold">{service.title}</h3>
-              <p className="m-0 text-[15.5px] text-body">{service.description}</p>
-            </GlassCard>
+              <p className="m-0 text-[15.5px] text-ink">{service.description}</p>
+            </Card>
           );
         })}
       </ul>

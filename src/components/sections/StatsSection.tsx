@@ -1,7 +1,7 @@
 /**
  * Row of headline numbers under a page's hero.
  */
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Card } from "@/components/ui/Card";
 import type { Stat } from "@/content/stats";
 
 /** Props for {@link StatsSection}. */
@@ -19,12 +19,12 @@ export function StatsSection({ stats }: StatsSectionProps) {
     <section className="mx-auto max-w-page px-gutter">
       <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-4 p-0">
         {stats.map((stat) => (
-          <GlassCard key={stat.label} as="li" className="flex flex-col gap-1.5 p-[26px]">
-            <span className="font-heading text-[44px] leading-none font-extrabold text-accent">
+          <Card key={stat.label} as="li" className="flex flex-col gap-1.5 p-[26px]">
+            <span className="font-heading text-[44px] leading-none font-extrabold text-accent-ink">
               {stat.value}
             </span>
-            <span className="text-[15px] text-muted">{stat.label}</span>
-          </GlassCard>
+            <span className="text-[15px] text-ink-2">{stat.label}</span>
+          </Card>
         ))}
       </ul>
     </section>

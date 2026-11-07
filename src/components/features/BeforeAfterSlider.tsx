@@ -78,7 +78,7 @@ export function BeforeAfterSlider() {
         onPointerUp={stopDragging}
         onPointerCancel={stopDragging}
         onLostPointerCapture={stopDragging}
-        className="relative h-[clamp(400px,60vw,440px)] cursor-ew-resize max-nav:h-[480px] touch-pan-y overflow-hidden rounded-inset bg-[#0b1017] select-none"
+        className="relative h-[clamp(400px,60vw,440px)] cursor-ew-resize max-nav:h-[480px] touch-pan-y overflow-hidden rounded-inset bg-surface-2 select-none"
       >
         <div
           role="group"
@@ -90,7 +90,7 @@ export function BeforeAfterSlider() {
         <div
           role="group"
           aria-label={after.tag}
-          className="absolute inset-0 flex items-center justify-center bg-[#0e1520]"
+          className="absolute inset-0 flex items-center justify-center bg-surface"
           style={{ clipPath: `inset(0 0 0 ${position}%)` }}
         >
           <CartMock cart={after} variant="after" />
@@ -99,7 +99,7 @@ export function BeforeAfterSlider() {
         {/* Visual labels; the groups above already carry these names. */}
         <span
           aria-hidden="true"
-          className="absolute top-4 left-4 rounded-full bg-black/45 px-3 py-1.5 font-mono text-[12px] text-body"
+          className="absolute top-4 left-4 rounded-full bg-surface px-3 py-1.5 font-mono text-[12px] text-ink"
         >
           {before.tag}
         </span>
@@ -115,13 +115,13 @@ export function BeforeAfterSlider() {
           className="pointer-events-none absolute inset-y-0 -ml-px w-0.5 bg-ink"
           style={{ left: `${position}%` }}
         >
-          <span className="absolute top-1/2 left-1/2 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/50 bg-white/18 text-ink backdrop-blur-[10px]">
+          <span className="absolute top-1/2 left-1/2 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-surface text-ink ">
             <ChevronsHorizontalIcon />
           </span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3.5 px-2 font-mono text-[12px] text-muted">
+      <div className="flex items-center gap-3.5 px-2 font-mono text-[12px] text-ink-2">
         <label htmlFor={rangeId}>{before.tag}</label>
         <input
           id={rangeId}

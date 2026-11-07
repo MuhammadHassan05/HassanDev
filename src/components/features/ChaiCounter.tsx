@@ -21,7 +21,7 @@ export function ChaiCounter() {
       title={chai.title}
       aria-hidden={count === null ? true : undefined}
       className={cx(
-        "glass m-0 inline-flex items-center gap-2 rounded-full px-4 py-[7px] font-mono text-[13px] text-body",
+        "panel m-0 inline-flex items-center gap-2 rounded-full px-4 py-[7px] font-mono text-[13px] text-ink",
         count === null && "invisible",
       )}
     >
@@ -31,7 +31,7 @@ export function ChaiCounter() {
         height="18"
         viewBox="0 0 24 24"
         fill="none"
-        className="stroke-accent"
+        className="stroke-accent-ink"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

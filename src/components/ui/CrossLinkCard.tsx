@@ -1,5 +1,5 @@
 /**
- * Full-width glass card that links to the other track, e.g. "Also … Open Studio".
+ * Full-width card that links to the other track, e.g. "Also … Open Studio".
  */
 import type { CrossLinkContent } from "@/content/profile";
 import { AppLink } from "./AppLink";
@@ -20,15 +20,15 @@ export function CrossLinkCard({ content }: CrossLinkCardProps) {
     <AppLink
       href={content.action.href}
       newTab={content.action.newTab}
-      className="glass flex flex-wrap items-center justify-between gap-4 rounded-card p-[clamp(20px,4vw,28px)]"
+      className="panel flex flex-wrap items-center justify-between gap-4 rounded-card p-[clamp(20px,4vw,28px)]"
     >
       <span className="flex flex-col gap-1">
-        <span className="font-mono text-[13px] text-muted">{content.eyebrow}</span>
+        <span className="font-mono text-[13px] text-ink-2">{content.eyebrow}</span>
         <span className="font-heading text-[clamp(19px,2.4vw,22px)] font-bold">
           {content.title}
         </span>
       </span>
-      <span className="inline-flex min-h-11 items-center gap-2 font-medium text-accent">
+      <span className="inline-flex min-h-11 items-center gap-2 font-medium text-accent-ink">
         {content.action.label}
         <ArrowRightIcon />
       </span>

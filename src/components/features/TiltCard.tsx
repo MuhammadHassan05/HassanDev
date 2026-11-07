@@ -1,7 +1,7 @@
 /**
- * Glass card that tilts gently toward the pointer with a soft light glint,
- * as on the project cards in the design. Only for a precise, hovering pointer
- * and only when motion is allowed; otherwise it is a still glass card.
+ * Card that tilts gently toward the pointer, as on the project cards. Only
+ * for a precise, hovering pointer and only when motion is allowed; otherwise
+ * it is a still card.
  */
 "use client";
 
@@ -48,9 +48,6 @@ export function TiltCard({ className, children }: TiltCardProps) {
         card.getBoundingClientRect(),
       );
       card.style.transform = tiltTransform(tilt);
-      card.style.setProperty("--gx", `${tilt.glintX.toFixed(1)}%`);
-      card.style.setProperty("--gy", `${tilt.glintY.toFixed(1)}%`);
-      card.style.setProperty("--go", "1");
     });
   };
 
@@ -62,7 +59,6 @@ export function TiltCard({ className, children }: TiltCardProps) {
     const card = ref.current;
     if (!card) return;
     card.style.transform = "";
-    card.style.setProperty("--go", "0");
   };
 
   return (
@@ -72,7 +68,6 @@ export function TiltCard({ className, children }: TiltCardProps) {
       onPointerLeave={handleLeave}
       className={cx("tilt-card relative", className)}
     >
-      <span aria-hidden="true" className="tilt-glint" />
       {children}
     </article>
   );

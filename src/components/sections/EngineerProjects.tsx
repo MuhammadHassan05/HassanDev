@@ -33,7 +33,7 @@ export function EngineerProjects() {
       id: category.id,
       content: (
         <section aria-labelledby={groupTitleId} className="flex flex-col gap-[22px]">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-white/10 pb-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-line pb-4">
             <div className="flex items-baseline gap-3.5">
               <h3
                 id={groupTitleId}
@@ -41,11 +41,11 @@ export function EngineerProjects() {
               >
                 {category.title}
               </h3>
-              <span className="font-mono text-[13px] text-accent">
+              <span className="font-mono text-[13px] text-accent-ink">
                 {twoDigits(projects.length)}
               </span>
             </div>
-            <p className="m-0 max-w-[520px] text-[15px] text-muted">{category.description}</p>
+            <p className="m-0 max-w-[520px] text-[15px] text-ink-2">{category.description}</p>
           </div>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] gap-[22px]">
             {projects.map((project) => (

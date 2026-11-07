@@ -25,7 +25,7 @@ export function StudioHero() {
       >
         {hero.heading ? <BounceText text={hero.heading} /> : null}
       </h1>
-      <p className="m-0 max-w-[660px] text-[21px] leading-normal text-body">{hero.summary}</p>
+      <p className="m-0 max-w-[660px] text-[21px] leading-normal text-ink">{hero.summary}</p>
       <div className="flex flex-wrap gap-3 pt-1.5">
         {primary ? (
           <Button href={primary.href} newTab={primary.newTab}>
@@ -34,7 +34,7 @@ export function StudioHero() {
           </Button>
         ) : null}
         {secondary ? (
-          <Button href={secondary.href} newTab={secondary.newTab} variant="glass">
+          <Button href={secondary.href} newTab={secondary.newTab} variant="secondary">
             {secondary.label}
           </Button>
         ) : null}

@@ -33,7 +33,7 @@ export function SectionHeader({
   return (
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div className="flex flex-col gap-3">
-        <span className="font-mono text-[13px] text-accent">
+        <span className="font-mono text-[13px] text-accent-ink">
           {index} / {label}
         </span>
         <Heading
@@ -43,7 +43,7 @@ export function SectionHeader({
           {title}
         </Heading>
       </div>
-      {description ? <p className="m-0 max-w-[440px] text-muted">{description}</p> : null}
+      {description ? <p className="m-0 max-w-[440px] text-ink-2">{description}</p> : null}
     </div>
   );
 }

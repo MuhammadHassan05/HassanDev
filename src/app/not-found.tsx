@@ -1,12 +1,12 @@
 /**
  * Custom 404 page (exported as 404.html, which GitHub Pages serves for any
- * missing path under the site): a glass terminal card that reports the page
+ * missing path under the site): a terminal card that reports the page
  * as a missing command, and a link back home.
  */
 import type { Metadata } from "next";
 import { PageShell } from "@/components/layout/PageShell";
 import { Button } from "@/components/ui/Button";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Card } from "@/components/ui/Card";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { profile } from "@/content/profile";
 import { notFound } from "@/content/site";
@@ -24,20 +24,20 @@ export default function NotFound() {
         <h1 className="m-0 font-heading text-[clamp(38px,5.5vw,72px)] leading-[1.02] font-extrabold tracking-[-0.03em]">
           {notFound.title}
         </h1>
-        <GlassCard
+        <Card
           radius="card-lg"
           className="w-full max-w-[560px] overflow-hidden font-mono text-[14px] leading-[1.75]"
         >
           <div
             aria-hidden="true"
-            className="flex items-center gap-2 border-b border-white/10 px-[18px] py-3.5"
+            className="flex items-center gap-2 border-b border-line px-[18px] py-3.5"
           >
-            <span className="size-2.5 rounded-full bg-white/20" />
-            <span className="size-2.5 rounded-full bg-white/20" />
-            <span className="size-2.5 rounded-full bg-white/20" />
+            <span className="size-2.5 rounded-full bg-line" />
+            <span className="size-2.5 rounded-full bg-line" />
+            <span className="size-2.5 rounded-full bg-line" />
           </div>
-          <p className="m-0 px-[22px] py-5 text-dim">{notFound.terminalLine}</p>
-        </GlassCard>
+          <p className="m-0 px-[22px] py-5 text-ink-2">{notFound.terminalLine}</p>
+        </Card>
         <Button href={notFound.homeLink.href}>
           {notFound.homeLink.label}
           <ArrowRightIcon />

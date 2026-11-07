@@ -3,8 +3,8 @@
  * injected so the output is testable.
  */
 
-/** Theme color of a piece: track accent, track glow, or the page's white. */
-export type ConfettiColor = "accent" | "glow" | "ink";
+/** Theme colour of a piece: the track accent or the main text colour. */
+export type ConfettiColor = "accent" | "ink";
 
 /** Which falling path a piece takes (three CSS keyframes in globals.css). */
 export type ConfettiPath = "a" | "b" | "c";
@@ -28,7 +28,7 @@ export const CONFETTI_COUNT = 48;
 /** Longest a piece can take to land (max delay plus max duration), in ms. */
 export const CONFETTI_LIFETIME_MS = 4000;
 
-const COLORS: readonly ConfettiColor[] = ["accent", "glow", "ink"];
+const COLORS: readonly ConfettiColor[] = ["accent", "ink"];
 const PATHS: readonly ConfettiPath[] = ["a", "b", "c"];
 
 /** Rounds to two decimals, so the generated CSS stays short. */

@@ -5,7 +5,7 @@
 import { BeforeAfterSlider } from "@/components/features/BeforeAfterSlider";
 import { Section } from "@/components/layout/Section";
 import { Chip } from "@/components/ui/Chip";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { caseStudy } from "@/content/caseStudy";
 
@@ -17,9 +17,9 @@ export function CaseStudySection() {
   return (
     <Section id="case" labelledBy={titleId}>
       <SectionHeader {...section} titleId={titleId} />
-      <GlassCard radius="panel" className="flex flex-col gap-3.5 p-3.5">
+      <Card radius="panel" className="flex flex-col gap-3.5 p-3.5">
         <BeforeAfterSlider />
-      </GlassCard>
+      </Card>
       <ul className="m-0 flex list-none flex-wrap gap-2.5 p-0">
         {highlights.map((highlight) => (
           <li key={highlight}>

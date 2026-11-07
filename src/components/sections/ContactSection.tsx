@@ -5,7 +5,7 @@
 import { AppLink } from "@/components/ui/AppLink";
 import { BounceText } from "@/components/ui/BounceText";
 import { Button } from "@/components/ui/Button";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Card } from "@/components/ui/Card";
 import type { ContactContent } from "@/content/profile";
 
 /** Props for {@link ContactSection}. */
@@ -15,7 +15,7 @@ export interface ContactSectionProps {
 
 /**
  * Renders the contact panel. The first action is the filled primary button,
- * the rest are glass, as in the design.
+ * the rest are secondary.
  *
  * @param props.content - Contact copy from src/content/profile.ts.
  */
@@ -29,8 +29,8 @@ export function ContactSection({ content }: ContactSectionProps) {
       aria-labelledby={titleId}
       className="mx-auto max-w-page px-gutter pt-section"
     >
-      <GlassCard radius="shell" className="flex flex-col gap-7 p-[clamp(32px,6vw,72px)]">
-        <p className="m-0 font-mono text-[13px] text-accent">
+      <Card radius="shell" className="flex flex-col gap-7 p-[clamp(32px,6vw,72px)]">
+        <p className="m-0 font-mono text-[13px] text-accent-ink">
           {content.index} / {content.label}
         </p>
         {/* The letters are hidden from screen readers, so the h2 carries the heading. */}
@@ -44,9 +44,9 @@ export function ContactSection({ content }: ContactSectionProps) {
         {/* The link box is 44px tall for touch; the underline stays tight to the text. */}
         <AppLink
           href={content.email.href}
-          className="inline-flex min-h-11 items-center self-start font-mono text-[clamp(16px,2vw,22px)] text-accent hover:text-accent"
+          className="inline-flex min-h-11 items-center self-start font-mono text-[clamp(16px,2vw,22px)] text-accent-ink hover:text-accent-ink"
         >
-          <span className="border-b border-accent pb-1">{content.email.label}</span>
+          <span className="border-b border-accent-ink pb-1">{content.email.label}</span>
         </AppLink>
         <div className="flex flex-wrap gap-3 pt-1">
           {primary ? (
@@ -55,12 +55,17 @@ export function ContactSection({ content }: ContactSectionProps) {
             </Button>
           ) : null}
           {others.map((action) => (
-            <Button key={action.label} href={action.href} newTab={action.newTab} variant="glass">
+            <Button
+              key={action.label}
+              href={action.href}
+              newTab={action.newTab}
+              variant="secondary"
+            >
               {action.label}
             </Button>
           ))}
         </div>
-      </GlassCard>
+      </Card>
     </section>
   );
 }

@@ -78,13 +78,11 @@ describe("createConfetti", () => {
     expect(CONFETTI_COUNT).toBe(48);
   });
 
-  it("cycles through accent, glow and white", () => {
-    expect(createConfetti(seeded(2), 6).map((p) => p.color)).toEqual([
+  it("alternates between the accent and the text colour", () => {
+    expect(createConfetti(seeded(2), 4).map((p) => p.color)).toEqual([
       "accent",
-      "glow",
       "ink",
       "accent",
-      "glow",
       "ink",
     ]);
   });

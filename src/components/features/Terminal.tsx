@@ -24,10 +24,10 @@ import { Confetti } from "./Confetti";
 
 /** Text color for each line tone, as in the design. */
 const TONE_CLASSES: Record<Extract<TerminalLine, { kind: "text" }>["tone"], string> = {
-  output: "text-body",
-  dim: "text-dim",
+  output: "text-ink",
+  dim: "text-ink-2",
   command: "text-ink",
-  ok: "text-accent",
+  ok: "text-accent-ink",
 };
 
 /** Renders the terminal window. */
@@ -69,12 +69,12 @@ export function Terminal() {
   };
 
   return (
-    <div className="glass min-w-0 flex-[1_1_380px] overflow-hidden rounded-card-lg font-mono text-[14px] leading-[1.75]">
-      <div className="flex items-center gap-2 border-b border-white/10 px-[18px] py-3.5">
-        <span aria-hidden="true" className="size-2.5 rounded-full bg-white/20" />
-        <span aria-hidden="true" className="size-2.5 rounded-full bg-white/20" />
-        <span aria-hidden="true" className="size-2.5 rounded-full bg-white/20" />
-        <span className="ml-2 text-[12px] text-faint">{terminal.title}</span>
+    <div className="panel min-w-0 flex-[1_1_380px] overflow-hidden rounded-card-lg font-mono text-[14px] leading-[1.75]">
+      <div className="flex items-center gap-2 border-b border-line px-[18px] py-3.5">
+        <span aria-hidden="true" className="size-2.5 rounded-full bg-line" />
+        <span aria-hidden="true" className="size-2.5 rounded-full bg-line" />
+        <span aria-hidden="true" className="size-2.5 rounded-full bg-line" />
+        <span className="ml-2 text-[12px] text-ink-2">{terminal.title}</span>
       </div>
 
       {/* role="log" announces new lines politely; tabIndex lets keyboard users scroll it. */}
@@ -94,7 +94,7 @@ export function Terminal() {
                 key={index}
                 href={target.href}
                 newTab={target.newTab}
-                className="self-start border-b border-accent text-accent hover:text-accent"
+                className="self-start border-b border-accent-ink text-accent-ink hover:text-accent-ink"
               >
                 {target.label}
               </AppLink>
@@ -112,7 +112,7 @@ export function Terminal() {
       </div>
 
       <div className="flex items-center gap-2.5 px-[22px] pt-1 pb-3">
-        <label htmlFor={inputId} className="text-accent">
+        <label htmlFor={inputId} className="text-accent-ink">
           <span aria-hidden="true">{terminal.prompt}</span>
           <span className="sr-only">{terminal.inputLabel}</span>
         </label>
@@ -129,17 +129,17 @@ export function Terminal() {
           autoCorrect="off"
           spellCheck={false}
           enterKeyHint="go"
-          className="min-h-11 min-w-0 flex-1 rounded-sm border-0 bg-transparent text-ink caret-accent placeholder:text-dim"
+          className="min-h-11 min-w-0 flex-1 rounded-sm border-0 bg-transparent text-ink caret-accent-ink placeholder:text-ink-2"
         />
       </div>
 
-      <div className="flex flex-wrap gap-2 border-t border-white/10 px-[18px] pt-3 pb-4">
+      <div className="flex flex-wrap gap-2 border-t border-line px-[18px] pt-3 pb-4">
         {terminal.chips.map((chip) => (
           <button
             key={chip}
             type="button"
             onClick={() => run(chip)}
-            className="min-h-11 cursor-pointer rounded-full border border-glass-border bg-white/5 px-3.5 text-[13px] text-body transition-colors duration-200 hover:bg-white/12"
+            className="min-h-11 cursor-pointer rounded-full border border-line bg-surface-2 px-3.5 text-[13px] text-ink transition-colors duration-200 hover:bg-line"
           >
             {chip}
           </button>

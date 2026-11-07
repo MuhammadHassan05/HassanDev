@@ -1,33 +1,28 @@
 /*
- * Global styles and design tokens. Every value comes from
- * design-kit/canvas-source/*.dc.html; the token names are this project's own.
+ * Global styles and design tokens. Every colour on the site comes from the
+ * tokens below (light by default, dark from the system setting or the theme
+ * toggle); the design rules in CLAUDE.md say how they may be used.
  */
 @import "tailwindcss";
 
-/* `inline` makes utilities reference the variables at use time, so a
-   [data-track] wrapper can retheme everything inside it. */
+/* `inline` makes utilities reference the variables at use time, so the theme
+   and a [data-track] wrapper can recolour everything inside them. */
 @theme inline {
-  /* Surface and text colors */
-  --color-bg: #070a10;
-  --color-ink: #f1f5f9;
-  --color-body: #cdd5df;
-  --color-muted: #a9b4c2;
-  --color-soft: #c8d1dc;
-  --color-faint: #7d8894;
-  --color-dim: #8b96a3;
-  --color-well: #0e141c;
+  /* No default palette: a colour that is not a token below cannot be used. */
+  --color-*: initial;
 
-  /* Glass surfaces and hairlines */
-  --color-glass: rgba(255, 255, 255, 0.06);
-  --color-glass-border: rgba(255, 255, 255, 0.14);
-  --color-hairline: rgba(255, 255, 255, 0.12);
-  --color-outline-strong: rgba(255, 255, 255, 0.22);
-  --color-recess: rgba(0, 0, 0, 0.25);
-  --blur-glass: 16px;
+  /* Surfaces and text */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-line: var(--line);
 
-  /* Track colors, resolved from the nearest [data-track] */
+  /* Track accent, resolved from the nearest [data-track]: --accent for fills,
+     --accent-ink for text and links. */
   --color-accent: var(--accent);
-  --color-glow: var(--glow);
+  --color-accent-ink: var(--accent-ink);
   --color-on-accent: var(--on-accent);
 
   /* Radii, smallest to largest */
@@ -57,28 +52,115 @@
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
-/* Track themes. :root carries the engineer set so anything outside a
-   [data-track] wrapper still has valid colors. */
+/* ---- Colour tokens. tests/contrast.test.ts reads these blocks and checks
+   every text/background pair against WCAG AA in both modes. ---- */
+
+/* Light, the default. The -ink tokens (accent text and links) equal the fills
+   here; dark mode needs lighter ones for text to stay readable. */
+:root {
+  color-scheme: light dark;
+  --bg: #fafaf7;
+  --surface: #ffffff;
+  --surface-2: #f0efea;
+  --text: #1d1d1f;
+  --text-2: #5e5e63;
+  --line: #e3e2dc;
+  --burgundy: #7b1e2e;
+  --burgundy-ink: #7b1e2e;
+  --olive: #4a5530;
+  --olive-ink: #4a5530;
+  --on-accent: #ffffff;
+}
+
+/* Dark, when the system asks for it and the visitor has not chosen light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121212;
+    --surface: #1c1c1e;
+    --surface-2: #232326;
+    --text: #f2f1ec;
+    --text-2: #a6a6ab;
+    --line: #2e2e32;
+    --burgundy: #8e2a3b;
+    --burgundy-ink: #d98a95;
+    --olive: #5a6638;
+    --olive-ink: #a8b47e;
+    --on-accent: #ffffff;
+  }
+}
+
+/* Dark, chosen with the theme toggle. Must match the block above (the
+   contrast test checks); CSS cannot share one block between a media query
+   and an attribute selector. */
+:root[data-theme="dark"] {
+  --bg: #121212;
+  --surface: #1c1c1e;
+  --surface-2: #232326;
+  --text: #f2f1ec;
+  --text-2: #a6a6ab;
+  --line: #2e2e32;
+  --burgundy: #8e2a3b;
+  --burgundy-ink: #d98a95;
+  --olive: #5a6638;
+  --olive-ink: #a8b47e;
+  --on-accent: #ffffff;
+}
+
+/* A chosen theme also fixes form controls and scrollbars to that scheme. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Track accents. :root carries the engineer set so anything outside a
+   [data-track] wrapper (the skip link) still has valid colours. */
 :root,
 [data-track="engineer"] {
-  --accent: #4ade80;
-  --glow: #38bdf8;
-  --on-accent: #06210f;
+  --accent: var(--burgundy);
+  --accent-ink: var(--burgundy-ink);
 }
 
 [data-track="studio"] {
-  --accent: #fbbf24;
-  --glow: #f472b6;
-  --on-accent: #2a1a00;
+  --accent: var(--olive);
+  --accent-ink: var(--olive-ink);
 }
 
-/* The frosted panel used throughout the design. The -webkit- prefix is still
-   required by Safari. */
-@utility glass {
-  background-color: var(--color-glass);
-  border: 1px solid var(--color-glass-border);
-  backdrop-filter: blur(var(--blur-glass));
-  -webkit-backdrop-filter: blur(var(--blur-glass));
+/* Theme toggle icon: the moon in light mode, the sun in dark mode. Decided by
+   the same selectors as the colours, so it is right before hydration. */
+.theme-icon-moon,
+.theme-icon-sun {
+  display: inline-flex;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-moon {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .theme-icon-sun {
+    display: inline-flex;
+  }
+}
+
+:root[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-icon-sun {
+  display: inline-flex;
+}
+
+/* A flat card surface: solid colour and a 1px hairline, no blur or glow. */
+@utility panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
 }
 
 @layer base {
@@ -95,12 +177,8 @@
     text-decoration: none;
   }
 
-  a:hover {
-    color: #ffffff;
-  }
-
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--color-accent-ink);
     outline-offset: 3px;
   }
 }
@@ -125,30 +203,14 @@
   }
 }
 
-/* TiltCard: TiltCard.tsx sets the transform and the --gx/--gy/--go glint
-   variables; without them the card is flat and the glint invisible. */
+/* TiltCard: TiltCard.tsx sets the transform; without it the card is flat. */
 .tilt-card {
   transition: transform 0.25s ease;
 }
 
-.tilt-glint {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  border-radius: inherit;
-  opacity: var(--go, 0);
-  transition: opacity 0.35s ease;
-  background: radial-gradient(
-    circle at var(--gx, 50%) var(--gy, 50%),
-    rgba(255, 255, 255, 0.16),
-    rgba(255, 255, 255, 0) 55%
-  );
-}
-
 /* DrawOnScroll: .js-draw is only added once the observer is running, so
    nothing is hidden unless it will also be revealed. Outlines draw over
-   1.5s; fills (attribute or theme class) and text fade in after 0.7s. */
+   1.5s; fills (every fill-* token class) and text fade in after 0.7s. */
 @media (prefers-reduced-motion: no-preference) {
   .js-draw .draw-svg .draw-stroke {
     stroke-dasharray: 1;
@@ -160,17 +222,17 @@
     stroke-dashoffset: 0;
   }
 
-  .js-draw .draw-svg :is([fill]:not([fill="none"]), .fill-accent, .fill-glow, text) {
+  .js-draw .draw-svg :is([class*="fill-"], text) {
     opacity: 0;
     transition: opacity 0.7s ease 0.7s;
   }
 
-  .js-draw .draw-svg.is-drawn :is([fill]:not([fill="none"]), .fill-accent, .fill-glow, text) {
+  .js-draw .draw-svg.is-drawn :is([class*="fill-"], text) {
     opacity: 1;
   }
 
-  /* Glow morph on full page loads (e.g. opening a link in the same tab):
-     supporting browsers cross-fade the old page, glow included, into the new. */
+  /* Full page loads (e.g. opening a link in the same tab): supporting
+     browsers cross-fade the old page into the new. */
   @view-transition {
     navigation: auto;
   }

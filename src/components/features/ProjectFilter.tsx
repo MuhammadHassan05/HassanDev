@@ -45,7 +45,7 @@ export function ProjectFilter({ label, allId, tabs, groups }: ProjectFilterProps
       <div
         role="group"
         aria-label={label}
-        className="glass flex flex-wrap gap-1 self-start rounded-shell p-[5px]"
+        className="panel flex flex-wrap gap-1 self-start rounded-shell p-[5px]"
       >
         {tabs.map((tab) => {
           const pressed = tab.id === active;
@@ -57,7 +57,7 @@ export function ProjectFilter({ label, allId, tabs, groups }: ProjectFilterProps
               onClick={() => setActive(tab.id)}
               className={cx(
                 "inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full px-[18px] text-[15px] font-medium",
-                pressed ? "bg-accent text-on-accent" : "text-soft hover:text-ink",
+                pressed ? "bg-accent text-on-accent" : "text-ink hover:text-ink",
               )}
             >
               {tab.label}{" "}

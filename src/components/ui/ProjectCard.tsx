@@ -27,19 +27,19 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
   const { footer } = project;
 
   return (
-    <TiltCard className="glass flex flex-col overflow-hidden rounded-card-lg">
-      <div className="mx-2.5 mt-2.5 flex h-[200px] items-center justify-center overflow-hidden rounded-inner bg-well">
+    <TiltCard className="panel flex flex-col overflow-hidden rounded-card-lg">
+      <div className="mx-2.5 mt-2.5 flex h-[200px] items-center justify-center overflow-hidden rounded-inner bg-surface-2">
         <Illustration className={DRAW_TARGET_CLASS} />
       </div>
       <div className="flex grow flex-col gap-2.5 px-6 pt-[22px] pb-5">
-        <p className="m-0 font-mono text-[12px] text-muted">{project.tags.join(" · ")}</p>
+        <p className="m-0 font-mono text-[12px] text-ink-2">{project.tags.join(" · ")}</p>
         <Heading className="m-0 font-heading text-[23px] font-bold">{project.title}</Heading>
-        <p className="m-0 text-[16px] text-body">{project.description}</p>
+        <p className="m-0 text-[16px] text-ink">{project.description}</p>
         {footer.kind === "link" ? (
           <AppLink
             href={footer.href}
             newTab={footer.newTab}
-            className="mt-auto inline-flex min-h-11 items-center gap-2 self-start pt-1.5 font-medium text-accent hover:text-accent"
+            className="mt-auto inline-flex min-h-11 items-center gap-2 self-start pt-1.5 font-medium text-accent-ink hover:text-accent-ink"
           >
             {footer.label}
             {/* "Visit site" repeats on many cards; the project name makes each link unique. */}
@@ -47,7 +47,7 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
             <ArrowUpRightIcon />
           </AppLink>
         ) : (
-          <p className="m-0 mt-auto inline-flex min-h-11 items-center pt-1.5 font-mono text-[13px] text-muted">
+          <p className="m-0 mt-auto inline-flex min-h-11 items-center pt-1.5 font-mono text-[13px] text-ink-2">
             {footer.label}
           </p>
         )}

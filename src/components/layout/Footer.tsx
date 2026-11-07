@@ -8,7 +8,7 @@ export function Footer() {
   const { copyright, location } = siteChrome.footer;
   return (
     <footer className="mx-auto w-full max-w-page px-gutter pb-12">
-      <div className="flex flex-wrap justify-between gap-3 px-2 pt-8 font-mono text-[13px] text-faint">
+      <div className="flex flex-wrap justify-between gap-3 px-2 pt-8 font-mono text-[13px] text-ink-2">
         <span>{copyright}</span>
         <span>{location}</span>
       </div>

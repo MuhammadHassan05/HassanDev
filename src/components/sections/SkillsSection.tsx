@@ -1,10 +1,10 @@
 /**
- * Skill groups: a grid of glass cards, each a titled list of chips. Used for
+ * Skill groups: a grid of cards, each a titled list of chips. Used for
  * the engineer toolkit and the studio tools.
  */
 import { Section } from "@/components/layout/Section";
 import { Chip } from "@/components/ui/Chip";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { SkillsSection as SkillsContent } from "@/content/skills";
 
@@ -27,7 +27,7 @@ export function SkillsSection({ content, id }: SkillsSectionProps) {
       <SectionHeader {...content.section} titleId={titleId} />
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] gap-[22px]">
         {content.groups.map((group) => (
-          <GlassCard key={group.title} className="flex flex-col gap-3.5 p-6">
+          <Card key={group.title} className="flex flex-col gap-3.5 p-6">
             <h3 className="m-0 font-heading text-[19px] font-bold">{group.title}</h3>
             <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
               {group.items.map((item) => (
@@ -36,7 +36,7 @@ export function SkillsSection({ content, id }: SkillsSectionProps) {
                 </li>
               ))}
             </ul>
-          </GlassCard>
+          </Card>
         ))}
       </div>
     </Section>

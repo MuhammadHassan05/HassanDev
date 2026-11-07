@@ -6,8 +6,8 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cx } from "@/lib/cx";
 import { AppLink } from "./AppLink";
 
-/** Visual style: filled accent, frosted glass, or the nav's thin outline. */
-export type ButtonVariant = "primary" | "glass" | "outline";
+/** Visual style: filled accent, a flat surface, or the nav's thin outline. */
+export type ButtonVariant = "primary" | "secondary" | "outline";
 
 /** Height: md is the 52px hero size, sm the 44px nav size. */
 export type ButtonSize = "md" | "sm";
@@ -34,8 +34,8 @@ export type ButtonProps = LinkButtonProps | NativeButtonProps;
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: "bg-accent px-[26px] font-semibold text-on-accent hover:text-on-accent",
-  glass: "glass px-6 font-medium",
-  outline: "border border-outline-strong px-5 font-medium",
+  secondary: "panel px-6 font-medium",
+  outline: "border border-line px-5 font-medium",
 };
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
@@ -56,7 +56,7 @@ function buttonClasses(variant: ButtonVariant, size: ButtonSize, className?: str
 /**
  * Renders a call to action.
  *
- * @param props.variant - primary (default), glass or outline.
+ * @param props.variant - primary (default), secondary or outline.
  * @param props.size - md (default, 52px) or sm (44px).
  * @param props.href - When set, renders a link via AppLink.
  */

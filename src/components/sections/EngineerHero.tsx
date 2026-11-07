@@ -30,12 +30,12 @@ export function EngineerHero() {
             <span className="inline-block font-display text-[clamp(52px,7.5vw,104px)] leading-[0.95] font-extrabold tracking-[-0.045em] whitespace-nowrap">
               <BounceText text={profile.firstName} />
             </span>
-            <span className="inline-block font-serif text-[clamp(64px,9vw,128px)] leading-[0.9] font-normal tracking-[-0.01em] whitespace-nowrap text-accent italic">
+            <span className="inline-block font-serif text-[clamp(64px,9vw,128px)] leading-[0.9] font-normal tracking-[-0.01em] whitespace-nowrap text-accent-ink italic">
               <BounceText text={profile.lastName} />
             </span>
           </h1>
-          <p className="m-0 font-mono text-[15px] text-accent">{profile.roleLine}</p>
-          <p className="m-0 max-w-[620px] text-[21px] leading-normal text-body">{hero.summary}</p>
+          <p className="m-0 font-mono text-[15px] text-accent-ink">{profile.roleLine}</p>
+          <p className="m-0 max-w-[620px] text-[21px] leading-normal text-ink">{hero.summary}</p>
           <div className="flex flex-wrap gap-3 pt-1.5">
             {primary ? (
               <Button href={primary.href} newTab={primary.newTab}>
@@ -44,7 +44,7 @@ export function EngineerHero() {
               </Button>
             ) : null}
             {secondary ? (
-              <Button href={secondary.href} newTab={secondary.newTab} variant="glass">
+              <Button href={secondary.href} newTab={secondary.newTab} variant="secondary">
                 <DownloadIcon />
                 {secondary.label}
               </Button>

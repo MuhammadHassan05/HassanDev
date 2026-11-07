@@ -1,7 +1,6 @@
 /**
  * Frame shared by every page: sets the track theme and places the nav, the
- * main landmark and the footer. The glow orbs live in the root layout instead,
- * so they persist (and morph) when navigating between tracks.
+ * main landmark and the footer.
  */
 import type { ReactNode } from "react";
 import type { TrackId } from "@/content/tracks";

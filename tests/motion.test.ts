@@ -75,13 +75,8 @@ describe("feature detection", () => {
 describe("tiltFromPointer", () => {
   const box = { left: 100, top: 50, width: 400, height: 200 };
 
-  it("is flat with the glint centred when the pointer is in the middle", () => {
-    expect(tiltFromPointer(300, 150, box)).toEqual({
-      rotateX: 0,
-      rotateY: 0,
-      glintX: 50,
-      glintY: 50,
-    });
+  it("is flat when the pointer is in the middle", () => {
+    expect(tiltFromPointer(300, 150, box)).toEqual({ rotateX: 0, rotateY: 0 });
   });
 
   it("reaches the design's maximum at the corners", () => {
@@ -97,8 +92,6 @@ describe("tiltFromPointer", () => {
     const outside = tiltFromPointer(-1000, 5000, box);
     expect(Math.abs(outside.rotateX)).toBeLessThanOrEqual(MAX_TILT_X);
     expect(Math.abs(outside.rotateY)).toBeLessThanOrEqual(MAX_TILT_Y);
-    expect(outside.glintX).toBe(0);
-    expect(outside.glintY).toBe(100);
   });
 
   it("stays flat for a card with no size", () => {
@@ -115,7 +108,7 @@ describe("tiltFromPointer", () => {
 
 describe("tiltTransform", () => {
   it("formats a CSS transform with a 4px lift", () => {
-    expect(tiltTransform({ rotateX: 1.234, rotateY: -2, glintX: 0, glintY: 0 })).toBe(
+    expect(tiltTransform({ rotateX: 1.234, rotateY: -2 })).toBe(
       "perspective(1000px) rotateX(1.23deg) rotateY(-2.00deg) translateY(-4px)",
     );
   });

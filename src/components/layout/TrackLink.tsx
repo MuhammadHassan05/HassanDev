@@ -1,8 +1,7 @@
 /**
  * TrackSwitch link that wraps the page change in a View Transition, so the
- * old track cross-fades into the new one (glow colors included). Where View
- * Transitions are unsupported, or motion is reduced, it is an ordinary link
- * and the glow background's CSS color transition does the morph instead.
+ * old track cross-fades into the new one. Where View Transitions are
+ * unsupported, or motion is reduced, it is an ordinary link.
  */
 "use client";
 

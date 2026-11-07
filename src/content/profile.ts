@@ -57,7 +57,7 @@ export interface HeroContent {
   actions: readonly LinkAction[];
 }
 
-/** Glass card that points visitors to the other track. */
+/** Card that points visitors to the other track. */
 export interface CrossLinkContent {
   eyebrow: string;
   title: string;

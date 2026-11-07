@@ -84,15 +84,12 @@ export interface Box {
   height: number;
 }
 
-/** How far to tilt a card and where to centre its light glint. */
+/** How far to tilt a card. */
 export interface Tilt {
   /** Degrees around the horizontal axis; positive tips the top edge back. */
   rotateX: number;
   /** Degrees around the vertical axis; positive turns the right edge back. */
   rotateY: number;
-  /** Glint centre as a percentage of the card's width and height. */
-  glintX: number;
-  glintY: number;
 }
 
 /** Largest tilt, in degrees, at the card's edges. Values from the design. */
@@ -116,8 +113,6 @@ export function tiltFromPointer(clientX: number, clientY: number, box: Box): Til
   return {
     rotateX: (0.5 - y) * 2 * MAX_TILT_X,
     rotateY: (x - 0.5) * 2 * MAX_TILT_Y,
-    glintX: x * 100,
-    glintY: y * 100,
   };
 }
 

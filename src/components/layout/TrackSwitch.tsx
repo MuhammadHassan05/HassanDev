@@ -25,7 +25,7 @@ export function TrackSwitch({ current, className }: TrackSwitchProps) {
     <ul
       className={cx(
         // In the two-row nav (below 660px) the options split the width equally instead of wrapping.
-        "m-0 flex list-none flex-wrap gap-1 rounded-full bg-recess p-1 max-nav:grid max-nav:grid-cols-2",
+        "m-0 flex list-none flex-wrap gap-1 rounded-full bg-surface-2 p-1 max-nav:grid max-nav:grid-cols-2",
         className,
       )}
     >
@@ -42,7 +42,7 @@ export function TrackSwitch({ current, className }: TrackSwitchProps) {
                 "inline-flex min-h-11 items-center rounded-full px-[18px] text-[15px] whitespace-nowrap max-nav:w-full max-nav:justify-center max-nav:px-2",
                 active
                   ? "bg-accent font-semibold text-on-accent hover:text-on-accent"
-                  : "font-medium text-soft",
+                  : "font-medium text-ink",
               )}
             >
               <BounceText text={track.label} />

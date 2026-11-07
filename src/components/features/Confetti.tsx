@@ -12,7 +12,6 @@ import { CONFETTI_LIFETIME_MS, type ConfettiColor, type ConfettiPiece } from "@/
 /** Literal classes so Tailwind finds them. */
 const COLOR_CLASSES: Record<ConfettiColor, string> = {
   accent: "bg-accent",
-  glow: "bg-glow",
   ink: "bg-ink",
 };
 
@@ -24,8 +23,8 @@ export interface ConfettiProps {
 }
 
 /**
- * Renders a burst into <body>. A portal is needed because the terminal's glass
- * card uses backdrop-filter, which would trap fixed-position children inside it.
+ * Renders a burst into <body>. The portal keeps the pieces fixed to the
+ * viewport: a transform or filter on any ancestor would trap them inside it.
  *
  * @param props.pieces - From createConfetti() in src/lib/confetti.ts.
  */

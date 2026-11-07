@@ -20,7 +20,7 @@ export function Chip({ size = "sm", children }: ChipProps) {
   return (
     <span
       className={cx(
-        "inline-flex items-center rounded-full border border-hairline bg-glass font-mono text-[13px] text-body",
+        "inline-flex items-center rounded-full border border-line bg-surface font-mono text-[13px] text-ink",
         size === "md" ? "px-3.5 py-2" : "px-3 py-1.5",
       )}
     >
