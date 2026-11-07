@@ -19,6 +19,9 @@ next-env.d.ts
 /screenshots-review/
 /screenshots-review.html
 
+# Redesign review screenshots (review/<step>/), for Hassan to check locally.
+/review/
+
 # Environment files (the site uses none, keep it that way)
 .env
 .env*.local
