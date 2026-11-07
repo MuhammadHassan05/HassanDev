@@ -1,6 +1,6 @@
 /**
- * Studio page hero: the written heading (the page's h1), pitch and two calls
- * to action.
+ * Studio page hero, left-aligned like the engineer hero: the headline (the
+ * page's h1), one line in the secondary text colour and two calls to action.
  */
 import { Button } from "@/components/ui/Button";
 import { pitch } from "@/content/profile";
@@ -11,13 +11,13 @@ export function StudioHero() {
   const [primary, secondary] = hero.actions;
 
   return (
-    <section className="mx-auto flex max-w-page flex-col gap-6 px-page pt-16 pb-section md:pt-24">
+    <section className="mx-auto flex max-w-page flex-col gap-6 px-page pt-16 pb-section md:pt-28">
       {/* A sentence, not a name, so a step below the hero-name size. */}
       <h1 className="m-0 max-w-[16ch] text-[clamp(44px,7vw,88px)] leading-[1.05] font-semibold tracking-[-0.03em] text-balance">
         {hero.heading}
       </h1>
-      <p className="m-0 text-lead text-ink-2">{hero.summary}</p>
-      <div className="flex flex-col gap-3 pt-2 md:flex-row">
+      <p className="m-0 pt-2 text-lead text-ink-2">{hero.summary}</p>
+      <div className="flex flex-col gap-3 pt-4 md:flex-row">
         {primary ? (
           <Button href={primary.href} newTab={primary.newTab}>
             {primary.label}

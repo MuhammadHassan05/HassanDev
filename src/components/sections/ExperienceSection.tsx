@@ -1,66 +1,70 @@
 /**
- * Experience timeline: one card per role, with an optional cross-link
- * card at the end (the engineer page points to the studio from here).
+ * Experience: a list of roles split by hairlines. Each has the role and
+ * company in bold, the dates on the right (under the title on phones) and the
+ * bullets below. An optional line after the list links to the other track.
  */
 import { Section } from "@/components/layout/Section";
-import { AppLink } from "@/components/ui/AppLink";
-import { CrossLinkCard } from "@/components/ui/CrossLinkCard";
-import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ArrowUpRightIcon } from "@/components/ui/icons";
 import type { ExperienceSection as ExperienceContent } from "@/content/experience";
 import type { CrossLinkContent } from "@/content/profile";
 
 /** Props for {@link ExperienceSection}. */
 export interface ExperienceSectionProps {
   content: ExperienceContent;
-  /** Card shown after the roles, linking to the other track. */
+  /** Line shown after the roles, linking to the other track. */
   crossLink?: CrossLinkContent;
 }
 
 /**
- * Renders the roles as an ordered list, newest first as in the design.
+ * Renders the roles as an ordered list, newest first.
  *
  * @param props.content - Section copy and entries from src/content/experience.ts.
+ * @param props.crossLink - Optional pointer to the other track.
  */
 export function ExperienceSection({ content, crossLink }: ExperienceSectionProps) {
   const titleId = "experience-title";
   return (
     <Section id="experience" labelledBy={titleId}>
       <SectionHeader {...content.section} titleId={titleId} />
-      <div className="flex flex-col gap-4">
-        <ol className="m-0 flex list-none flex-col gap-4 p-0">
+      <div className="flex flex-col gap-8">
+        <ol className="m-0 list-none border-b border-line p-0">
           {content.entries.map((entry) => (
-            <Card
+            <li
               key={`${entry.role}-${entry.organization}`}
-              as="li"
-              className="flex flex-wrap gap-x-8 gap-y-2.5 p-[clamp(20px,4vw,28px)]"
+              className="flex flex-col gap-3 border-t border-line py-8"
             >
-              <p className="m-0 flex-[0_0_170px] text-[14px] text-accent-ink">{entry.dates}</p>
-              <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-2.5">
-                <h3 className="m-0 text-[22px] font-semibold">
+              <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
+                <h3 className="m-0 text-[21px] font-semibold tracking-[-0.01em]">
                   {entry.role} · {entry.organization}
                 </h3>
-                <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-[16px] text-ink">
-                  {entry.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
-                  ))}
-                </ul>
-                {entry.link ? (
-                  <AppLink
-                    href={entry.link.href}
-                    newTab={entry.link.newTab}
-                    className="inline-flex min-h-11 items-center gap-1.5 self-start text-[15px] font-medium text-accent-ink hover:text-accent-ink"
-                  >
-                    {entry.link.label}
-                    <ArrowUpRightIcon />
-                  </AppLink>
-                ) : null}
+                <p className="m-0 shrink-0 text-small text-ink-2">{entry.dates}</p>
               </div>
-            </Card>
+              <ul className="m-0 flex list-disc flex-col gap-2 pl-5">
+                {entry.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+              {entry.link ? (
+                <div>
+                  <Button href={entry.link.href} newTab={entry.link.newTab} variant="text">
+                    {entry.link.label}
+                  </Button>
+                </div>
+              ) : null}
+            </li>
           ))}
         </ol>
-        {crossLink ? <CrossLinkCard content={crossLink} /> : null}
+        {crossLink ? (
+          <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
+            <p className="m-0 text-ink-2">{crossLink.title}</p>
+            <div>
+              <Button href={crossLink.action.href} variant="text">
+                {crossLink.action.label}
+              </Button>
+            </div>
+          </div>
+        ) : null}
       </div>
     </Section>
   );

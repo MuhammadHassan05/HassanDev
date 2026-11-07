@@ -1,17 +1,17 @@
 /**
- * Project card: the illustration at the top, then the tags, title,
- * description and either a link or a plain label.
+ * Project card: the illustration at the top, then the title, the one-line
+ * description, the tags in the secondary text colour, and a text link (or a
+ * plain label when there is nothing to open).
  */
 import { illustrations } from "@/components/illustrations";
 import type { Project } from "@/content/projects";
-import { AppLink } from "./AppLink";
+import { Button } from "./Button";
 import { Card } from "./Card";
-import { ArrowUpRightIcon } from "./icons";
 
 /** Props for {@link ProjectCard}. */
 export interface ProjectCardProps {
   project: Project;
-  /** Heading level for the title, one below the group heading it sits under. */
+  /** Heading level for the title, one below the heading it sits under. */
   headingLevel?: "h3" | "h4";
 }
 
@@ -31,27 +31,24 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
         <Illustration />
       </div>
       <div className="flex grow flex-col gap-2 p-6">
-        <p className="m-0 text-small text-ink-2">{project.tags.join(" · ")}</p>
         <Heading className="m-0 text-[21px] font-semibold tracking-[-0.01em]">
           {project.title}
         </Heading>
-        <p className="m-0 text-ink-2">{project.description}</p>
-        {footer.kind === "link" ? (
-          <AppLink
-            href={footer.href}
-            newTab={footer.newTab}
-            className="mt-auto inline-flex min-h-11 items-center gap-1.5 self-start pt-2 text-accent-ink hover:underline hover:underline-offset-4"
-          >
-            {footer.label}
-            {/* "Visit site" repeats on many cards; the project name makes each link unique. */}
-            <span className="sr-only">: {project.title}</span>
-            <ArrowUpRightIcon />
-          </AppLink>
-        ) : (
-          <p className="m-0 mt-auto inline-flex min-h-11 items-center pt-2 text-small text-ink-2">
-            {footer.label}
-          </p>
-        )}
+        <p className="m-0">{project.description}</p>
+        <p className="m-0 text-small text-ink-2">{project.tags.join(" · ")}</p>
+        <div className="mt-auto pt-2">
+          {footer.kind === "link" ? (
+            <Button href={footer.href} newTab={footer.newTab} variant="text">
+              {footer.label}
+              {/* "Visit site" repeats on many cards; the project name makes each link unique. */}
+              <span className="sr-only">: {project.title}</span>
+            </Button>
+          ) : (
+            <p className="m-0 inline-flex min-h-11 items-center text-small text-ink-2">
+              {footer.label}
+            </p>
+          )}
+        </div>
       </div>
     </Card>
   );

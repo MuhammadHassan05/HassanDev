@@ -52,6 +52,9 @@ const { links } = profile;
 export interface HeroContent {
   /** Studio has a written heading; the engineer hero shows the name instead. */
   heading?: string;
+  /** One line in the main text colour under the name (engineer page). */
+  lead?: string;
+  /** One line in the secondary text colour. */
   summary: string;
   actions: readonly LinkAction[];
 }
@@ -63,11 +66,14 @@ export interface CrossLinkContent {
   action: LinkAction;
 }
 
-/** Closing contact panel. */
+/** Closing contact section. */
 export interface ContactContent {
   heading: string;
   email: LinkAction;
-  actions: readonly LinkAction[];
+  /** The one primary button. */
+  primary: LinkAction;
+  /** Shown as text links after the button. */
+  links: readonly LinkAction[];
 }
 
 /** Everything about the person that differs between the two pages. */
@@ -80,11 +86,13 @@ export interface PagePitch {
 /** Hero, cross-link and contact copy for each page. */
 export const pitch: Record<TrackId, PagePitch> = {
   engineer: {
+    // Hero copy given by Hassan for the redesign.
     hero: {
+      lead: "Software engineer building AI products, full-stack platforms and automation.",
       summary:
-        "Final-year Software Engineering student at FAST-NUCES Lahore, shipping production SaaS with React, Next.js, Node.js, TypeScript and AI workflow automation.",
+        "Final year, BS Software Engineering at FAST-NUCES. Based in Lahore, working remotely with teams in the US, UK and Canada.",
       actions: [
-        { label: "See projects", href: "#projects" },
+        { label: "View case studies", href: "#case-studies" },
         { label: "Download resume", href: links.resume, newTab: true },
       ],
     },
@@ -93,12 +101,12 @@ export const pitch: Record<TrackId, PagePitch> = {
       title: "Freelance web, Shopify and design work lives in my Studio portfolio",
       action: { label: "Open Studio", href: "/studio/" },
     },
+    // Heading and link set given by Hassan; the resume is in the hero.
     contact: {
-      heading: "Hiring for an engineering role? Let's talk.",
+      heading: "Let's build something.",
       email: { label: profile.email, href: links.email },
-      actions: [
-        { label: "Book a 30 min call", href: links.calendly },
-        { label: "Resume (PDF)", href: links.resume, newTab: true },
+      primary: { label: "Book a 30 min call", href: links.calendly },
+      links: [
         { label: "LinkedIn", href: links.linkedin },
         { label: "GitHub", href: links.github },
         { label: "Behance", href: links.behance },
@@ -112,7 +120,8 @@ export const pitch: Record<TrackId, PagePitch> = {
         "I'm Hassan. I build and customize Shopify stores, ship websites for international clients and design brand identities, from logos to social media.",
       actions: [
         { label: "Start a project", href: links.calendly },
-        { label: "See my work", href: "#shopify" },
+        // Label given by Hassan for the redesign.
+        { label: "See the work", href: "#shopify" },
       ],
     },
     crossLink: {
@@ -123,9 +132,9 @@ export const pitch: Record<TrackId, PagePitch> = {
     contact: {
       heading: "Need a store, a site or a brand? Let's build it.",
       email: { label: profile.email, href: links.email },
+      primary: { label: "Book a 30 min call", href: links.calendly },
       // The design repeats Behance as a plain "Behance" button; CLAUDE.md drops the duplicate.
-      actions: [
-        { label: "Book a 30 min call", href: links.calendly },
+      links: [
         { label: "Behance portfolio", href: links.behance },
         { label: "LinkedIn", href: links.linkedin },
         { label: "GitHub", href: links.github },

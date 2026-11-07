@@ -5,6 +5,7 @@
  * Responses refer to links by id only; the URLs themselves live in the fixed
  * allowlist in src/lib/terminal.ts, so nothing here can add a new destination.
  */
+import type { SectionIntro } from "./types";
 
 /** Visual style of an output line: normal, dimmed, or highlighted in the accent. */
 export type TerminalTone = "output" | "dim" | "ok";
@@ -37,6 +38,8 @@ export interface TerminalResponses {
 
 /** Static terminal copy. */
 export interface TerminalContent {
+  /** Heading and supporting line of the terminal's own section. */
+  section: SectionIntro;
   title: string;
   welcome: readonly TerminalCopyLine[];
   prompt: string;
@@ -52,6 +55,11 @@ export interface TerminalContent {
 
 /** Terminal copy in design order. */
 export const terminal: TerminalContent = {
+  // Title given by Hassan; the supporting line reuses the terminal's own hint.
+  section: {
+    title: "Prefer the command line?",
+    description: "Type 'help' or tap a command below.",
+  },
   title: "~/hassan · interactive",
   welcome: [
     { tone: "output", text: "Welcome. I'm Hassan, a software engineer from Lahore." },

@@ -1,8 +1,8 @@
 /**
- * Freelance clients on the studio page: a grid of name and country cards.
+ * Freelance clients on the studio page: the names as large plain text in the
+ * secondary colour, in one centred row that wraps.
  */
 import { Section } from "@/components/layout/Section";
-import { Card } from "@/components/ui/Card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { clients } from "@/content/clients";
 
@@ -12,12 +12,9 @@ export function ClientsSection() {
   return (
     <Section id="clients" labelledBy={titleId}>
       <SectionHeader {...clients.section} titleId={titleId} />
-      <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-4 p-0">
+      <ul className="m-0 flex list-none flex-wrap justify-center gap-x-10 gap-y-3 p-0 text-[clamp(26px,3.4vw,40px)] leading-tight font-semibold tracking-[-0.02em] text-ink-2">
         {clients.clients.map((client) => (
-          <Card key={client.name} as="li" className="flex flex-col gap-1 p-[22px]">
-            <span className="text-[21px] font-semibold">{client.name}</span>
-            <span className="text-[13px] text-ink-2">{client.country}</span>
-          </Card>
+          <li key={client.name}>{client.name}</li>
         ))}
       </ul>
     </Section>
