@@ -2,10 +2,8 @@
  * Shapes shared by several content files.
  */
 
-/** Copy for a SectionHeader: the "01 / label" eyebrow, title and optional aside. */
+/** Copy for a SectionHeader: the title and its one short supporting line. */
 export interface SectionIntro {
-  index: string;
-  label: string;
   title: string;
   description?: string;
 }

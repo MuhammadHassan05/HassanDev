@@ -42,6 +42,33 @@ export function SunIcon({ size = 20 }: IconProps) {
   );
 }
 
+/** Small right chevron, after the label of a text link ("Learn more ›"). */
+export function ChevronRightIcon({ size = 16 }: IconProps) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="m9 6 6 6-6 6" />
+    </svg>
+  );
+}
+
+/** Three lines, on the phone nav's closed menu button. */
+export function MenuIcon({ size = 22 }: IconProps) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
+/** A cross, on the phone nav's open menu button. */
+export function CloseIcon({ size = 22 }: IconProps) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
 /** Right arrow, used on primary calls to action. */
 export function ArrowRightIcon({ size = 18 }: IconProps) {
   return (
@@ -110,16 +137,6 @@ export function ClockRefreshIcon({ size = 22 }: IconProps) {
       <path d="M4 12a8 8 0 1 0 3-6.2" />
       <path d="M4 4v4h4" />
       <path d="M12 8v4l3 2" />
-    </svg>
-  );
-}
-
-/** Left and right chevrons, for the before/after slider handle. */
-export function ChevronsHorizontalIcon({ size = 20 }: IconProps) {
-  return (
-    <svg {...iconProps(size)}>
-      <path d="m9 6-6 6 6 6" />
-      <path d="m15 6 6 6-6 6" />
     </svg>
   );
 }

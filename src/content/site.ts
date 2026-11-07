@@ -72,8 +72,10 @@ export interface SiteChrome {
   skipLinkLabel: string;
   /** Read by screen readers after links that open a new tab. */
   newTabLabel: string;
-  logo: { name: string; suffix: string };
-  bookCall: { label: string; href: string };
+  /** The nav's Contact button; it goes to the current page's contact section. */
+  contactLabel: string;
+  /** Accessible name of the phone nav's menu button. */
+  menuLabel: string;
   /** Accessible names of the theme toggle, for each direction it switches. */
   themeToggle: { toDark: string; toLight: string };
   footer: { copyright: string; location: string };
@@ -85,8 +87,10 @@ export const siteChrome: SiteChrome = {
   skipLinkLabel: "Skip to content",
   // Also not in the design: invisible, so new-tab links are announced as such.
   newTabLabel: "(opens in a new tab)",
-  logo: { name: "hassan", suffix: ".dev" },
-  bookCall: { label: "Book a call", href: profile.links.calendly },
+  // Given by Hassan.
+  contactLabel: "Contact",
+  // Not in the design: a standard label for the icon-only menu button.
+  menuLabel: "Menu",
   // Wording given by Hassan.
   themeToggle: { toDark: "Switch to dark mode", toLight: "Switch to light mode" },
   footer: {

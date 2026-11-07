@@ -1,11 +1,9 @@
 /**
- * Closing contact panel: eyebrow, large heading, email link and the row of
- * call-to-action buttons. The footer follows directly after it.
+ * Closing contact section: a large centred heading, the email link and the
+ * row of call-to-action buttons. The footer follows directly after it.
  */
 import { AppLink } from "@/components/ui/AppLink";
-import { BounceText } from "@/components/ui/BounceText";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import type { ContactContent } from "@/content/profile";
 
 /** Props for {@link ContactSection}. */
@@ -14,8 +12,8 @@ export interface ContactSectionProps {
 }
 
 /**
- * Renders the contact panel. The first action is the filled primary button,
- * the rest are secondary.
+ * Renders the contact section. The first action is the primary button, the
+ * rest are secondary.
  *
  * @param props.content - Contact copy from src/content/profile.ts.
  */
@@ -27,45 +25,30 @@ export function ContactSection({ content }: ContactSectionProps) {
     <section
       id="contact"
       aria-labelledby={titleId}
-      className="mx-auto max-w-page px-gutter pt-section"
+      data-reveal=""
+      className="mx-auto flex max-w-page flex-col items-center gap-8 px-page py-section text-center"
     >
-      <Card radius="shell" className="flex flex-col gap-7 p-[clamp(32px,6vw,72px)]">
-        <p className="m-0 font-mono text-[13px] text-accent-ink">
-          {content.index} / {content.label}
-        </p>
-        {/* The letters are hidden from screen readers, so the h2 carries the heading. */}
-        <h2
-          id={titleId}
-          aria-label={content.heading}
-          className="m-0 max-w-[860px] font-heading text-[clamp(38px,5.5vw,72px)] leading-[1.02] font-extrabold tracking-[-0.03em]"
-        >
-          <BounceText text={content.heading} />
-        </h2>
-        {/* The link box is 44px tall for touch; the underline stays tight to the text. */}
-        <AppLink
-          href={content.email.href}
-          className="inline-flex min-h-11 items-center self-start font-mono text-[clamp(16px,2vw,22px)] text-accent-ink hover:text-accent-ink"
-        >
-          <span className="border-b border-accent-ink pb-1">{content.email.label}</span>
-        </AppLink>
-        <div className="flex flex-wrap gap-3 pt-1">
-          {primary ? (
-            <Button href={primary.href} newTab={primary.newTab}>
-              {primary.label}
-            </Button>
-          ) : null}
-          {others.map((action) => (
-            <Button
-              key={action.label}
-              href={action.href}
-              newTab={action.newTab}
-              variant="secondary"
-            >
-              {action.label}
-            </Button>
-          ))}
-        </div>
-      </Card>
+      <h2 id={titleId} className="m-0 max-w-[18ch] text-title text-balance">
+        {content.heading}
+      </h2>
+      <AppLink
+        href={content.email.href}
+        className="inline-flex min-h-11 items-center text-lead text-accent-ink underline underline-offset-4"
+      >
+        {content.email.label}
+      </AppLink>
+      <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:flex-wrap md:justify-center">
+        {primary ? (
+          <Button href={primary.href} newTab={primary.newTab}>
+            {primary.label}
+          </Button>
+        ) : null}
+        {others.map((action) => (
+          <Button key={action.label} href={action.href} newTab={action.newTab} variant="secondary">
+            {action.label}
+          </Button>
+        ))}
+      </div>
     </section>
   );
 }

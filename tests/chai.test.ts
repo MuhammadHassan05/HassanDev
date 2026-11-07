@@ -1,10 +1,8 @@
 /**
- * Unit tests for the chai counter logic in src/lib/chai.ts and the confetti
- * generator in src/lib/confetti.ts.
+ * Unit tests for the terminal chai command's clock logic in src/lib/chai.ts.
  */
 import { describe, expect, it } from "vitest";
-import { chaiCount, cupsForHour, formatChaiLabel, karachiHour } from "@/lib/chai";
-import { CONFETTI_COUNT, CONFETTI_LIFETIME_MS, createConfetti } from "@/lib/confetti";
+import { chaiCount, cupsForHour, karachiHour } from "@/lib/chai";
 
 describe("cupsForHour", () => {
   it.each([
@@ -54,58 +52,5 @@ describe("chaiCount", () => {
 
   it("is 0 before 7am without commands", () => {
     expect(chaiCount(new Date("2026-10-25T00:30:00Z"), 0)).toBe(0);
-  });
-});
-
-describe("formatChaiLabel", () => {
-  it("fills in the count", () => {
-    expect(formatChaiLabel("Chai today: {count}", 4)).toBe("Chai today: 4");
-  });
-});
-
-describe("createConfetti", () => {
-  /** A repeatable pseudo-random sequence. */
-  function seeded(seed: number) {
-    let state = seed;
-    return () => {
-      state = (state * 16807) % 2147483647;
-      return (state - 1) / 2147483646;
-    };
-  }
-
-  it("makes 48 pieces by default", () => {
-    expect(createConfetti(seeded(1))).toHaveLength(CONFETTI_COUNT);
-    expect(CONFETTI_COUNT).toBe(48);
-  });
-
-  it("alternates between the accent and the text colour", () => {
-    expect(createConfetti(seeded(2), 4).map((p) => p.color)).toEqual([
-      "accent",
-      "ink",
-      "accent",
-      "ink",
-    ]);
-  });
-
-  it("keeps sizes and timings in the design's ranges", () => {
-    for (const piece of createConfetti(seeded(3), 500)) {
-      expect(piece.left).toBeGreaterThanOrEqual(0);
-      expect(piece.left).toBeLessThanOrEqual(100);
-      expect(piece.width).toBeGreaterThanOrEqual(6);
-      expect(piece.width).toBeLessThanOrEqual(12);
-      expect(piece.height).toBeGreaterThanOrEqual(10);
-      expect(piece.height).toBeLessThanOrEqual(18);
-      expect(piece.duration).toBeGreaterThanOrEqual(1.8);
-      expect(piece.duration).toBeLessThanOrEqual(3.2);
-      expect(piece.delay).toBeGreaterThanOrEqual(0);
-      expect(piece.delay).toBeLessThanOrEqual(0.5);
-    }
-  });
-
-  it("lands every piece before the burst is removed", () => {
-    const slowest = Math.max(
-      ...createConfetti(seeded(4), 500).map((p) => (p.delay + p.duration) * 1000),
-    );
-    expect(slowest).toBeLessThanOrEqual(CONFETTI_LIFETIME_MS);
   });
 });

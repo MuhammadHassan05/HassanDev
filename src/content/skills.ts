@@ -20,7 +20,7 @@ export interface SkillsSection {
 /** Skills for each page. */
 export const skills: Record<TrackId, SkillsSection> = {
   engineer: {
-    section: { index: "04", label: "skills", title: "Engineering toolkit" },
+    section: { title: "Engineering toolkit" },
     groups: [
       {
         title: "Frontend",
@@ -64,7 +64,7 @@ export const skills: Record<TrackId, SkillsSection> = {
     ],
   },
   studio: {
-    section: { index: "07", label: "tools", title: "Studio toolkit" },
+    section: { title: "Studio toolkit" },
     groups: [
       {
         title: "Commerce",

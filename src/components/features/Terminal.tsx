@@ -1,16 +1,16 @@
 /**
- * Interactive hero terminal. Commands run through the pure parser in
- * src/lib/terminal.ts; this component only keeps the history, renders it as
- * plain text, and carries out the parser's effects (clear, chai, confetti).
+ * Interactive hero terminal: a flat card in JetBrains Mono. Commands run
+ * through the pure parser in src/lib/terminal.ts; this component only keeps
+ * the history, renders it as plain text, and carries out the parser's effects
+ * (clear, and counting the cups for the chai command).
  */
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { AppLink } from "@/components/ui/AppLink";
 import { terminal } from "@/content/terminal";
-import { createConfetti, type ConfettiPiece } from "@/lib/confetti";
+import { chaiCount } from "@/lib/chai";
 import { cx } from "@/lib/cx";
-import { motionAllowed } from "@/lib/motion";
 import {
   appendHistory,
   MAX_INPUT_LENGTH,
@@ -19,10 +19,8 @@ import {
   welcomeLines,
   type TerminalLine,
 } from "@/lib/terminal";
-import { useChai } from "./ChaiProvider";
-import { Confetti } from "./Confetti";
 
-/** Text color for each line tone, as in the design. */
+/** Text colour for each line tone. */
 const TONE_CLASSES: Record<Extract<TerminalLine, { kind: "text" }>["tone"], string> = {
   output: "text-ink",
   dim: "text-ink-2",
@@ -30,14 +28,14 @@ const TONE_CLASSES: Record<Extract<TerminalLine, { kind: "text" }>["tone"], stri
   ok: "text-accent-ink",
 };
 
-/** Renders the terminal window. */
+/** Renders the terminal card. */
 export function Terminal() {
   const inputId = useId();
   const outputRef = useRef<HTMLDivElement>(null);
   const [history, setHistory] = useState<TerminalLine[]>(welcomeLines);
   const [input, setInput] = useState("");
-  const [confetti, setConfetti] = useState<readonly ConfettiPiece[] | null>(null);
-  const { count, addCup } = useChai();
+  // Cups added by the chai command on top of the clock's count.
+  const [extraCups, setExtraCups] = useState(0);
 
   // Keep the newest line in view, like a real terminal.
   useEffect(() => {
@@ -45,19 +43,15 @@ export function Terminal() {
     if (output) output.scrollTop = output.scrollHeight;
   }, [history]);
 
-  const endConfetti = useCallback(() => setConfetti(null), []);
-
   const run = (raw: string) => {
-    const result = runCommand(raw, count ?? 0);
+    // Read the clock only when a command runs, so the server and browser render the same.
+    const result = runCommand(raw, chaiCount(new Date(), extraCups));
     if (result.effects.includes("clear")) {
       setHistory([]);
     } else if (result.lines.length > 0) {
       setHistory((current) => appendHistory(current, result.lines));
     }
-    if (result.effects.includes("chai")) addCup();
-    if (result.effects.includes("confetti") && motionAllowed(window)) {
-      setConfetti(createConfetti(Math.random));
-    }
+    if (result.effects.includes("chai")) setExtraCups((cups) => cups + 1);
     setInput("");
   };
 
@@ -69,13 +63,8 @@ export function Terminal() {
   };
 
   return (
-    <div className="panel min-w-0 flex-[1_1_380px] overflow-hidden rounded-card-lg font-mono text-[14px] leading-[1.75]">
-      <div className="flex items-center gap-2 border-b border-line px-[18px] py-3.5">
-        <span aria-hidden="true" className="size-2.5 rounded-full bg-line" />
-        <span aria-hidden="true" className="size-2.5 rounded-full bg-line" />
-        <span aria-hidden="true" className="size-2.5 rounded-full bg-line" />
-        <span className="ml-2 text-[12px] text-ink-2">{terminal.title}</span>
-      </div>
+    <div className="min-w-0 rounded-card bg-surface-2 font-mono text-[14px] leading-[1.7]">
+      <p className="m-0 px-5 pt-4 text-[13px] text-ink-2">{terminal.title}</p>
 
       {/* role="log" announces new lines politely; tabIndex lets keyboard users scroll it. */}
       <div
@@ -83,7 +72,7 @@ export function Terminal() {
         role="log"
         aria-label={terminal.outputLabel}
         tabIndex={0}
-        className="flex h-[230px] flex-col gap-0.5 overflow-y-auto px-[22px] pt-4 pb-2"
+        className="flex h-[220px] flex-col gap-0.5 overflow-y-auto px-5 pt-3 pb-2"
       >
         {history.map((line, index) => {
           // Lines are append-only and capped, so the position is a stable key.
@@ -94,7 +83,7 @@ export function Terminal() {
                 key={index}
                 href={target.href}
                 newTab={target.newTab}
-                className="self-start border-b border-accent-ink text-accent-ink hover:text-accent-ink"
+                className="self-start text-accent-ink underline underline-offset-4"
               >
                 {target.label}
               </AppLink>
@@ -111,7 +100,7 @@ export function Terminal() {
         })}
       </div>
 
-      <div className="flex items-center gap-2.5 px-[22px] pt-1 pb-3">
+      <div className="flex items-center gap-2.5 px-5 pb-2">
         <label htmlFor={inputId} className="text-accent-ink">
           <span aria-hidden="true">{terminal.prompt}</span>
           <span className="sr-only">{terminal.inputLabel}</span>
@@ -129,24 +118,22 @@ export function Terminal() {
           autoCorrect="off"
           spellCheck={false}
           enterKeyHint="go"
-          className="min-h-11 min-w-0 flex-1 rounded-sm border-0 bg-transparent text-ink caret-accent-ink placeholder:text-ink-2"
+          className="min-h-11 min-w-0 flex-1 border-0 bg-transparent text-ink caret-accent-ink placeholder:text-ink-2"
         />
       </div>
 
-      <div className="flex flex-wrap gap-2 border-t border-line px-[18px] pt-3 pb-4">
+      <div className="flex flex-wrap gap-2 border-t border-line px-5 pt-3 pb-4">
         {terminal.chips.map((chip) => (
           <button
             key={chip}
             type="button"
             onClick={() => run(chip)}
-            className="min-h-11 cursor-pointer rounded-full border border-line bg-surface-2 px-3.5 text-[13px] text-ink transition-colors duration-200 hover:bg-line"
+            className="min-h-11 cursor-pointer rounded-button border border-line px-4 text-[13px] text-ink transition-colors duration-200 hover:bg-surface"
           >
             {chip}
           </button>
         ))}
       </div>
-
-      {confetti ? <Confetti pieces={confetti} onDone={endConfetti} /> : null}
     </div>
   );
 }

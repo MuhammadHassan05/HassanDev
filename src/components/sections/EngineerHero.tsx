@@ -1,14 +1,11 @@
 /**
- * Engineer page hero: availability badge, the Editorial name treatment,
- * role line, pitch, calls to action and the terminal card.
+ * Engineer page hero: the name (the page's h1), role line, pitch, calls to
+ * action and the interactive terminal. One column on phones; from 1024px the
+ * terminal sits beside the text.
  */
-import { ChaiCounter } from "@/components/features/ChaiCounter";
-import { ChaiProvider } from "@/components/features/ChaiProvider";
 import { Terminal } from "@/components/features/Terminal";
-import { Badge } from "@/components/ui/Badge";
-import { BounceText } from "@/components/ui/BounceText";
 import { Button } from "@/components/ui/Button";
-import { ArrowRightIcon, DownloadIcon } from "@/components/ui/icons";
+import { DownloadIcon } from "@/components/ui/icons";
 import { pitch, profile } from "@/content/profile";
 
 /** Renders the hero. The name is the page's only h1. */
@@ -17,42 +14,30 @@ export function EngineerHero() {
   const [primary, secondary] = hero.actions;
 
   return (
-    <section className="mx-auto flex max-w-page flex-wrap items-center gap-12 px-gutter pt-[clamp(48px,9vw,88px)] pb-[clamp(36px,6vw,56px)]">
-      {/* The counter and the terminal's chai command share one count. */}
-      <ChaiProvider>
-        <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-6">
-          <div className="flex flex-wrap gap-2.5">
-            <Badge>{hero.availability}</Badge>
-            <ChaiCounter />
-          </div>
-          {/* The letters are hidden from screen readers, so the h1 carries the name. */}
-          <h1 aria-label={profile.fullName} className="m-0 flex flex-col gap-1">
-            <span className="inline-block font-display text-[clamp(52px,7.5vw,104px)] leading-[0.95] font-extrabold tracking-[-0.045em] whitespace-nowrap">
-              <BounceText text={profile.firstName} />
-            </span>
-            <span className="inline-block font-serif text-[clamp(64px,9vw,128px)] leading-[0.9] font-normal tracking-[-0.01em] whitespace-nowrap text-accent-ink italic">
-              <BounceText text={profile.lastName} />
-            </span>
-          </h1>
-          <p className="m-0 font-mono text-[15px] text-accent-ink">{profile.roleLine}</p>
-          <p className="m-0 max-w-[620px] text-[21px] leading-normal text-ink">{hero.summary}</p>
-          <div className="flex flex-wrap gap-3 pt-1.5">
-            {primary ? (
-              <Button href={primary.href} newTab={primary.newTab}>
-                {primary.label}
-                <ArrowRightIcon />
-              </Button>
-            ) : null}
-            {secondary ? (
-              <Button href={secondary.href} newTab={secondary.newTab} variant="secondary">
-                <DownloadIcon />
-                {secondary.label}
-              </Button>
-            ) : null}
-          </div>
+    <section className="mx-auto grid max-w-page items-center gap-12 px-page pt-16 pb-section md:pt-24 lg:grid-cols-[minmax(0,1fr)_380px]">
+      <div className="flex min-w-0 flex-col gap-6">
+        <h1 className="m-0 text-hero">
+          {/* Two lines on every width, so the name never breaks mid-word. */}
+          <span className="block">{profile.firstName}</span>
+          <span className="block">{profile.lastName}</span>
+        </h1>
+        <p className="m-0 text-lead text-ink-2">{profile.roleLine}</p>
+        <p className="m-0 text-lead">{hero.summary}</p>
+        <div className="flex flex-col gap-3 pt-2 md:flex-row">
+          {primary ? (
+            <Button href={primary.href} newTab={primary.newTab}>
+              {primary.label}
+            </Button>
+          ) : null}
+          {secondary ? (
+            <Button href={secondary.href} newTab={secondary.newTab} variant="secondary">
+              <DownloadIcon />
+              {secondary.label}
+            </Button>
+          ) : null}
         </div>
-        <Terminal />
-      </ChaiProvider>
+      </div>
+      <Terminal />
     </section>
   );
 }

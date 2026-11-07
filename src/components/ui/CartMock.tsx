@@ -22,7 +22,7 @@ export interface CartMockProps {
  */
 export function CartMock({ cart, variant }: CartMockProps) {
   return (
-    <div className="box-border flex w-[min(380px,86%)] flex-col gap-4 rounded-inset border border-line bg-surface-2 p-[22px] font-mono">
+    <div className="box-border flex w-[min(380px,86%)] flex-col gap-4 rounded-card border border-line bg-surface-2 p-[22px]">
       <p className="m-0 text-[13px] text-ink">{cart.cartTitle}</p>
       <ul className="m-0 flex list-none flex-col gap-4 p-0">
         {cart.lines.map((line, index) => (
@@ -54,7 +54,7 @@ export function CartMock({ cart, variant }: CartMockProps) {
       {cart.notifications?.map((notification) => (
         <p
           key={notification.label}
-          className="panel m-0 flex items-center gap-2.5 rounded-xl px-3.5 py-2.5"
+          className="card m-0 flex items-center gap-2.5 rounded-xl px-3.5 py-2.5"
         >
           <span aria-hidden="true" className="size-2 rounded-full bg-accent" />
           <span className="text-[12px] text-ink">{notification.label}</span>

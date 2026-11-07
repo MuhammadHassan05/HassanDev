@@ -105,11 +105,11 @@ describe("runCommand", () => {
   });
 
   it.each(["hassan", "Hassan", "muhammad", "Muhammad  Hassan"])(
-    "%s finds the easter egg and fires confetti",
+    "%s finds the easter egg",
     (command) => {
       const result = runCommand(command, 0);
       expect(texts(result.lines).slice(1)).toEqual(["You found the easter egg. Hi, I am Hassan."]);
-      expect(result.effects).toEqual(["confetti"]);
+      expect(result.effects).toEqual([]);
     },
   );
 

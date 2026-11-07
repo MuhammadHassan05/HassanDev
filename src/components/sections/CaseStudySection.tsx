@@ -17,7 +17,7 @@ export function CaseStudySection() {
   return (
     <Section id="case" labelledBy={titleId}>
       <SectionHeader {...section} titleId={titleId} />
-      <Card radius="panel" className="flex flex-col gap-3.5 p-3.5">
+      <Card className="flex flex-col gap-3.5 p-3.5">
         <BeforeAfterSlider />
       </Card>
       <ul className="m-0 flex list-none flex-wrap gap-2.5 p-0">

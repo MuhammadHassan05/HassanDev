@@ -1,13 +1,12 @@
 /**
- * Engineer project section: header, filter tabs and the three category
- * groups (AI & Automation, Web Platforms & SaaS, Mobile & Research).
+ * Engineer project section: header, the segmented filter and the three
+ * category groups (AI & Automation, Web Platforms & SaaS, Mobile & Research).
  */
 import { ProjectFilter, type FilterTab } from "@/components/features/ProjectFilter";
 import { Section } from "@/components/layout/Section";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { engineerProjects, engineerProjectsIntro } from "@/content/projects";
-import { twoDigits } from "@/lib/format";
 
 const SECTION_ID = "projects";
 const ALL_ID = "all";
@@ -18,12 +17,8 @@ export function EngineerProjects() {
   const titleId = `${SECTION_ID}-title`;
 
   const tabs: FilterTab[] = [
-    { id: ALL_ID, label: allTabLabel, count: engineerProjects.length },
-    ...categories.map((category) => ({
-      id: category.id,
-      label: category.tabLabel,
-      count: engineerProjects.filter((p) => p.category === category.id).length,
-    })),
+    { id: ALL_ID, label: allTabLabel },
+    ...categories.map((category) => ({ id: category.id, label: category.tabLabel })),
   ];
 
   const groups = categories.map((category) => {
@@ -32,22 +27,14 @@ export function EngineerProjects() {
     return {
       id: category.id,
       content: (
-        <section aria-labelledby={groupTitleId} className="flex flex-col gap-[22px]">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-line pb-4">
-            <div className="flex items-baseline gap-3.5">
-              <h3
-                id={groupTitleId}
-                className="m-0 font-heading text-[clamp(22px,2.6vw,28px)] font-bold"
-              >
-                {category.title}
-              </h3>
-              <span className="font-mono text-[13px] text-accent-ink">
-                {twoDigits(projects.length)}
-              </span>
-            </div>
-            <p className="m-0 max-w-[520px] text-[15px] text-ink-2">{category.description}</p>
+        <section aria-labelledby={groupTitleId} className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h3 id={groupTitleId} className="m-0 text-[28px] font-semibold tracking-[-0.02em]">
+              {category.title}
+            </h3>
+            <p className="m-0 text-ink-2">{category.description}</p>
           </div>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] gap-[22px]">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <ProjectCard key={project.illustration} project={project} />
             ))}
@@ -58,7 +45,7 @@ export function EngineerProjects() {
   });
 
   return (
-    <Section id={SECTION_ID} labelledBy={titleId} className="gap-9">
+    <Section id={SECTION_ID} labelledBy={titleId}>
       <SectionHeader {...section} titleId={titleId} />
       <ProjectFilter label={filterLabel} allId={ALL_ID} tabs={tabs} groups={groups} />
     </Section>

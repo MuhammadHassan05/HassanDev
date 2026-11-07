@@ -16,7 +16,7 @@ export interface CrossLinkSectionProps {
  */
 export function CrossLinkSection({ content }: CrossLinkSectionProps) {
   return (
-    <div className="mx-auto max-w-page px-gutter">
+    <div className="mx-auto max-w-page px-page">
       <CrossLinkCard content={content} />
     </div>
   );

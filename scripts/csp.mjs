@@ -33,8 +33,8 @@ const SEARCH_CONSOLE_FILE = /^google[0-9a-f]+\.html$/;
  * Builds the policy for one page.
  *
  * style-src keeps 'unsafe-inline' because React writes style attributes for
- * per-element values (the slider's clip position, confetti sizes and timings),
- * and Next.js inlines font-face styles. Hashes cannot cover style attributes.
+ * per-element values (the before/after slider's clip position), and Next.js
+ * inlines font-face styles. Hashes cannot cover style attributes.
  * The risk is low here: the site is fully static with no user-generated
  * content, so there is no way to inject markup, and inline styles cannot run
  * code; script-src, which is what matters against XSS, has no 'unsafe-inline'.

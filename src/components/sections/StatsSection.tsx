@@ -16,11 +16,11 @@ export interface StatsSectionProps {
  */
 export function StatsSection({ stats }: StatsSectionProps) {
   return (
-    <section className="mx-auto max-w-page px-gutter">
+    <section className="mx-auto max-w-page px-page">
       <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-4 p-0">
         {stats.map((stat) => (
           <Card key={stat.label} as="li" className="flex flex-col gap-1.5 p-[26px]">
-            <span className="font-heading text-[44px] leading-none font-extrabold text-accent-ink">
+            <span className="text-[44px] leading-none font-semibold text-accent-ink">
               {stat.value}
             </span>
             <span className="text-[15px] text-ink-2">{stat.label}</span>

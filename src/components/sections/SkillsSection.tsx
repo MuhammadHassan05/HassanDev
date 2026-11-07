@@ -28,7 +28,7 @@ export function SkillsSection({ content, id }: SkillsSectionProps) {
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] gap-[22px]">
         {content.groups.map((group) => (
           <Card key={group.title} className="flex flex-col gap-3.5 p-6">
-            <h3 className="m-0 font-heading text-[19px] font-bold">{group.title}</h3>
+            <h3 className="m-0 text-[19px] font-semibold">{group.title}</h3>
             <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
               {group.items.map((item) => (
                 <li key={item}>

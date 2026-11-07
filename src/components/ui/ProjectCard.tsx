@@ -1,12 +1,11 @@
 /**
- * Project card from the design: illustration well on top, then meta tags,
- * title, description and either a link or a plain label.
+ * Project card: the illustration at the top, then the tags, title,
+ * description and either a link or a plain label.
  */
-import { TiltCard } from "@/components/features/TiltCard";
 import { illustrations } from "@/components/illustrations";
 import type { Project } from "@/content/projects";
-import { DRAW_TARGET_CLASS } from "@/lib/dom-ids";
 import { AppLink } from "./AppLink";
+import { Card } from "./Card";
 import { ArrowUpRightIcon } from "./icons";
 
 /** Props for {@link ProjectCard}. */
@@ -27,19 +26,21 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
   const { footer } = project;
 
   return (
-    <TiltCard className="panel flex flex-col overflow-hidden rounded-card-lg">
-      <div className="mx-2.5 mt-2.5 flex h-[200px] items-center justify-center overflow-hidden rounded-inner bg-surface-2">
-        <Illustration className={DRAW_TARGET_CLASS} />
+    <Card as="article" className="flex flex-col overflow-hidden">
+      <div className="flex h-[200px] items-center justify-center border-b border-line">
+        <Illustration />
       </div>
-      <div className="flex grow flex-col gap-2.5 px-6 pt-[22px] pb-5">
-        <p className="m-0 font-mono text-[12px] text-ink-2">{project.tags.join(" · ")}</p>
-        <Heading className="m-0 font-heading text-[23px] font-bold">{project.title}</Heading>
-        <p className="m-0 text-[16px] text-ink">{project.description}</p>
+      <div className="flex grow flex-col gap-2 p-6">
+        <p className="m-0 text-small text-ink-2">{project.tags.join(" · ")}</p>
+        <Heading className="m-0 text-[21px] font-semibold tracking-[-0.01em]">
+          {project.title}
+        </Heading>
+        <p className="m-0 text-ink-2">{project.description}</p>
         {footer.kind === "link" ? (
           <AppLink
             href={footer.href}
             newTab={footer.newTab}
-            className="mt-auto inline-flex min-h-11 items-center gap-2 self-start pt-1.5 font-medium text-accent-ink hover:text-accent-ink"
+            className="mt-auto inline-flex min-h-11 items-center gap-1.5 self-start pt-2 text-accent-ink hover:underline hover:underline-offset-4"
           >
             {footer.label}
             {/* "Visit site" repeats on many cards; the project name makes each link unique. */}
@@ -47,11 +48,11 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
             <ArrowUpRightIcon />
           </AppLink>
         ) : (
-          <p className="m-0 mt-auto inline-flex min-h-11 items-center pt-1.5 font-mono text-[13px] text-ink-2">
+          <p className="m-0 mt-auto inline-flex min-h-11 items-center pt-2 text-small text-ink-2">
             {footer.label}
           </p>
         )}
       </div>
-    </TiltCard>
+    </Card>
   );
 }

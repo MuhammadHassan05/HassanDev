@@ -19,14 +19,18 @@ export interface PageShellProps {
 /**
  * Renders a full page in the given track's colors.
  *
- * @param props.track - Theme and, for track pages, the active TrackSwitch entry.
- * @param props.isTrackPage - Whether the TrackSwitch should mark this page as current.
+ * @param props.track - Theme and, for track pages, the current nav link.
+ * @param props.isTrackPage - Whether the nav should mark this page as current.
  * @param props.children - The page's sections.
  */
 export function PageShell({ track, isTrackPage = true, children }: PageShellProps) {
   return (
-    <div data-track={track} className="relative text-ink">
-      <Nav current={isTrackPage ? track : null} />
+    <div data-track={track} className="text-ink">
+      {/* Track pages end with a #contact section; other pages send Contact home. */}
+      <Nav
+        current={isTrackPage ? track : null}
+        contactHref={isTrackPage ? "#contact" : "/#contact"}
+      />
       {/* tabIndex lets the skip link move focus here; no ring because main is not a control. */}
       <main id={MAIN_CONTENT_ID} tabIndex={-1} className="focus:outline-none">
         {children}

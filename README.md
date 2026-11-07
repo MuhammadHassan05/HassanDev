@@ -67,9 +67,9 @@ All copy, links, numbers and project data live in typed files in `src/content/`.
 | `skills.ts`                                 | Skill groups                                                       |
 | `services.ts`, `clients.ts`, `caseStudy.ts` | Studio page: services, client list and the before/after case study |
 | `stats.ts`                                  | The stat tiles                                                     |
-| `terminal.ts`, `chai.ts`                    | Terminal commands and replies, and the chai counter's copy         |
-| `tracks.ts`                                 | The two tracks and their routes                                    |
-| `site.ts`                                   | Page titles and descriptions, share image, footer, 404 page        |
+| `terminal.ts`                               | Terminal commands and replies                                      |
+| `tracks.ts`                                 | The two tracks, their routes and nav labels                        |
+| `site.ts`                                   | Page titles and descriptions, share image, nav, footer, 404 page   |
 | `illustrations.ts`                          | Which illustration each project uses                               |
 | `types.ts`                                  | The types every content file is checked against                    |
 

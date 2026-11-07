@@ -1,7 +1,7 @@
 /**
  * Illustration for the VTEST project card, converted from
  * design-kit/illustrations/vtest.svg. Colours come from the
- * theme tokens; draw-stroke marks the outlines that draw in on scroll.
+ * theme tokens.
  */
 import type { IllustrationProps } from "./types";
 
@@ -16,39 +16,29 @@ export function VtestIllustration({ className }: IllustrationProps) {
       fill="none"
       className={className}
     >
-      <rect
-        className="draw-stroke fill-surface-2 stroke-line"
-        x="40"
-        y="22"
-        width="280"
-        height="156"
-        rx="10"
-        pathLength={1}
-      />
-      <text className="fill-ink" x="58" y="46" fontFamily="JetBrains Mono, monospace" fontSize="11">
+      <rect className="fill-surface-2 stroke-line" x="40" y="22" width="280" height="156" rx="10" />
+      <text
+        className="fill-ink-2"
+        x="58"
+        y="46"
+        fontFamily="JetBrains Mono, monospace"
+        fontSize="11"
+      >
         Agentic QA run
       </text>
-      <path className="fill-accent" d="M180 36l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" />
-      <path className="draw-stroke stroke-line" d="M40 58h280" pathLength={1} />
-      <circle
-        className="stroke-accent-ink draw-stroke"
-        cx="66"
-        cy="78"
-        r="8"
-        strokeWidth="2"
-        pathLength={1}
-      />
+      <path className="fill-accent-ink" d="M180 36l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z" />
+      <path className="stroke-line" d="M40 58h280" />
+      <circle className="stroke-accent-ink" cx="66" cy="78" r="8" strokeWidth="2" />
       <path
-        className="stroke-accent-ink draw-stroke"
+        className="stroke-accent-ink"
         d="M62 78l3 3 5-6"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        pathLength={1}
       />
-      <rect className="fill-ink-2" x="84" y="75" width="150" height="6" rx="3" />
+      <rect className="fill-line" x="84" y="75" width="150" height="6" rx="3" />
       <rect
-        className="fill-accent"
+        className="fill-accent-ink"
         x="262"
         y="70"
         width="40"
@@ -57,7 +47,7 @@ export function VtestIllustration({ className }: IllustrationProps) {
         fillOpacity="0.2"
       />
       <text
-        className="fill-accent"
+        className="fill-accent-ink"
         x="271"
         y="82"
         fontFamily="JetBrains Mono, monospace"
@@ -65,25 +55,17 @@ export function VtestIllustration({ className }: IllustrationProps) {
       >
         pass
       </text>
-      <circle
-        className="stroke-accent-ink draw-stroke"
-        cx="66"
-        cy="104"
-        r="8"
-        strokeWidth="2"
-        pathLength={1}
-      />
+      <circle className="stroke-accent-ink" cx="66" cy="104" r="8" strokeWidth="2" />
       <path
-        className="stroke-accent-ink draw-stroke"
+        className="stroke-accent-ink"
         d="M62 104l3 3 5-6"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        pathLength={1}
       />
-      <rect className="fill-ink-2" x="84" y="101" width="120" height="6" rx="3" />
+      <rect className="fill-line" x="84" y="101" width="120" height="6" rx="3" />
       <rect
-        className="fill-accent"
+        className="fill-accent-ink"
         x="262"
         y="96"
         width="40"
@@ -92,7 +74,7 @@ export function VtestIllustration({ className }: IllustrationProps) {
         fillOpacity="0.2"
       />
       <text
-        className="fill-accent"
+        className="fill-accent-ink"
         x="271"
         y="108"
         fontFamily="JetBrains Mono, monospace"
@@ -100,25 +82,17 @@ export function VtestIllustration({ className }: IllustrationProps) {
       >
         pass
       </text>
-      <circle
-        className="stroke-accent-ink draw-stroke"
-        cx="66"
-        cy="130"
-        r="8"
-        strokeWidth="2"
-        pathLength={1}
-      />
+      <circle className="stroke-accent-ink" cx="66" cy="130" r="8" strokeWidth="2" />
       <path
-        className="stroke-accent-ink draw-stroke"
+        className="stroke-accent-ink"
         d="M62 130l3 3 5-6"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        pathLength={1}
       />
-      <rect className="fill-ink-2" x="84" y="127" width="164" height="6" rx="3" />
+      <rect className="fill-line" x="84" y="127" width="164" height="6" rx="3" />
       <rect
-        className="fill-accent"
+        className="fill-accent-ink"
         x="262"
         y="122"
         width="40"
@@ -127,7 +101,7 @@ export function VtestIllustration({ className }: IllustrationProps) {
         fillOpacity="0.2"
       />
       <text
-        className="fill-accent"
+        className="fill-accent-ink"
         x="271"
         y="134"
         fontFamily="JetBrains Mono, monospace"
@@ -136,16 +110,16 @@ export function VtestIllustration({ className }: IllustrationProps) {
         pass
       </text>
       <circle
-        className="stroke-accent-ink"
+        className="stroke-ink-2"
         cx="66"
         cy="156"
         r="8"
         strokeWidth="2"
         strokeDasharray="4 3"
       />
-      <rect className="fill-ink-2" x="84" y="153" width="104" height="6" rx="3" />
+      <rect className="fill-line" x="84" y="153" width="104" height="6" rx="3" />
       <text
-        className="fill-accent-ink"
+        className="fill-ink-2"
         x="262"
         y="160"
         fontFamily="JetBrains Mono, monospace"

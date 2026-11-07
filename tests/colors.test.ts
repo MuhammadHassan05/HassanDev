@@ -33,7 +33,7 @@ const TOKENS = [
 
 /** Utilities with a colour prefix that set something other than colour. */
 const NON_COLOUR =
-  /^(border-[0-9trblxy]|border-[trblxy]-\d|outline-(none|hidden|\d|offset)|text-\[[\d.]+px\]|text-\[clamp|text-(left|center|right|xs|sm|base|lg|xl|wrap|nowrap|balance|pretty))/;
+  /^(border-[0-9trblxy]|border-[trblxy]-\d|outline-(none|hidden|\d|offset)|text-\[[\d.]+px\]|text-\[clamp|text-(left|center|right|xs|sm|base|lg|xl|wrap|nowrap|balance|pretty|hero|title|lead|small)$)/;
 
 const COLOUR_UTILITY =
   /(?<=["'`\s:])(?:text|bg|border(?:-[trblxy])?|outline|ring|fill|stroke|caret|accent|decoration|divide|shadow|from|via|to)-[^\s"'`]+/g;

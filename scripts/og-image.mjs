@@ -74,8 +74,11 @@ async function readCopy(page) {
     return {
       firstName: nameParts[0],
       lastName: nameParts[1],
-      role: document.querySelector("header nav li a")?.getAttribute("aria-label"),
-      logo: document.querySelector("header nav > a")?.textContent?.trim(),
+      // The job title from the page's structured data (src/lib/seo.ts).
+      role: JSON.parse(
+        document.querySelector('script[type="application/ld+json"]')?.textContent ?? "{}",
+      ).jobTitle,
+      initial: nameParts[0]?.charAt(0),
     };
   });
   for (const [key, value] of Object.entries(copy)) {
@@ -88,32 +91,30 @@ async function readCopy(page) {
 /** The share card: name and role on glass over the engineer glow. */
 function shareCard({ firstName, lastName, role }) {
   return `
-<div style="position:fixed;inset:0;overflow:hidden;background:${COLORS.bg};font-family:var(--font-space-grotesk)">
+<div style="position:fixed;inset:0;overflow:hidden;background:${COLORS.bg};font-family:var(--font-sans)">
   ${orb(COLORS.accent, "top:-260px;left:-180px")}
   ${orb(COLORS.glow, "bottom:-300px;right:-160px")}
   <div style="position:absolute;inset:56px;border-radius:28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(16px);display:flex;flex-direction:column;justify-content:center;padding:0 80px;gap:10px">
-    <div style="font-family:var(--font-bricolage);font-weight:800;font-size:132px;line-height:.95;letter-spacing:-.045em;color:${COLORS.ink}">${esc(firstName)}</div>
-    <div style="font-family:var(--font-instrument-serif);font-style:italic;font-size:164px;line-height:.9;letter-spacing:-.01em;color:${COLORS.accent}">${esc(lastName)}</div>
+    <div style="font-family:var(--font-sans);font-weight:600;font-size:132px;line-height:.95;letter-spacing:-.045em;color:${COLORS.ink}">${esc(firstName)}</div>
+    <div style="font-family:var(--font-sans);font-weight:600;font-size:132px;line-height:.9;letter-spacing:-.01em;color:${COLORS.accent}">${esc(lastName)}</div>
     <div style="margin-top:28px;font-family:var(--font-jetbrains-mono);font-size:34px;color:${COLORS.accent}">${esc(role)}</div>
   </div>
 </div>`;
 }
 
 /**
- * The icon: the nav logo's initial and accent dot ("h."), on the page
+ * The icon: the first initial of the name, on the page
  * background with a hint of the glow.
  *
- * @param logo - The nav logo text, e.g. "hassan.dev".
+ * @param initial - The letter to show, e.g. "M".
  * @param size - Edge length in pixels.
  * @param rounded - Rounded corners for the favicon; iOS rounds the touch icon itself.
  */
-function iconCard(logo, size, rounded) {
-  const initial = logo.charAt(0);
-  const dot = logo.includes(".") ? "." : "";
+function iconCard(initial, size, rounded) {
   return `
 <div style="position:fixed;left:0;top:0;width:${size}px;height:${size}px;overflow:hidden;border-radius:${rounded ? Math.round(size * 0.22) : 0}px;background:${COLORS.bg};display:flex;align-items:center;justify-content:center;font-family:var(--font-jetbrains-mono);font-weight:500;font-size:${Math.round(size * 0.62)}px;line-height:1">
   <div style="position:absolute;top:${-size * 0.35}px;left:${-size * 0.35}px;width:${size}px;height:${size}px;border-radius:999px;background:${COLORS.accent};filter:blur(${size * 0.25}px);opacity:.35"></div>
-  <span style="position:relative;color:${COLORS.ink}">${esc(initial)}</span><span style="position:relative;color:${COLORS.accent}">${esc(dot)}</span>
+  <span style="position:relative;color:${COLORS.ink}">${esc(initial)}</span>
 </div>`;
 }
 
@@ -155,14 +156,14 @@ try {
   await render(page, shareCard(copy), { width: 1200, height: 630 }, "public/og.png");
   await render(
     page,
-    iconCard(copy.logo, 512, true),
+    iconCard(copy.initial, 512, true),
     { width: 512, height: 512 },
     "src/app/icon.png",
     true,
   );
   await render(
     page,
-    iconCard(copy.logo, 180, false),
+    iconCard(copy.initial, 180, false),
     { width: 180, height: 180 },
     "src/app/apple-icon.png",
   );

@@ -27,10 +27,10 @@ export function ServicesSection() {
           const Icon = ICONS[service.icon];
           return (
             <Card key={service.title} as="li" className="flex flex-col gap-3 p-[26px]">
-              <span className="inline-flex size-[46px] items-center justify-center rounded-inner border border-line bg-surface-2 text-accent-ink">
+              <span className="inline-flex size-[46px] items-center justify-center rounded-card border border-line bg-surface-2 text-accent-ink">
                 <Icon />
               </span>
-              <h3 className="m-0 font-heading text-[20px] font-bold">{service.title}</h3>
+              <h3 className="m-0 text-[20px] font-semibold">{service.title}</h3>
               <p className="m-0 text-[15.5px] text-ink">{service.description}</p>
             </Card>
           );

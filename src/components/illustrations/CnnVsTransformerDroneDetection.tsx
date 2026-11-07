@@ -1,7 +1,7 @@
 /**
  * Illustration for the CNN vs Transformer Drone Detection project card, converted from
  * design-kit/illustrations/cnn-vs-transformer-drone-detection.svg. Colours come from the
- * theme tokens; draw-stroke marks the outlines that draw in on scroll.
+ * theme tokens.
  */
 import type { IllustrationProps } from "./types";
 
@@ -17,66 +17,24 @@ export function CnnVsTransformerDroneDetectionIllustration({ className }: Illust
       className={className}
     >
       <path
-        className="draw-stroke stroke-surface"
+        className="stroke-line"
         d="M40 0v200M80 0v200M120 0v200M160 0v200M200 0v200M240 0v200M280 0v200M320 0v200M0 40h360M0 80h360M0 120h360M0 160h360"
-        pathLength={1}
       />
       <path
-        className="draw-stroke stroke-ink"
+        className="stroke-ink-2"
         d="M165 92 145 78M175 92l20-14M165 98l-20 14M175 98l20 14"
         strokeWidth="2.5"
         strokeLinecap="round"
-        pathLength={1}
       />
-      <rect className="fill-ink" x="160" y="89" width="20" height="12" rx="3" />
-      <ellipse
-        className="draw-stroke stroke-ink"
-        cx="145"
-        cy="76"
-        rx="12"
-        ry="3"
-        strokeWidth="2"
-        pathLength={1}
-      />
-      <ellipse
-        className="draw-stroke stroke-ink"
-        cx="195"
-        cy="76"
-        rx="12"
-        ry="3"
-        strokeWidth="2"
-        pathLength={1}
-      />
-      <ellipse
-        className="draw-stroke stroke-ink"
-        cx="145"
-        cy="114"
-        rx="12"
-        ry="3"
-        strokeWidth="2"
-        pathLength={1}
-      />
-      <ellipse
-        className="draw-stroke stroke-ink"
-        cx="195"
-        cy="114"
-        rx="12"
-        ry="3"
-        strokeWidth="2"
-        pathLength={1}
-      />
-      <rect
-        className="stroke-accent-ink draw-stroke"
-        x="124"
-        y="64"
-        width="92"
-        height="62"
-        strokeWidth="2"
-        pathLength={1}
-      />
-      <rect className="fill-accent" x="123" y="48" width="52" height="16" />
+      <rect className="fill-ink-2" x="160" y="89" width="20" height="12" rx="3" />
+      <ellipse className="stroke-ink-2" cx="145" cy="76" rx="12" ry="3" strokeWidth="2" />
+      <ellipse className="stroke-ink-2" cx="195" cy="76" rx="12" ry="3" strokeWidth="2" />
+      <ellipse className="stroke-ink-2" cx="145" cy="114" rx="12" ry="3" strokeWidth="2" />
+      <ellipse className="stroke-ink-2" cx="195" cy="114" rx="12" ry="3" strokeWidth="2" />
+      <rect className="stroke-accent-ink" x="124" y="64" width="92" height="62" strokeWidth="2" />
+      <rect className="fill-accent-ink" x="123" y="48" width="52" height="16" />
       <text
-        className="fill-on-accent"
+        className="fill-surface"
         x="130"
         y="60"
         fontFamily="JetBrains Mono, monospace"
@@ -86,15 +44,14 @@ export function CnnVsTransformerDroneDetectionIllustration({ className }: Illust
         drone
       </text>
       <path
-        className="draw-stroke stroke-ink-2/50"
+        className="stroke-line"
         d="M276 48l-8-5M284 48l8-5M276 54l-8 5M284 54l8 5"
         strokeWidth="1.5"
         strokeLinecap="round"
-        pathLength={1}
       />
-      <rect className="fill-ink-2/50" x="276" y="47" width="8" height="8" rx="2" />
+      <rect className="fill-line" x="276" y="47" width="8" height="8" rx="2" />
       <rect
-        className="stroke-ink-2/50"
+        className="stroke-line"
         x="260"
         y="36"
         width="40"

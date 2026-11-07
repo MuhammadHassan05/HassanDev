@@ -1,7 +1,7 @@
 /**
  * Illustration for the JAIB Expense Tracker project card, converted from
  * design-kit/illustrations/jaib-expense-tracker.svg. Colours come from the
- * theme tokens; draw-stroke marks the outlines that draw in on scroll.
+ * theme tokens.
  */
 import type { IllustrationProps } from "./types";
 
@@ -17,24 +17,16 @@ export function JaibExpenseTrackerIllustration({ className }: IllustrationProps)
       className={className}
     >
       <rect
-        className="draw-stroke fill-surface-2 stroke-line"
+        className="fill-surface-2 stroke-line"
         x="128"
         y="12"
         width="104"
         height="176"
         rx="18"
         strokeWidth="2"
-        pathLength={1}
       />
       <rect className="fill-line" x="165" y="20" width="30" height="5" rx="2.5" />
-      <circle
-        className="draw-stroke stroke-line"
-        cx="180"
-        cy="78"
-        r="28"
-        strokeWidth="11"
-        pathLength={1}
-      />
+      <circle className="stroke-line" cx="180" cy="78" r="28" strokeWidth="11" />
       <circle
         className="stroke-accent-ink"
         cx="180"
@@ -45,7 +37,7 @@ export function JaibExpenseTrackerIllustration({ className }: IllustrationProps)
         transform="rotate(-90 180 78)"
       />
       <circle
-        className="stroke-ink"
+        className="stroke-ink-2"
         cx="180"
         cy="78"
         r="28"
@@ -54,15 +46,15 @@ export function JaibExpenseTrackerIllustration({ className }: IllustrationProps)
         strokeDashoffset="-100"
         transform="rotate(-90 180 78)"
       />
-      <circle className="fill-accent" cx="146" cy="128" r="5" />
-      <rect className="fill-ink-2/50" x="158" y="125" width="40" height="6" rx="3" />
-      <rect className="fill-ink" x="204" y="125" width="16" height="6" rx="3" />
-      <circle className="fill-ink" cx="146" cy="146" r="5" />
-      <rect className="fill-ink-2/50" x="158" y="143" width="32" height="6" rx="3" />
-      <rect className="fill-ink" x="204" y="143" width="16" height="6" rx="3" />
+      <circle className="fill-accent-ink" cx="146" cy="128" r="5" />
+      <rect className="fill-line" x="158" y="125" width="40" height="6" rx="3" />
+      <rect className="fill-ink-2" x="204" y="125" width="16" height="6" rx="3" />
+      <circle className="fill-ink-2" cx="146" cy="146" r="5" />
+      <rect className="fill-line" x="158" y="143" width="32" height="6" rx="3" />
+      <rect className="fill-ink-2" x="204" y="143" width="16" height="6" rx="3" />
       <circle className="fill-line" cx="146" cy="164" r="5" />
-      <rect className="fill-ink-2/50" x="158" y="161" width="44" height="6" rx="3" />
-      <rect className="fill-ink" x="204" y="161" width="16" height="6" rx="3" />
+      <rect className="fill-line" x="158" y="161" width="44" height="6" rx="3" />
+      <rect className="fill-ink-2" x="204" y="161" width="16" height="6" rx="3" />
     </svg>
   );
 }

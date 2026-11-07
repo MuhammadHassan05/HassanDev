@@ -36,11 +36,9 @@ export function ExperienceSection({ content, crossLink }: ExperienceSectionProps
               as="li"
               className="flex flex-wrap gap-x-8 gap-y-2.5 p-[clamp(20px,4vw,28px)]"
             >
-              <p className="m-0 flex-[0_0_170px] font-mono text-[14px] text-accent-ink">
-                {entry.dates}
-              </p>
+              <p className="m-0 flex-[0_0_170px] text-[14px] text-accent-ink">{entry.dates}</p>
               <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-2.5">
-                <h3 className="m-0 font-heading text-[22px] font-bold">
+                <h3 className="m-0 text-[22px] font-semibold">
                   {entry.role} · {entry.organization}
                 </h3>
                 <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-[16px] text-ink">

@@ -19,8 +19,6 @@ export interface ClientsSection {
 /** Clients in design order. */
 export const clients: ClientsSection = {
   section: {
-    index: "04",
-    label: "freelance",
     title: "Clients I have built for",
     description:
       "15+ production sites via direct work, LinkedIn and Upwork: SaaS, booking systems, medical clinics, immigration portals and social apps.",

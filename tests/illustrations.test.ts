@@ -1,7 +1,7 @@
 /**
  * Tests for the illustration components: every key renders a decorative
- * 360x200 svg with no leftover color placeholders, and themed parts use the
- * track variables through classes.
+ * 360x200 svg with no leftover color placeholders, and every colour is one of
+ * the tokens the design rules allow for drawings.
  */
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -26,6 +26,17 @@ describe("illustrations", () => {
 
   it.each(rendered)("%s has no placeholders or inline styles", (_key, html) => {
     expect(html).not.toMatch(/__ACCENT__|__GLOW__|\{\{|style=/);
+  });
+
+  it.each(rendered)("%s uses only the drawing palette", (_key, html) => {
+    // Accent as accent-ink (never the fill), the old glow as text-2, greys as surface-2 and line.
+    const allowed = /^(fill|stroke)-(accent-ink(\/40)?|ink-2|line|surface-2|surface|none)$/;
+    for (const [, classes = ""] of html.matchAll(/class="([^"]*)"/g)) {
+      for (const name of classes.split(" ").filter((c) => /^(fill|stroke)-/.test(c))) {
+        expect(name).toMatch(allowed);
+      }
+    }
+    expect(html).not.toMatch(/\s(fill|stroke)="#/);
   });
 
   it("passes className through to the root svg", () => {

@@ -1,11 +1,11 @@
 /**
  * Root layout: document shell, language, self-hosted fonts, default metadata,
- * the theme script, the skip-to-content link, and the draw-on-scroll
+ * the theme script, the skip-to-content link, and the section fade-up
  * observer, which outlives a single page.
  */
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { DrawOnScroll } from "@/components/features/DrawOnScroll";
+import { Reveal } from "@/components/features/Reveal";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 import { siteChrome, siteMetadata } from "@/content/site";
 import { MAIN_CONTENT_ID } from "@/lib/dom-ids";
@@ -19,6 +19,14 @@ export const metadata: Metadata = {
   title: siteMetadata.pages.engineer.title,
   description: siteMetadata.pages.engineer.description,
   referrer: "strict-origin-when-cross-origin",
+};
+
+// "cover" lets the page reach under a phone's notch; the nav, sections and
+// footer pad themselves with env(safe-area-inset-*) to keep content clear.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 /**
@@ -42,7 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         >
           {siteChrome.skipLinkLabel}
         </a>
-        <DrawOnScroll />
+        <Reveal />
         {children}
       </body>
     </html>

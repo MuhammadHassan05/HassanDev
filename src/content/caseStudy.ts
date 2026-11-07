@@ -45,8 +45,6 @@ export interface CaseStudy {
 /** Tiny Owlets case study content. */
 export const caseStudy: CaseStudy = {
   section: {
-    index: "03",
-    label: "case study",
     title: "Tiny Owlets: before and after",
     description: "Drag across the store to compare the old cart with the one I rebuilt.",
   },

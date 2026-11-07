@@ -4,6 +4,6 @@
 
 /** Props for an illustration component. */
 export interface IllustrationProps {
-  /** Extra classes for the root svg, e.g. to switch on the draw-in animation. */
+  /** Extra classes for the root svg. */
   className?: string;
 }

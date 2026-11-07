@@ -48,9 +48,8 @@ export const profile: Profile = {
 
 const { links } = profile;
 
-/** Top of a page: availability badge, pitch and calls to action. */
+/** Top of a page: pitch and calls to action. */
 export interface HeroContent {
-  availability: string;
   /** Studio has a written heading; the engineer hero shows the name instead. */
   heading?: string;
   summary: string;
@@ -66,8 +65,6 @@ export interface CrossLinkContent {
 
 /** Closing contact panel. */
 export interface ContactContent {
-  index: string;
-  label: string;
   heading: string;
   email: LinkAction;
   actions: readonly LinkAction[];
@@ -84,7 +81,6 @@ export interface PagePitch {
 export const pitch: Record<TrackId, PagePitch> = {
   engineer: {
     hero: {
-      availability: "Available for remote roles · immediate start",
       summary:
         "Final-year Software Engineering student at FAST-NUCES Lahore, shipping production SaaS with React, Next.js, Node.js, TypeScript and AI workflow automation.",
       actions: [
@@ -98,8 +94,6 @@ export const pitch: Record<TrackId, PagePitch> = {
       action: { label: "Open Studio", href: "/studio/" },
     },
     contact: {
-      index: "05",
-      label: "contact",
       heading: "Hiring for an engineering role? Let's talk.",
       email: { label: profile.email, href: links.email },
       actions: [
@@ -113,7 +107,6 @@ export const pitch: Record<TrackId, PagePitch> = {
   },
   studio: {
     hero: {
-      availability: "Taking new Shopify, web and design projects",
       heading: "Shopify stores, websites and brands that sell.",
       summary:
         "I'm Hassan. I build and customize Shopify stores, ship websites for international clients and design brand identities, from logos to social media.",
@@ -128,8 +121,6 @@ export const pitch: Record<TrackId, PagePitch> = {
       action: { label: "See engineering projects", href: "/#projects" },
     },
     contact: {
-      index: "08",
-      label: "contact",
       heading: "Need a store, a site or a brand? Let's build it.",
       email: { label: profile.email, href: links.email },
       // The design repeats Behance as a plain "Behance" button; CLAUDE.md drops the duplicate.

@@ -1,5 +1,5 @@
 /**
- * The chai counter's logic: how many cups of chai Hassan has had today,
+ * The terminal chai command's logic: how many cups of chai Hassan has had today,
  * going by the time of day in Lahore (Asia/Karachi).
  */
 
@@ -46,14 +46,4 @@ export function cupsForHour(hour: number): number {
  */
 export function chaiCount(date: Date, extraCups: number): number {
   return cupsForHour(karachiHour(date)) + extraCups;
-}
-
-/**
- * Fills a label template such as "Chai today: {count}".
- *
- * @param template - Copy with a {count} placeholder.
- * @param count - The number to show.
- */
-export function formatChaiLabel(template: string, count: number): string {
-  return template.replace("{count}", String(count));
 }

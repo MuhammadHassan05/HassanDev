@@ -36,8 +36,6 @@ export interface EducationSection {
 /** Education content in design order. */
 export const education: EducationSection = {
   section: {
-    index: "03",
-    label: "education",
     title: "Degree, leadership and certifications",
   },
   degree: {

@@ -1,46 +1,76 @@
 /**
- * Floating navigation bar: hassan.dev logo, track switch, theme toggle and
- * the Book a call link.
+ * Site nav: a 56px bar on a solid background with a hairline under it. The
+ * name sits on the left. From 768px the right side holds the Engineering and
+ * Studio links, the theme toggle and the Contact button; on phones it holds
+ * the theme toggle and a menu button that opens the links (NavMenu).
  */
+import { NavMenu } from "@/components/features/NavMenu";
 import { ThemeToggle } from "@/components/features/ThemeToggle";
-import { siteChrome } from "@/content/site";
-import type { TrackId } from "@/content/tracks";
 import { AppLink } from "@/components/ui/AppLink";
 import { Button } from "@/components/ui/Button";
-import { TrackSwitch } from "./TrackSwitch";
+import { profile } from "@/content/profile";
+import { siteChrome } from "@/content/site";
+import { tracks, type TrackId } from "@/content/tracks";
+import { cx } from "@/lib/cx";
 
 /** Props for {@link Nav}. */
 export interface NavProps {
   /** Track of the page being viewed; null on pages that belong to neither (the 404). */
   current: TrackId | null;
+  /** Where Contact goes: this page's contact section, or the home page's. */
+  contactHref: string;
 }
 
 /**
  * Renders the site header and its navigation.
  *
  * @param props.current - Track of the page being viewed, or null for none.
+ * @param props.contactHref - Target of the Contact button.
  */
-export function Nav({ current }: NavProps) {
-  const { logo, bookCall } = siteChrome;
+export function Nav({ current, contactHref }: NavProps) {
+  const links = tracks.map((track) => ({
+    href: track.href,
+    label: track.navLabel,
+    current: track.id === current,
+  }));
+  const contact = { href: contactHref, label: siteChrome.contactLabel };
+
   return (
-    <header className="mx-auto w-full max-w-nav px-5 pt-5">
-      {/* Below 660px: logo, theme toggle and Book a call on row 1, the switch full width on row 2.
-          From 660px the design's single row fits and is used unchanged. */}
-      <nav className="panel flex flex-wrap items-center justify-between gap-3 rounded-shell py-2 pr-2 pl-6 max-nav:grid max-nav:grid-cols-[1fr_auto] max-nav:gap-2 max-nav:p-2">
-        {/* min-h-11 keeps the logo a 44px touch target; the design's text alone is ~24px tall. */}
-        <AppLink
-          href="/"
-          className="inline-flex min-h-11 items-center font-mono text-[15px] font-medium max-nav:justify-self-start max-nav:pl-4"
-        >
-          {logo.name}
-          <span className="text-accent-ink">{logo.suffix}</span>
+    // The top padding keeps the bar clear of a phone's status bar and notch.
+    <header className="sticky top-0 z-40 border-b border-line bg-bg pt-[env(safe-area-inset-top)]">
+      <nav className="mx-auto flex h-14 max-w-page items-center justify-between gap-4 px-page">
+        <AppLink href="/" className="inline-flex min-h-11 items-center text-[17px] font-semibold">
+          {profile.fullName}
         </AppLink>
-        <TrackSwitch current={current} className="max-nav:col-span-2 max-nav:row-start-2" />
-        <div className="flex items-center gap-2 max-nav:col-start-2 max-nav:row-start-1">
+
+        <div className="flex items-center gap-2 md:gap-6">
+          <ul className="m-0 hidden list-none items-center gap-6 p-0 md:flex">
+            {links.map((link) => (
+              <li key={link.href}>
+                {/* The current page is marked for screen readers too, not only by colour. */}
+                <AppLink
+                  href={link.href}
+                  aria-current={link.current ? "page" : undefined}
+                  className={cx(
+                    "inline-flex min-h-11 items-center border-b-2 text-[15px]",
+                    link.current
+                      ? "border-accent text-ink"
+                      : "border-transparent text-ink-2 hover:text-ink",
+                  )}
+                >
+                  {link.label}
+                </AppLink>
+              </li>
+            ))}
+          </ul>
           <ThemeToggle />
-          <Button href={bookCall.href} variant="outline" size="sm" className="max-nav:px-4">
-            {bookCall.label}
-          </Button>
+          {/* Hidden on the wrapper: the button's own display class would win over "hidden". */}
+          <div className="hidden md:block">
+            <Button href={contact.href} size="sm">
+              {contact.label}
+            </Button>
+          </div>
+          <NavMenu links={links} contact={contact} label={siteChrome.menuLabel} />
         </div>
       </nav>
     </header>

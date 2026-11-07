@@ -1,7 +1,7 @@
 /**
  * Illustration for the AI Text Detection API project card, converted from
  * design-kit/illustrations/ai-text-detection-api.svg. Colours come from the
- * theme tokens; draw-stroke marks the outlines that draw in on scroll.
+ * theme tokens.
  */
 import type { IllustrationProps } from "./types";
 
@@ -16,17 +16,9 @@ export function AiTextDetectionApiIllustration({ className }: IllustrationProps)
       fill="none"
       className={className}
     >
+      <rect className="fill-surface-2 stroke-line" x="56" y="24" width="164" height="152" rx="8" />
       <rect
-        className="draw-stroke fill-surface-2 stroke-line"
-        x="56"
-        y="24"
-        width="164"
-        height="152"
-        rx="8"
-        pathLength={1}
-      />
-      <rect
-        className="fill-accent"
+        className="fill-accent-ink"
         x="66"
         y="55"
         width="144"
@@ -35,7 +27,7 @@ export function AiTextDetectionApiIllustration({ className }: IllustrationProps)
         fillOpacity="0.2"
       />
       <rect
-        className="fill-accent"
+        className="fill-accent-ink"
         x="66"
         y="71"
         width="144"
@@ -44,7 +36,7 @@ export function AiTextDetectionApiIllustration({ className }: IllustrationProps)
         fillOpacity="0.2"
       />
       <rect
-        className="fill-accent"
+        className="fill-accent-ink"
         x="66"
         y="119"
         width="144"
@@ -52,16 +44,16 @@ export function AiTextDetectionApiIllustration({ className }: IllustrationProps)
         rx="3"
         fillOpacity="0.2"
       />
-      <rect className="fill-ink-2/50" x="72" y="42" width="130" height="5" rx="2.5" />
-      <rect className="fill-ink" x="72" y="59" width="118" height="5" rx="2.5" />
-      <rect className="fill-ink" x="72" y="75" width="132" height="5" rx="2.5" />
-      <rect className="fill-ink-2/50" x="72" y="91" width="96" height="5" rx="2.5" />
-      <rect className="fill-ink-2/50" x="72" y="107" width="126" height="5" rx="2.5" />
-      <rect className="fill-ink" x="72" y="123" width="112" height="5" rx="2.5" />
-      <rect className="fill-ink-2/50" x="72" y="139" width="128" height="5" rx="2.5" />
-      <rect className="fill-ink-2/50" x="72" y="155" width="84" height="5" rx="2.5" />
+      <rect className="fill-line" x="72" y="42" width="130" height="5" rx="2.5" />
+      <rect className="fill-ink-2" x="72" y="59" width="118" height="5" rx="2.5" />
+      <rect className="fill-ink-2" x="72" y="75" width="132" height="5" rx="2.5" />
+      <rect className="fill-line" x="72" y="91" width="96" height="5" rx="2.5" />
+      <rect className="fill-line" x="72" y="107" width="126" height="5" rx="2.5" />
+      <rect className="fill-ink-2" x="72" y="123" width="112" height="5" rx="2.5" />
+      <rect className="fill-line" x="72" y="139" width="128" height="5" rx="2.5" />
+      <rect className="fill-line" x="72" y="155" width="84" height="5" rx="2.5" />
       <text
-        className="fill-ink-2"
+        className="fill-line"
         x="240"
         y="34"
         fontFamily="JetBrains Mono, monospace"
@@ -70,11 +62,11 @@ export function AiTextDetectionApiIllustration({ className }: IllustrationProps)
         ai score
       </text>
       <rect className="fill-line" x="240" y="42" width="14" height="5" rx="2.5" />
-      <rect className="fill-accent" x="240" y="59" width="64" height="5" rx="2.5" />
-      <rect className="fill-accent" x="240" y="75" width="56" height="5" rx="2.5" />
+      <rect className="fill-accent-ink" x="240" y="59" width="64" height="5" rx="2.5" />
+      <rect className="fill-accent-ink" x="240" y="75" width="56" height="5" rx="2.5" />
       <rect className="fill-line" x="240" y="91" width="10" height="5" rx="2.5" />
       <rect className="fill-line" x="240" y="107" width="20" height="5" rx="2.5" />
-      <rect className="fill-accent" x="240" y="123" width="70" height="5" rx="2.5" />
+      <rect className="fill-accent-ink" x="240" y="123" width="70" height="5" rx="2.5" />
       <rect className="fill-line" x="240" y="139" width="12" height="5" rx="2.5" />
       <rect className="fill-line" x="240" y="155" width="8" height="5" rx="2.5" />
     </svg>

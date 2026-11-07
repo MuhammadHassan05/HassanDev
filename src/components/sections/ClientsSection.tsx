@@ -14,9 +14,9 @@ export function ClientsSection() {
       <SectionHeader {...clients.section} titleId={titleId} />
       <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-4 p-0">
         {clients.clients.map((client) => (
-          <Card key={client.name} as="li" radius="card-sm" className="flex flex-col gap-1 p-[22px]">
-            <span className="font-heading text-[21px] font-bold">{client.name}</span>
-            <span className="font-mono text-[13px] text-ink-2">{client.country}</span>
+          <Card key={client.name} as="li" className="flex flex-col gap-1 p-[22px]">
+            <span className="text-[21px] font-semibold">{client.name}</span>
+            <span className="text-[13px] text-ink-2">{client.country}</span>
           </Card>
         ))}
       </ul>

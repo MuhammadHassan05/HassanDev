@@ -27,7 +27,7 @@ export type TerminalLine =
   | { kind: "link"; id: TerminalLinkId };
 
 /** Side effects a command asks the component to perform. */
-export type TerminalEffect = "clear" | "confetti" | "chai";
+export type TerminalEffect = "clear" | "chai";
 
 /** What running one command produced. */
 export interface TerminalResult {
@@ -134,7 +134,7 @@ export function runCommand(raw: string, chaiCount: number): TerminalResult {
     case "hassan":
     case "muhammad":
     case "muhammad hassan":
-      return reply(responses.easterEgg, ["confetti"]);
+      return reply(responses.easterEgg);
   }
 
   if (command === "sudo" || command.startsWith("sudo ")) {

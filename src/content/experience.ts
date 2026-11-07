@@ -24,7 +24,7 @@ export interface ExperienceSection {
 /** Experience for each page. */
 export const experience: Record<TrackId, ExperienceSection> = {
   engineer: {
-    section: { index: "02", label: "experience", title: "Engineering experience" },
+    section: { title: "Engineering experience" },
     entries: [
       {
         dates: "Jun 2026 to now",
@@ -40,7 +40,7 @@ export const experience: Record<TrackId, ExperienceSection> = {
     ],
   },
   studio: {
-    section: { index: "06", label: "experience", title: "Freelance and studio experience" },
+    section: { title: "Freelance and studio experience" },
     entries: [
       {
         dates: "2025 to now",

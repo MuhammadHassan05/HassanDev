@@ -58,8 +58,6 @@ export interface EngineerProjectsIntro {
 /** Section header and filter copy for the engineer projects. */
 export const engineerProjectsIntro: EngineerProjectsIntro = {
   section: {
-    index: "01",
-    label: "projects",
     title: "Things I have engineered",
     description:
       "14 projects across AI, web platforms, mobile and research. Filter to focus on one area.",
@@ -92,15 +90,11 @@ export const engineerProjectsIntro: EngineerProjectsIntro = {
 /** Section headers for the two studio project grids. */
 export const studioProjectsIntro: Record<StudioSection, SectionIntro> = {
   ecommerce: {
-    index: "02",
-    label: "e-commerce",
     title: "Shopify and e-commerce builds",
     description:
       "Store builds, cart customization and back-office integrations across Shopify, Wix and BigCommerce.",
   },
   design: {
-    index: "05",
-    label: "design",
     title: "Brand and graphic design",
     description: "Identity, apparel and social work. Full case studies on Behance.",
   },

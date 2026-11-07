@@ -1,14 +1,12 @@
 /**
- * Section heading pattern from the design: a mono "01 / label" eyebrow above
- * the title, with an optional short description on the right.
+ * Section heading: a centred title with one short supporting line under it
+ * in the secondary text colour.
  */
 
 /** Props for {@link SectionHeader}. */
 export interface SectionHeaderProps {
-  /** Two-digit section number, e.g. "01". */
-  index: string;
-  label: string;
   title: string;
+  /** The one short supporting line under the title. */
   description?: string;
   /** Heading element; h2 on real pages. */
   as?: "h2" | "h3";
@@ -17,33 +15,23 @@ export interface SectionHeaderProps {
 }
 
 /**
- * Renders the eyebrow, title and optional description.
+ * Renders the title and its supporting line.
  *
- * @param props.index - Section number shown in the eyebrow.
- * @param props.label - Lowercase label shown after the slash.
+ * @param props.title - Section title.
+ * @param props.description - Supporting line, if the section has one.
  */
 export function SectionHeader({
-  index,
-  label,
   title,
   description,
   as: Heading = "h2",
   titleId,
 }: SectionHeaderProps) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4">
-      <div className="flex flex-col gap-3">
-        <span className="font-mono text-[13px] text-accent-ink">
-          {index} / {label}
-        </span>
-        <Heading
-          id={titleId}
-          className="m-0 font-heading text-[clamp(32px,4vw,48px)] leading-[1.1] font-bold tracking-[-0.02em]"
-        >
-          {title}
-        </Heading>
-      </div>
-      {description ? <p className="m-0 max-w-[440px] text-ink-2">{description}</p> : null}
+    <div className="flex flex-col items-center gap-4 text-center">
+      <Heading id={titleId} className="m-0 text-title text-balance">
+        {title}
+      </Heading>
+      {description ? <p className="m-0 text-lead text-balance text-ink-2">{description}</p> : null}
     </div>
   );
 }

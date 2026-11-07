@@ -25,30 +25,32 @@
   --color-accent-ink: var(--accent-ink);
   --color-on-accent: var(--on-accent);
 
-  /* Radii, smallest to largest */
-  --radius-inner: 14px;
-  --radius-inset: 16px;
-  --radius-card-sm: 18px;
-  --radius-card: 20px;
-  --radius-card-lg: 22px;
-  --radius-panel: 24px;
-  --radius-shell: 28px;
+  /* Corners: cards and media, and buttons (fully round). */
+  --radius-card: 18px;
+  --radius-button: 980px;
 
-  /* Below 660px the design's one-row nav would wrap, so it switches to its
-     two-row phone layout. 660px is the narrowest width where one row fits. */
-  --breakpoint-nav: 41.25rem;
+  /* Layout: content width, side padding (20px on phones) and section padding. */
+  --container-page: 1120px;
+  --spacing-gutter: clamp(20px, 4vw, 40px);
+  --spacing-section: clamp(80px, 12vw, 160px);
 
-  /* Layout widths and fluid spacing */
-  --container-page: 1200px;
-  --container-nav: 1240px;
-  --spacing-gutter: clamp(20px, 5vw, 40px);
-  --spacing-section: clamp(56px, 9vw, 88px);
+  /* Type scale. Usage: text-hero, text-title, text-lead, text-small. */
+  --text-hero: clamp(56px, 9vw, 112px);
+  --text-hero--line-height: 1;
+  --text-hero--letter-spacing: -0.035em;
+  --text-hero--font-weight: 600;
+  --text-title: clamp(36px, 5vw, 56px);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.025em;
+  --text-title--font-weight: 600;
+  --text-lead: 19px;
+  --text-lead--line-height: 1.5;
+  --text-small: 14px;
+  --text-small--line-height: 1.5;
 
-  /* Fonts, exposed as variables by src/styles/fonts.ts */
-  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
-  --font-heading: var(--font-archivo), system-ui, sans-serif;
-  --font-display: var(--font-bricolage), var(--font-archivo), system-ui, sans-serif;
-  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  /* One family: SF Pro on Apple devices, self-hosted Inter elsewhere. Mono is
+     only for the terminal and code. */
+  --font-sans: -apple-system, BlinkMacSystemFont, var(--font-inter), "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
@@ -70,6 +72,7 @@
   --olive: #4a5530;
   --olive-ink: #4a5530;
   --on-accent: #ffffff;
+  --card-border: var(--line);
 }
 
 /* Dark, when the system asks for it and the visitor has not chosen light. */
@@ -86,6 +89,7 @@
     --olive: #5a6638;
     --olive-ink: #a8b47e;
     --on-accent: #ffffff;
+    --card-border: transparent;
   }
 }
 
@@ -104,6 +108,7 @@
   --olive: #5a6638;
   --olive-ink: #a8b47e;
   --on-accent: #ffffff;
+  --card-border: transparent;
 }
 
 /* A chosen theme also fixes form controls and scrollbars to that scheme. */
@@ -157,19 +162,37 @@
   display: inline-flex;
 }
 
-/* A flat card surface: solid colour and a 1px hairline, no blur or glow. */
-@utility panel {
+/* Card: flat surface, 18px corners, a hairline in light mode only. */
+@utility card {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+}
+
+/* Page side padding that also clears the notch on landscape phones. */
+@utility px-page {
+  padding-left: max(var(--spacing-gutter), env(safe-area-inset-left));
+  padding-right: max(var(--spacing-gutter), env(safe-area-inset-right));
 }
 
 @layer base {
+  html {
+    /* In-page links land below the sticky nav. */
+    scroll-padding-top: 80px;
+  }
+
   body {
     background-color: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 17px;
-    line-height: 1.6;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Readable line length on wide screens. */
+  p {
+    max-width: 65ch;
   }
 
   a {
@@ -183,127 +206,20 @@
   }
 }
 
-/* ---- Motion features. Every effect is opt-in behind a media query or a class
-   added by JavaScript, so with reduced motion or no JavaScript the page is
-   complete and still. ---- */
-
-/* BounceText: letters lift on hover. Hover only exists for mouse and trackpad
-   users, so touch screens never get a letter stuck mid-bounce. */
-.bounce-letter {
-  display: inline-block;
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .bounce-letter {
-    transition: transform 0.32s cubic-bezier(0.34, 1.9, 0.5, 1);
+/* Section fade-up: a 16px rise and fade the first time a section enters the
+   viewport. Only hidden once Reveal.tsx has added .js-reveal (so the page is
+   complete without JavaScript), never with reduced motion, and never in print
+   (sections not yet scrolled to would print blank). */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal] {
+    transition:
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
   }
 
-  .bounce-letter:hover {
-    transform: translateY(-0.22em);
-  }
-}
-
-/* TiltCard: TiltCard.tsx sets the transform; without it the card is flat. */
-.tilt-card {
-  transition: transform 0.25s ease;
-}
-
-/* DrawOnScroll: .js-draw is only added once the observer is running, so
-   nothing is hidden unless it will also be revealed. Outlines draw over
-   1.5s; fills (every fill-* token class) and text fade in after 0.7s. */
-@media (prefers-reduced-motion: no-preference) {
-  .js-draw .draw-svg .draw-stroke {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.5s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  .js-draw .draw-svg.is-drawn .draw-stroke {
-    stroke-dashoffset: 0;
-  }
-
-  .js-draw .draw-svg :is([class*="fill-"], text) {
+  .js-reveal [data-reveal]:not(.is-revealed) {
     opacity: 0;
-    transition: opacity 0.7s ease 0.7s;
-  }
-
-  .js-draw .draw-svg.is-drawn :is([class*="fill-"], text) {
-    opacity: 1;
-  }
-
-  /* Full page loads (e.g. opening a link in the same tab): supporting
-     browsers cross-fade the old page into the new. */
-  @view-transition {
-    navigation: auto;
-  }
-}
-
-/* Confetti (terminal easter egg): three falling paths from the design. The
-   component is never rendered with reduced motion; the rule below is a
-   second guard. */
-@keyframes confetti-a {
-  to {
-    transform: translate3d(60px, 880px, 0) rotate(540deg);
-    opacity: 0;
-  }
-}
-
-@keyframes confetti-b {
-  to {
-    transform: translate3d(-70px, 880px, 0) rotate(-620deg);
-    opacity: 0;
-  }
-}
-
-@keyframes confetti-c {
-  to {
-    transform: translate3d(10px, 880px, 0) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-.confetti-piece {
-  position: absolute;
-  top: -24px;
-  border-radius: 2px;
-  animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
-  animation-fill-mode: forwards;
-}
-
-.confetti-a {
-  animation-name: confetti-a;
-}
-
-.confetti-b {
-  animation-name: confetti-b;
-}
-
-.confetti-c {
-  animation-name: confetti-c;
-}
-
-/* Chai counter: the steam above the cup drifts gently. */
-@keyframes chai-steam {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translateY(-2px);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .chai-steam {
-    animation: chai-steam 2.4s ease-in-out infinite;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .confetti-piece {
-    display: none;
+    transform: translateY(16px);
   }
 }
 

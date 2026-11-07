@@ -22,7 +22,7 @@ export interface ServicesSection {
 
 /** Services in design order. */
 export const services: ServicesSection = {
-  section: { index: "01", label: "services", title: "What I can do for you" },
+  section: { title: "What I can do for you" },
   services: [
     {
       icon: "shopping-bag",
