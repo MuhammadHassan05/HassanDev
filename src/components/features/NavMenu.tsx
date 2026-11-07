@@ -6,14 +6,25 @@
  * While open, Tab stays inside the button and the panel, the page behind does
  * not scroll, and Escape (or choosing a link) closes it and returns focus to
  * the button.
+ *
+ * Until JavaScript has run, the control is a plain link to the footer's link
+ * row instead, so the site's pages are reachable on phones without it.
  */
 "use client";
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent,
+} from "react";
 import { AppLink } from "@/components/ui/AppLink";
 import { Button } from "@/components/ui/Button";
 import { CloseIcon, MenuIcon } from "@/components/ui/icons";
 import { cx } from "@/lib/cx";
+import { SITE_LINKS_ID } from "@/lib/dom-ids";
 
 /** One page link in the menu. */
 export interface NavMenuLink {
@@ -33,6 +44,14 @@ export interface NavMenuProps {
 /** Matches the md breakpoint, where the links move into the bar. */
 const DESKTOP_QUERY = "(min-width: 48rem)";
 
+// False in the server HTML and during hydration, true once React runs in the browser.
+const noSubscription = () => () => undefined;
+const inBrowser = () => true;
+const onServer = () => false;
+
+const CONTROL_CLASSES =
+  "inline-flex size-11 cursor-pointer items-center justify-center rounded-button text-ink hover:bg-surface-2";
+
 /**
  * Renders the menu button and, when open, the panel.
  *
@@ -40,6 +59,7 @@ const DESKTOP_QUERY = "(min-width: 48rem)";
  * @param props.contact - The Contact button's target and label.
  */
 export function NavMenu({ links, contact, label }: NavMenuProps) {
+  const hydrated = useSyncExternalStore(noSubscription, inBrowser, onServer);
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const container = useRef<HTMLDivElement>(null);
@@ -92,17 +112,23 @@ export function NavMenu({ links, contact, label }: NavMenuProps) {
 
   return (
     <div ref={container} onKeyDown={handleKeyDown} className="md:hidden">
-      <button
-        ref={button}
-        type="button"
-        aria-label={label}
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen((value) => !value)}
-        className="inline-flex size-11 cursor-pointer items-center justify-center rounded-button text-ink hover:bg-surface-2"
-      >
-        {open ? <CloseIcon /> : <MenuIcon />}
-      </button>
+      {hydrated ? (
+        <button
+          ref={button}
+          type="button"
+          aria-label={label}
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((value) => !value)}
+          className={CONTROL_CLASSES}
+        >
+          {open ? <CloseIcon /> : <MenuIcon />}
+        </button>
+      ) : (
+        <a href={`#${SITE_LINKS_ID}`} aria-label={label} className={CONTROL_CLASSES}>
+          <MenuIcon />
+        </a>
+      )}
       {open ? (
         <div
           id={panelId}

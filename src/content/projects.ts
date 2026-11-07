@@ -43,6 +43,8 @@ export type Project = EngineerProject | StudioProject;
 export interface ProjectCategoryInfo {
   id: ProjectCategory;
   tabLabel: string;
+  /** Shown instead of tabLabel below 480px; tabLabel must start with it. */
+  tabShortLabel: string;
   title: string;
   description: string;
 }
@@ -52,6 +54,7 @@ export interface EngineerProjectsIntro {
   section: SectionIntro;
   filterLabel: string;
   allTabLabel: string;
+  allTabShortLabel: string;
   categories: readonly ProjectCategoryInfo[];
 }
 
@@ -64,16 +67,20 @@ export const engineerProjectsIntro: EngineerProjectsIntro = {
   },
   filterLabel: "Filter projects by type",
   allTabLabel: "All",
+  // Short labels given by Hassan, so the filter fits one row on a 360px phone.
+  allTabShortLabel: "All",
   categories: [
     {
       id: "ai",
       tabLabel: "AI & Automation",
+      tabShortLabel: "AI",
       title: "AI & Automation",
       description: "LLM products, voice agents, machine learning models and automation pipelines.",
     },
     {
       id: "web",
       tabLabel: "Web & SaaS",
+      tabShortLabel: "Web",
       title: "Web Platforms & SaaS",
       description:
         "Full-stack platforms, client portals and CRMs built with React, Next.js and Node.js.",
@@ -81,6 +88,7 @@ export const engineerProjectsIntro: EngineerProjectsIntro = {
     {
       id: "mobile",
       tabLabel: "Mobile & Research",
+      tabShortLabel: "Mobile",
       title: "Mobile & Research",
       description: "Cross-platform mobile apps and deep learning research.",
     },

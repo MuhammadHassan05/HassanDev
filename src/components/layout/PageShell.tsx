@@ -24,18 +24,16 @@ export interface PageShellProps {
  * @param props.children - The page's sections.
  */
 export function PageShell({ track, isTrackPage = true, children }: PageShellProps) {
+  // Track pages end with a #contact section; other pages send Contact home.
+  const contactHref = isTrackPage ? "#contact" : "/#contact";
   return (
     <div data-track={track} className="text-ink">
-      {/* Track pages end with a #contact section; other pages send Contact home. */}
-      <Nav
-        current={isTrackPage ? track : null}
-        contactHref={isTrackPage ? "#contact" : "/#contact"}
-      />
+      <Nav current={isTrackPage ? track : null} contactHref={contactHref} />
       {/* tabIndex lets the skip link move focus here; no ring because main is not a control. */}
       <main id={MAIN_CONTENT_ID} tabIndex={-1} className="focus:outline-none">
         {children}
       </main>
-      <Footer />
+      <Footer contactHref={contactHref} />
     </div>
   );
 }

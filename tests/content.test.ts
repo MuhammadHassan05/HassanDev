@@ -157,3 +157,15 @@ describe("counts stated in the design copy", () => {
     expect([count("ai"), count("web"), count("mobile")]).toEqual([6, 6, 2]);
   });
 });
+
+describe("project filter labels", () => {
+  const { allTabLabel, allTabShortLabel, categories } = projectsModule.engineerProjectsIntro;
+
+  // The full label is the accessible name, so the short visible label must be its start.
+  it.each([
+    [allTabLabel, allTabShortLabel] as const,
+    ...categories.map((c) => [c.tabLabel, c.tabShortLabel] as const),
+  ])("%s starts with its short label %s", (full, short) => {
+    expect(full.startsWith(short)).toBe(true);
+  });
+});

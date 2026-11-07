@@ -1,6 +1,7 @@
 /**
  * Filter for the engineer project groups, styled as a segmented control: one
- * rounded track with the active option raised onto the card surface. The
+ * rounded track with the active option raised onto the card surface. Below
+ * 480px the options use short labels, so the track fits one row at 360px. The
  * groups are rendered on the server and passed in; this component only
  * decides which are visible, so every project is in the HTML and still shows
  * if JavaScript never runs.
@@ -13,7 +14,10 @@ import { cx } from "@/lib/cx";
 /** One filter option. */
 export interface FilterTab {
   id: string;
+  /** Full label, shown from 480px and always the accessible name. */
   label: string;
+  /** Shown below 480px; label starts with it, so what is seen is part of the name. */
+  shortLabel: string;
 }
 
 /** A group of cards the filter can show or hide. */
@@ -43,32 +47,30 @@ export function ProjectFilter({ label, allId, tabs, groups }: ProjectFilterProps
 
   return (
     <>
-      {/* Scrolls sideways on narrow phones rather than wrapping into a broken track.
-          The padding leaves room for the focus ring inside the scroll area. */}
-      <div className="-mx-1 overflow-x-auto p-1">
-        <div
-          role="group"
-          aria-label={label}
-          className="mx-auto flex w-max gap-1 rounded-button bg-surface-2 p-1"
-        >
-          {tabs.map((tab) => {
-            const pressed = tab.id === active;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                aria-pressed={pressed}
-                onClick={() => setActive(tab.id)}
-                className={cx(
-                  "inline-flex min-h-11 shrink-0 cursor-pointer items-center rounded-button px-4 text-[15px] whitespace-nowrap transition-colors duration-200",
-                  pressed ? "bg-surface font-medium text-ink" : "text-ink-2 hover:text-ink",
-                )}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+      <div
+        role="group"
+        aria-label={label}
+        className="mx-auto flex w-max gap-0.5 rounded-button bg-surface-2 p-1 md:gap-1"
+      >
+        {tabs.map((tab) => {
+          const pressed = tab.id === active;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              aria-pressed={pressed}
+              aria-label={tab.label}
+              onClick={() => setActive(tab.id)}
+              className={cx(
+                "inline-flex min-h-11 shrink-0 cursor-pointer items-center rounded-button px-3 text-[14px] whitespace-nowrap transition-colors duration-200 md:px-4 md:text-[15px]",
+                pressed ? "bg-surface font-medium text-ink" : "text-ink-2 hover:text-ink",
+              )}
+            >
+              <span className="min-[30rem]:hidden">{tab.shortLabel}</span>
+              <span className="hidden min-[30rem]:inline">{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
       <div className="flex flex-col gap-20">
         {groups.map((group) => (

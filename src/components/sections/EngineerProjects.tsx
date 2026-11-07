@@ -13,12 +13,16 @@ const ALL_ID = "all";
 
 /** Renders the filterable project groups. */
 export function EngineerProjects() {
-  const { section, filterLabel, allTabLabel, categories } = engineerProjectsIntro;
+  const { section, filterLabel, allTabLabel, allTabShortLabel, categories } = engineerProjectsIntro;
   const titleId = `${SECTION_ID}-title`;
 
   const tabs: FilterTab[] = [
-    { id: ALL_ID, label: allTabLabel },
-    ...categories.map((category) => ({ id: category.id, label: category.tabLabel })),
+    { id: ALL_ID, label: allTabLabel, shortLabel: allTabShortLabel },
+    ...categories.map((category) => ({
+      id: category.id,
+      label: category.tabLabel,
+      shortLabel: category.tabShortLabel,
+    })),
   ];
 
   const groups = categories.map((category) => {
