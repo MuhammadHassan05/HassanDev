@@ -74,14 +74,13 @@ function CaseSection({ id, label, children }: { id: string; label: string; child
   );
 }
 
-/** The Role · Year · Stack · Link row under the summary. */
+/** The Role · Year · Stack · Link row under the summary; missing items are left out. */
 function MetaRow({ study }: { study: CaseStudy }) {
   const { meta } = caseStudyLabels;
-  const items: { label: string; value: ReactNode }[] = [
-    { label: meta.role, value: study.role },
-    { label: meta.year, value: study.year },
-    { label: meta.stack, value: study.stack.join(" · ") },
-  ];
+  const items: { label: string; value: ReactNode }[] = [];
+  if (study.role) items.push({ label: meta.role, value: study.role });
+  if (study.year) items.push({ label: meta.year, value: study.year });
+  items.push({ label: meta.stack, value: study.stack.join(" · ") });
   if (study.link) {
     items.push({
       label: meta.link,
@@ -164,16 +163,19 @@ export default async function CaseStudyPage({ params }: CaseStudyParams) {
           )}
         </CaseSection>
 
-        <CaseSection id="decisions" label={sections.decisions}>
-          <ol className="m-0 flex list-none flex-col gap-8 p-0">
-            {study.decisions.map((item) => (
-              <li key={item.decision} className="flex flex-col gap-2">
-                <p className="m-0 font-semibold">{item.decision}</p>
-                <p className="m-0 text-ink-2">{item.reason}</p>
-              </li>
-            ))}
-          </ol>
-        </CaseSection>
+        {/* Optional: only shown when there are facts behind it. */}
+        {study.decisions && study.decisions.length > 0 ? (
+          <CaseSection id="decisions" label={sections.decisions}>
+            <ol className="m-0 flex list-none flex-col gap-8 p-0">
+              {study.decisions.map((item) => (
+                <li key={item.decision} className="flex flex-col gap-2">
+                  <p className="m-0 font-semibold">{item.decision}</p>
+                  <p className="m-0 text-ink-2">{item.reason}</p>
+                </li>
+              ))}
+            </ol>
+          </CaseSection>
+        ) : null}
 
         <CaseSection id="result" label={sections.result}>
           {/* With no metrics, the result is the paragraph alone. */}
@@ -192,13 +194,15 @@ export default async function CaseStudyPage({ params }: CaseStudyParams) {
           <p className="m-0">{study.result.summary}</p>
         </CaseSection>
 
-        <CaseSection id="next" label={sections.next}>
-          {study.next.map((paragraph) => (
-            <p key={paragraph} className="m-0">
-              {paragraph}
-            </p>
-          ))}
-        </CaseSection>
+        {study.next && study.next.length > 0 ? (
+          <CaseSection id="next" label={sections.next}>
+            {study.next.map((paragraph) => (
+              <p key={paragraph} className="m-0">
+                {paragraph}
+              </p>
+            ))}
+          </CaseSection>
+        ) : null}
 
         <nav
           aria-label={caseStudyLabels.listTitle}

@@ -16,7 +16,8 @@ export const stats: Record<TrackId, readonly Stat[]> = {
     { value: "2+", label: "years shipping production SaaS and web platforms" },
     { value: "37+", label: "operators on the live SaaS I test and build for" },
     { value: "100+", label: "resumes screened by TalentMiner" },
-    { value: "2,770+", label: "organic impressions for flatterlab in 3 months" },
+    // Google Search Console, July to November 2026.
+    { value: "40K+", label: "Google search impressions for flatterlab" },
   ],
   studio: [
     { value: "15+", label: "production websites for international clients" },

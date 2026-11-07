@@ -177,3 +177,24 @@ describe("project filter labels", () => {
     expect(full.startsWith(short)).toBe(true);
   });
 });
+
+describe("flatterlab.tech search metric", () => {
+  // Source: Google Search Console, July to November 2026. Only impressions are quoted.
+  const flatterlabCard = projects.find((p) => p.illustration === "flatterlab-tech");
+  const flatterlabStudy = caseStudiesModule.caseStudies.find((s) => s.slug === "flatterlab");
+  const stat = stats.stats.engineer.find((s) => s.label.includes("flatterlab"));
+
+  it("is 40K+ Google search impressions in the stats, on the card and in the case study", () => {
+    expect(stat).toEqual({ value: "40K+", label: "Google search impressions for flatterlab" });
+    expect(flatterlabCard?.description).toContain("40K+ Google search impressions in 4 months");
+    expect(flatterlabStudy?.result.metrics).toEqual([
+      { value: "40K+", label: "Google search impressions in 4 months" },
+    ]);
+  });
+
+  it("never quotes the old figure, clicks, CTR or average position anywhere in content", () => {
+    const text = JSON.stringify(CONTENT_MODULES);
+    expect(text).not.toMatch(/2,770|2770|organic impressions/);
+    expect(text).not.toMatch(/\bclicks?\b|\bCTR\b|average position/i);
+  });
+});

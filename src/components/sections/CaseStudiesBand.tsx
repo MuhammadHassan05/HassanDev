@@ -14,6 +14,7 @@ import { cartComparison } from "@/content/cartComparison";
 import { caseStudies, caseStudiesIntro, featuredCaseStudies } from "@/content/caseStudies";
 import type { TrackId } from "@/content/tracks";
 import { featuredCaseStudies as pickFeatured } from "@/lib/caseStudies";
+import { cx } from "@/lib/cx";
 
 /** Anchor of the band; the engineer hero's first button points here. */
 export const CASE_STUDIES_BAND_ID = "case-studies";
@@ -55,7 +56,13 @@ export function CaseStudiesBand({ track }: CaseStudiesBandProps) {
   return (
     <Section id={CASE_STUDIES_BAND_ID} labelledBy={titleId} band>
       <SectionHeader {...caseStudiesIntro} titleId={titleId} />
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Two cards stay two columns, so no empty third column is left. */}
+      <div
+        className={cx(
+          "grid grid-cols-1 gap-6 md:grid-cols-2",
+          studies.length > 2 && "lg:grid-cols-3",
+        )}
+      >
         {studies.map((study) => (
           <CaseStudyCard key={study.slug} study={study} />
         ))}

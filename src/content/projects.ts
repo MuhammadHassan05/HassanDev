@@ -188,7 +188,7 @@ export const engineerProjects: readonly EngineerProject[] = [
     title: "flatterlab.tech",
     tags: ["Co-founder", "Next.js", "Framer Motion", "Vercel"],
     description:
-      "A free platform that helps students build resumes and discover extracurriculars. 2,770+ organic impressions in its first 3 months.",
+      "A free platform that helps students build resumes and discover extracurriculars. 40K+ Google search impressions in 4 months.",
     footer: { kind: "link", label: "Visit site", href: "https://flatterlab.tech", newTab: true },
     illustration: "flatterlab-tech",
   },

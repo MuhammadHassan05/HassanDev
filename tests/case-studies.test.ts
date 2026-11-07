@@ -87,12 +87,15 @@ describe("case study content", () => {
       } else {
         expect(study.work.items.length).toBeGreaterThan(0);
       }
-      expect(study.decisions.length).toBeGreaterThanOrEqual(2);
-      expect(study.decisions.length).toBeLessThanOrEqual(3);
-      // None (the paragraph alone), or 2 to 4 numbers.
-      const metrics = study.result.metrics.length;
-      expect(metrics === 0 || (metrics >= 2 && metrics <= 4), `${metrics} metrics`).toBe(true);
-      expect(study.next.length).toBeGreaterThan(0);
+      // Optional sections: left out entirely, never present but empty.
+      if (study.decisions) {
+        expect(study.decisions.length).toBeGreaterThanOrEqual(2);
+        expect(study.decisions.length).toBeLessThanOrEqual(3);
+      }
+      if (study.next) expect(study.next.length).toBeGreaterThan(0);
+      // Real numbers only, up to 4; with none, the result is the paragraph alone.
+      expect(study.result.metrics.length).toBeLessThanOrEqual(4);
+      expect(study.result.summary.length).toBeGreaterThan(0);
       if (study.link) expect(linkKind(study.link.href)).toBe("external");
     },
   );
@@ -103,6 +106,15 @@ describe("case study content", () => {
       if (JSON.stringify(study).includes("[TODO")) expect(study.draft).toBe(true);
     },
   );
+
+  it("publishes TalentMiner, flatterlab.tech and Tiny Owlets, and holds back Yetti.ai", () => {
+    expect(publishedCaseStudies(caseStudies).map((s) => s.slug)).toEqual([
+      "tiny-owlets",
+      "talentminer",
+      "flatterlab",
+    ]);
+    expect(findCaseStudy(caseStudies, "yetti-ai")?.draft).toBe(true);
+  });
 
   it("features only case studies that exist, on the right track", () => {
     for (const [track, featured] of Object.entries(featuredCaseStudies)) {
