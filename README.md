@@ -81,7 +81,7 @@ PDFs live in `public/docs/`. Link to them with `withBasePath()` from `src/lib/si
 
 The site builds to static files in `out/`, which GitHub Pages serves as they are. There is no server or backend.
 
-**Every push to `main` deploys.** `.github/workflows/deploy.yml` builds on Ubuntu, adds the CSP, runs `npm run test:export`, then publishes `out/` with GitHub's official Pages actions. If any check fails, nothing is published. Deploys share one queue and are never cancelled midway, so a deploy that has started always finishes.
+**Every push to `main` deploys.** `.github/workflows/deploy.yml` runs `npm run check`, builds on Ubuntu, adds the CSP, runs `npm run test:export`, then publishes `out/` with GitHub's official Pages actions. If any check fails, nothing is published. Deploys share one queue and are never cancelled midway, so a deploy that has started always finishes.
 
 Separately, CI (`.github/workflows/ci.yml`) runs every check on each push to `main` and on every pull request.
 
