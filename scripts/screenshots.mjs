@@ -37,8 +37,11 @@ const DEVICE_SCALE = 2;
  * object-fit cover, so anything further down would never be seen.
  */
 const MAX_HEIGHT = VIEWPORT.height;
-/** Saved width: twice the widest card at 2x density, with room to spare. */
-const OUTPUT_WIDTH = 960;
+/**
+ * Saved width: case study covers are up to 1120px wide, so this keeps them
+ * sharp; cards show the same file at a smaller size.
+ */
+const OUTPUT_WIDTH = 1440;
 const SETTLE_MS = 1500;
 const NAVIGATION_TIMEOUT_MS = 45_000;
 const IDLE_TIMEOUT_MS = 20_000;

@@ -4,11 +4,12 @@
  * skips folders that start with an underscore), the 404 page it serves for
  * missing paths, Google Search Console's ownership file, and the case study
  * pages: one per published case study, none for drafts, and no draft text
- * anywhere, and every image: served under the base path, sized and lazy.
+ * anywhere, and every image: served under the base path, sized, and lazy
+ * unless it is on the first screen.
  * Run with `npm run test:export` after `npm run build`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { basename, join, relative } from "node:path";
+import { basename, join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "@/content/caseStudies";
 import { projectImages } from "@/content/projectImages";
@@ -116,9 +117,13 @@ describe("images", () => {
   const attr = (tag: string, name: string) => new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1];
   const images = pages.flatMap((page) =>
     [...readFileSync(page, "utf8").matchAll(/<img\b[^>]*>/g)].map(
-      ([tag]) => [relative(OUT, page), attr(tag, "src") ?? "(no src)", tag] as const,
+      ([tag], index) => [relative(OUT, page), attr(tag, "src") ?? "(no src)", tag, index] as const,
     ),
   );
+  // Only an image on the first screen loads eagerly: a case study's cover, or
+  // the first card on the case study list. Both are the first image on their page.
+  const firstScreen = (page: string, index: number) =>
+    index === 0 && page.split(sep)[0] === "case-studies";
 
   it("shows every approved project image", () => {
     const sources = images.map(([, src]) => src);
@@ -129,12 +134,23 @@ describe("images", () => {
 
   // next/image does not add the base path to unoptimized images; without it
   // GitHub Pages answers every image with a 404.
-  it.each(images)("%s: %s is served, sized and described", (_page, src, tag) => {
+  it.each(images)("%s: %s is served, sized and described", (page, src, tag, index) => {
     expect(src.startsWith(`${BASE_PATH}/`), `src without the base path: ${src}`).toBe(true);
     expect(existsSync(join(OUT, src.slice(BASE_PATH.length))), `missing ${src}`).toBe(true);
     expect(attr(tag, "alt")).toBeTruthy();
     expect(Number(attr(tag, "width"))).toBeGreaterThan(0);
     expect(Number(attr(tag, "height"))).toBeGreaterThan(0);
-    expect(attr(tag, "loading")).toBe("lazy");
+    expect(attr(tag, "loading")).toBe(firstScreen(page, index) ? "eager" : "lazy");
+  });
+
+  const imageCovers = published.flatMap(({ slug, cover }) =>
+    cover.kind === "illustration" && projectImages[cover.illustration]
+      ? [[slug, cover.illustration] as const]
+      : [],
+  );
+
+  it.each(imageCovers)("uses the approved screenshot as the cover of %s", (slug, key) => {
+    const first = images.find(([page]) => page === join("case-studies", slug, "index.html"));
+    expect(first?.[1]).toBe(withBasePath(`/projects/${key}.webp`));
   });
 });

@@ -8,7 +8,7 @@ Permanent rules for this repository (Muhammad Hassan's portfolio, repo `HassanDe
 - Hosted free on GitHub Pages as a project site: **<https://muhammadhassan05.github.io/HassanDev>**.
 - `basePath` and `assetPrefix` are `/HassanDev`, `trailingSlash: true`, `images: { unoptimized: true }`.
 - The base path and site URL are defined once in `src/lib/site.ts`. Never hard-code `/HassanDev` anywhere else.
-- `next/link` and `next/image` add the base path automatically. Plain `<a href>` to files in `public/` (for example the PDFs) must go through `withBasePath()` from `src/lib/site.ts`.
+- `next/link` adds the base path automatically. `next/image` does not, because images are unoptimized, so image `src` paths must go through `withBasePath()` from `src/lib/site.ts`, as must plain `<a href>` to files in `public/` (for example the PDFs).
 
 ## Content reference: `design-kit/`
 

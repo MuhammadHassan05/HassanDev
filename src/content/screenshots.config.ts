@@ -30,7 +30,9 @@ export const screenshotTargets: readonly ScreenshotTarget[] = [
     expectedKeyword: "FlatterLab",
     hideSelectors: ["button[aria-label='Send feedback']"],
   },
-  { project: "pikzels", url: "https://pikzels.com", expectedKeyword: "Pikzels" },
+  // The title no longer names the brand ("AI Thumbnail Maker: Get Clicked on
+  // YouTube"), so it is matched on the product instead, checked November 2026.
+  { project: "pikzels", url: "https://pikzels.com", expectedKeyword: "Thumbnail" },
   { project: "yetti-ai", url: "https://yetti.ai", expectedKeyword: "Yetti" },
   {
     project: "vtest",

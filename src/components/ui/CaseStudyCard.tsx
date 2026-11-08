@@ -1,16 +1,18 @@
 /**
- * A case study as a large card: the project's illustration on a --surface-2
- * panel, then the client, title, one-line summary and "Read case study ›".
+ * A case study as a large card: the project's approved screenshot, or its
+ * illustration on a --surface-2 panel, then the client, title, one-line summary and "Read case study ›".
  * The title link covers the whole card, so the card is one tap target and
  * one stop in the tab order. Each card uses its own case study's track
  * colours, so a studio case study stays olive wherever it is shown.
  */
 import { illustrations } from "@/components/illustrations";
 import { caseStudyLabels, type CaseStudy } from "@/content/caseStudies";
+import { projectImages } from "@/content/projectImages";
 import { caseStudyHref } from "@/lib/caseStudies";
 import { cx } from "@/lib/cx";
 import { AppLink } from "./AppLink";
 import { ChevronRightIcon } from "./icons";
+import { ProjectScreenshot } from "./ProjectScreenshot";
 
 /** Props for {@link CaseStudyCard}. */
 export interface CaseStudyCardProps {
@@ -21,6 +23,8 @@ export interface CaseStudyCardProps {
   titleId?: string;
   /** "wide" puts the illustration beside the text from 768px (one featured card). */
   layout?: "stacked" | "wide";
+  /** "eager" only for a card visible when the page first loads. */
+  imageLoading?: "lazy" | "eager";
 }
 
 /**
@@ -28,14 +32,17 @@ export interface CaseStudyCardProps {
  *
  * @param props.study - The case study.
  * @param props.layout - stacked (default) or wide.
+ * @param props.imageLoading - How the screenshot loads, lazy by default.
  */
 export function CaseStudyCard({
   study,
   headingLevel: Heading = "h3",
   titleId,
   layout = "stacked",
+  imageLoading = "lazy",
 }: CaseStudyCardProps) {
   const Illustration = illustrations[study.project];
+  const image = projectImages[study.project];
   const wide = layout === "wide";
 
   return (
@@ -46,14 +53,32 @@ export function CaseStudyCard({
         wide && "md:grid md:grid-cols-2",
       )}
     >
-      <div
-        className={cx(
-          "flex items-center justify-center bg-surface-2 p-6",
-          wide ? "h-[240px] md:h-full md:min-h-[320px]" : "h-[240px]",
-        )}
-      >
-        <Illustration />
-      </div>
+      {image ? (
+        // The screenshot sits absolutely in its box, so in the wide layout the
+        // text column sets the height instead of the image's own size.
+        <div
+          className={cx(
+            "relative h-[240px] border-b border-line",
+            wide && "md:h-auto md:min-h-[320px] md:border-r md:border-b-0",
+          )}
+        >
+          <ProjectScreenshot
+            project={study.project}
+            image={image}
+            loading={imageLoading}
+            className="absolute inset-0 h-full"
+          />
+        </div>
+      ) : (
+        <div
+          className={cx(
+            "flex items-center justify-center bg-surface-2 p-6",
+            wide ? "h-[240px] md:h-full md:min-h-[320px]" : "h-[240px]",
+          )}
+        >
+          <Illustration />
+        </div>
+      )}
       <div className={cx("flex grow flex-col gap-3 p-6", wide && "md:justify-center md:p-10")}>
         <p className="m-0 text-small text-ink-2">{study.client}</p>
         <Heading

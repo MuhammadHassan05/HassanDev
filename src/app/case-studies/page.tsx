@@ -35,8 +35,14 @@ export default function CaseStudiesPage() {
           {caseStudyLabels.listTitle}
         </h1>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {published.map((study) => (
-            <CaseStudyCard key={study.slug} study={study} headingLevel="h2" />
+          {published.map((study, index) => (
+            <CaseStudyCard
+              key={study.slug}
+              study={study}
+              headingLevel="h2"
+              // The first card sits right under the title, on the first screen.
+              imageLoading={index === 0 ? "eager" : "lazy"}
+            />
           ))}
         </div>
       </section>

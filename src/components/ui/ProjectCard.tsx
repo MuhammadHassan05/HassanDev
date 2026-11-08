@@ -5,15 +5,14 @@
  * is nothing to open). Projects with a case study also
  * get a "Read case study ›" link, once that case study is published.
  */
-import Image from "next/image";
 import { illustrations } from "@/components/illustrations";
 import { caseStudies, caseStudyLabels } from "@/content/caseStudies";
 import { projectImages } from "@/content/projectImages";
 import type { Project } from "@/content/projects";
 import { caseStudyForProject, caseStudyHref, publishedCaseStudies } from "@/lib/caseStudies";
-import { withBasePath } from "@/lib/site";
 import { Button } from "./Button";
 import { Card } from "./Card";
+import { ProjectScreenshot } from "./ProjectScreenshot";
 
 /** Props for {@link ProjectCard}. */
 export interface ProjectCardProps {
@@ -39,13 +38,10 @@ export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCa
     <Card as="article" className="flex flex-col overflow-hidden">
       {image ? (
         // Project grids are always below the fold, so every image loads lazily.
-        <Image
-          src={withBasePath(`/projects/${project.illustration}.webp`)}
-          alt={image.alt}
-          width={image.width}
-          height={image.height}
-          loading="lazy"
-          className="block h-[200px] w-full rounded-t-card border-b border-line object-cover object-top"
+        <ProjectScreenshot
+          project={project.illustration}
+          image={image}
+          className="h-[200px] rounded-t-card border-b border-line"
         />
       ) : (
         <div className="flex h-[200px] items-center justify-center border-b border-line">
