@@ -1,9 +1,11 @@
 /**
  * Tests for the case studies: the lookups in src/lib/caseStudies.ts, and the
- * content in src/content/caseStudies.ts against the shape the pages rely on.
+ * content in src/content/caseStudies.ts against the shape the pages rely on,
+ * and the Yetti.ai security wording, which must stay high level everywhere.
  */
 import { describe, expect, it } from "vitest";
 import { caseStudies, featuredCaseStudies, type CaseStudy } from "@/content/caseStudies";
+import { experience } from "@/content/experience";
 import { illustrationKeys } from "@/content/illustrations";
 import { projects } from "@/content/projects";
 import {
@@ -107,13 +109,28 @@ describe("case study content", () => {
     },
   );
 
-  it("publishes TalentMiner, flatterlab.tech and Tiny Owlets, and holds back Yetti.ai", () => {
+  it("publishes all four case studies", () => {
     expect(publishedCaseStudies(caseStudies).map((s) => s.slug)).toEqual([
+      "yetti-ai",
       "tiny-owlets",
       "talentminer",
       "flatterlab",
     ]);
-    expect(findCaseStudy(caseStudies, "yetti-ai")?.draft).toBe(true);
+  });
+
+  it.each([
+    ["the case study", findCaseStudy(caseStudies, "yetti-ai")],
+    [
+      "the Experience entry",
+      experience.engineer.entries.find((entry) => entry.organization === "Yetti.ai"),
+    ],
+  ])("describes the Yetti.ai security fix at a high level only in %s", (_where, content) => {
+    expect(content).toBeDefined();
+    const text = JSON.stringify(content);
+    expect(text).toContain(
+      "Identified and resolved a critical security vulnerability in the shared production repository.",
+    );
+    expect(text).not.toMatch(/postcss|malicious|config|exploit|payload/i);
   });
 
   it("features only case studies that exist, on the right track", () => {

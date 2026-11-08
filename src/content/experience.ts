@@ -32,7 +32,8 @@ export const experience: Record<TrackId, ExperienceSection> = {
         organization: "Yetti.ai",
         bullets: [
           "Ran full QA audits across 5 core modules (Captain, Dashboard, CRM, Booking, Widgets) and documented 30+ structured bugs on a live Next.js/Supabase SaaS serving 37+ operators.",
-          "Found and resolved a critical security vulnerability: a malicious PostCSS config pushed to the shared production repo.",
+          // High level only: no file names, contents or exploit details.
+          "Identified and resolved a critical security vulnerability in the shared production repository.",
           "Built AI-driven features with Vapi.ai voice agents and OTA integrations (GetYourGuide, Viator, Bokun).",
           "Led the full UI redesign of the Captain module using Claude Code, shipped to production.",
         ],

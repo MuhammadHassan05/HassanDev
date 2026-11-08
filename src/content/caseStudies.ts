@@ -98,8 +98,7 @@ export const caseStudiesIntro: SectionIntro = {
 export const caseStudies: readonly CaseStudy[] = [
   {
     slug: "yetti-ai",
-    // Held back until Hassan's manager has approved publishing it.
-    draft: true,
+    draft: false,
     title: "Yetti.ai: hardening and improving a live booking SaaS",
     summary: "QA, security and UI work on a live multi-tenant booking SaaS serving 37+ operators.",
     client: "Yetti.ai",
@@ -117,7 +116,8 @@ export const caseStudies: readonly CaseStudy[] = [
       kind: "bullets",
       items: [
         "Ran full QA audits across the five core modules and documented 30+ structured bug reports.",
-        "Identified and resolved a critical security vulnerability: a malicious build configuration file (a PostCSS config) pushed to the shared production repository.",
+        // High level only: no file names, contents or exploit details.
+        "Identified and resolved a critical security vulnerability in the shared production repository.",
         "Contributed to AI features built on Vapi.ai voice agents, and to OTA integrations with GetYourGuide, Viator and Bokun.",
         "Led the full UI redesign of the Captain module using Claude Code, and shipped it to production.",
       ],
