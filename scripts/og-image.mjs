@@ -1,6 +1,7 @@
 /**
  * Generates the share image and the icons from the built site, so they use
- * the site's own self-hosted fonts and colors:
+ * the site's own self-hosted Inter and its colour tokens (flat, light mode,
+ * burgundy accent):
  *   public/og.png          1200x630 Open Graph / Twitter image
  *   src/app/icon.png       512x512 favicon (Next.js adds the <link> tags)
  *   src/app/apple-icon.png 180x180 apple-touch-icon
@@ -21,9 +22,6 @@ const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const OUT_DIR = join(ROOT, "out");
 const BASE_PATH = readBasePath();
 const PORT = 4179;
-
-/** Design tokens used in the images (from src/styles/globals.css). */
-const COLORS = { bg: "#070a10", ink: "#f1f5f9", accent: "#4ade80", glow: "#38bdf8" };
 
 const TYPES = {
   ".html": "text/html",
@@ -58,64 +56,64 @@ const esc = (text) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
   );
 
-/** A blurred glow orb, as in the site background. */
-const orb = (color, css) =>
-  `<div style="position:absolute;${css};width:620px;height:620px;border-radius:999px;background:${color};filter:blur(130px);opacity:.45"></div>`;
-
 /**
- * Reads the text for the images from the built page, which was rendered from
- * src/content, so no copy is duplicated here.
+ * Reads the text and colours for the images from the built page, which was
+ * rendered from src/content and src/styles/globals.css, so nothing is
+ * duplicated here. Colours are the light-mode tokens.
  *
  * @param page - Playwright page showing the built engineer page.
  */
-async function readCopy(page) {
-  const copy = await page.evaluate(() => {
+async function readPage(page) {
+  const found = await page.evaluate(() => {
     const nameParts = [...document.querySelectorAll("h1 > span")].map((s) => s.textContent?.trim());
+    const token = (name) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     return {
-      firstName: nameParts[0],
-      lastName: nameParts[1],
+      name: nameParts.join(" "),
+      initial: nameParts[0]?.charAt(0),
       // The job title from the page's structured data (src/lib/seo.ts).
       role: JSON.parse(
         document.querySelector('script[type="application/ld+json"]')?.textContent ?? "{}",
       ).jobTitle,
-      initial: nameParts[0]?.charAt(0),
+      // The hero's first line under the name.
+      lead: document.querySelector("main h1 + div p")?.textContent?.trim(),
+      bg: token("--bg"),
+      text: token("--text"),
+      text2: token("--text-2"),
+      line: token("--line"),
+      accent: token("--burgundy"),
+      onAccent: token("--on-accent"),
     };
   });
-  for (const [key, value] of Object.entries(copy)) {
+  for (const [key, value] of Object.entries(found)) {
     if (!value)
       throw new Error(`Could not read ${key} from the built page; has the markup changed?`);
   }
-  return copy;
+  return found;
 }
 
-/** The share card: name and role on glass over the engineer glow. */
-function shareCard({ firstName, lastName, role }) {
+/** The share card: role, name and lead line in Inter on the flat page colour. */
+function shareCard(p) {
   return `
-<div style="position:fixed;inset:0;overflow:hidden;background:${COLORS.bg};font-family:var(--font-sans)">
-  ${orb(COLORS.accent, "top:-260px;left:-180px")}
-  ${orb(COLORS.glow, "bottom:-300px;right:-160px")}
-  <div style="position:absolute;inset:56px;border-radius:28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(16px);display:flex;flex-direction:column;justify-content:center;padding:0 80px;gap:10px">
-    <div style="font-family:var(--font-sans);font-weight:600;font-size:132px;line-height:.95;letter-spacing:-.045em;color:${COLORS.ink}">${esc(firstName)}</div>
-    <div style="font-family:var(--font-sans);font-weight:600;font-size:132px;line-height:.9;letter-spacing:-.01em;color:${COLORS.accent}">${esc(lastName)}</div>
-    <div style="margin-top:28px;font-family:var(--font-jetbrains-mono);font-size:34px;color:${COLORS.accent}">${esc(role)}</div>
-  </div>
+<div style="position:fixed;inset:0;background:${p.bg};font-family:var(--font-inter);display:flex;flex-direction:column;justify-content:center;padding:0 96px;gap:28px">
+  <div style="font-size:30px;font-weight:500;color:${p.accent}">${esc(p.role)}</div>
+  <div style="font-size:112px;font-weight:600;line-height:1;letter-spacing:-0.035em;color:${p.text}">${esc(p.name)}</div>
+  <div style="max-width:960px;font-size:34px;line-height:1.35;color:${p.text2}">${esc(p.lead)}</div>
+  <div style="position:absolute;left:96px;right:96px;bottom:72px;border-top:2px solid ${p.line}"></div>
 </div>`;
 }
 
 /**
- * The icon: the first initial of the name, on the page
- * background with a hint of the glow.
+ * The icon: the first initial of the name in Inter, white on the flat
+ * burgundy accent.
  *
- * @param initial - The letter to show, e.g. "M".
+ * @param p - Colours and copy from readPage().
  * @param size - Edge length in pixels.
  * @param rounded - Rounded corners for the favicon; iOS rounds the touch icon itself.
  */
-function iconCard(initial, size, rounded) {
+function iconCard(p, size, rounded) {
   return `
-<div style="position:fixed;left:0;top:0;width:${size}px;height:${size}px;overflow:hidden;border-radius:${rounded ? Math.round(size * 0.22) : 0}px;background:${COLORS.bg};display:flex;align-items:center;justify-content:center;font-family:var(--font-jetbrains-mono);font-weight:500;font-size:${Math.round(size * 0.62)}px;line-height:1">
-  <div style="position:absolute;top:${-size * 0.35}px;left:${-size * 0.35}px;width:${size}px;height:${size}px;border-radius:999px;background:${COLORS.accent};filter:blur(${size * 0.25}px);opacity:.35"></div>
-  <span style="position:relative;color:${COLORS.ink}">${esc(initial)}</span>
-</div>`;
+<div style="position:fixed;left:0;top:0;width:${size}px;height:${size}px;border-radius:${rounded ? Math.round(size * 0.22) : 0}px;background:${p.accent};display:flex;align-items:center;justify-content:center;font-family:var(--font-inter);font-weight:600;font-size:${Math.round(size * 0.6)}px;line-height:1;letter-spacing:-0.03em;color:${p.onAccent}">${esc(p.initial)}</div>`;
 }
 
 /**
@@ -152,18 +150,18 @@ const browser = await chromium.launch({ channel: "chrome" });
 try {
   const page = await browser.newPage({ deviceScaleFactor: 1 });
   await page.goto(`http://localhost:${PORT}${BASE_PATH}/`, { waitUntil: "networkidle" });
-  const copy = await readCopy(page);
-  await render(page, shareCard(copy), { width: 1200, height: 630 }, "public/og.png");
+  const found = await readPage(page);
+  await render(page, shareCard(found), { width: 1200, height: 630 }, "public/og.png");
   await render(
     page,
-    iconCard(copy.initial, 512, true),
+    iconCard(found, 512, true),
     { width: 512, height: 512 },
     "src/app/icon.png",
     true,
   );
   await render(
     page,
-    iconCard(copy.initial, 180, false),
+    iconCard(found, 180, false),
     { width: 180, height: 180 },
     "src/app/apple-icon.png",
   );

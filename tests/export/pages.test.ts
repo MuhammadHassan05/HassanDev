@@ -7,7 +7,7 @@
  * anywhere. Run with `npm run test:export` after `npm run build`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "@/content/caseStudies";
 import { publishedCaseStudies } from "@/lib/caseStudies";
@@ -79,6 +79,31 @@ describe("case study pages", () => {
           `/case-studies/${study.slug}/`,
         );
       }
+    }
+  });
+});
+
+describe("JavaScript", () => {
+  // next.config.ts swaps Next's built-in polyfills for src/polyfills.ts. If a
+  // Next.js update changes how they are imported, the alias stops matching
+  // and they come back as "legacy JavaScript"; this catches that.
+  it("ships none of Next's legacy polyfills to modern browsers", () => {
+    const chunks = readdirSync(join(OUT, "_next", "static", "chunks"))
+      .filter((name) => name.endsWith(".js"))
+      .map((name) => join(OUT, "_next", "static", "chunks", name));
+    const pages = textFiles.filter((file) => file.endsWith(".html"));
+    // Chunks loaded only by browsers without ES modules are exempt.
+    const noModule = new Set(
+      pages.flatMap((page) =>
+        [...readFileSync(page, "utf8").matchAll(/<script src="[^"]*\/([^/"]+\.js)" noModule/g)].map(
+          ([, name]) => name,
+        ),
+      ),
+    );
+    for (const chunk of chunks.filter((file) => !noModule.has(basename(file)))) {
+      const text = readFileSync(chunk, "utf8");
+      expect(text, chunk).not.toContain('"trimEnd"in String.prototype');
+      expect(text, chunk).not.toContain("Object.hasOwn||");
     }
   });
 });

@@ -14,6 +14,13 @@ const nextConfig: NextConfig = {
   // There is no image optimization server on a static host.
   images: { unoptimized: true },
   reactStrictMode: true,
+  turbopack: {
+    resolveAlias: {
+      // Next's client polyfills are native in every browser it supports;
+      // src/polyfills.ts keeps only the one some of them lack (see there).
+      "../build/polyfills/polyfill-module": { browser: "./src/polyfills.ts" },
+    },
+  },
 };
 
 export default nextConfig;
