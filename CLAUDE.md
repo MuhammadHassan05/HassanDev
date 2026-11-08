@@ -120,3 +120,6 @@ Hassan has confirmed these. Apply them instead of what the `.dc.html` files show
 - `npm run check` runs typecheck, ESLint (zero warnings), the Prettier check, the forbidden-patterns scan (`scripts/check-forbidden.mjs`) and Vitest. `npm run build` produces the static export in `out/`. Both must pass before work is called done.
 - **Never push or deploy unless Hassan explicitly says so.** Every push to `main` deploys the live site (`.github/workflows/deploy.yml`), so a push is a deploy.
 - The redesign happens on the `redesign` branch. Never push to `main` during it unless Hassan says so.
+- **Never push to `main` without asking first, even for small fixes.** Say what will be pushed and why, then wait for Hassan's OK. An earlier OK does not cover a later push.
+- **Any change with more than one commit goes through a pull request:** push the branch, open a PR, and wait for CI to pass on Linux before merging. Some checks (for example `tests/export/segment-files.test.ts`) run only on Linux, so they must pass before anything reaches `main`.
+- **Stop on the first failing command.** Check exit codes and chain steps so each runs only if the previous one passed (`npm run check && npm run build && npm run test:export`). Never commit or push after a failure.
