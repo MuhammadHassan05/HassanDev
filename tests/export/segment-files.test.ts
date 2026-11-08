@@ -7,6 +7,7 @@
  */
 import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
+import type { DynamicParamTypesShort } from "next/dist/shared/lib/app-router-types";
 import {
   convertSegmentPathToStaticExportFilename,
   createSegmentRequestKeyPart,
@@ -22,7 +23,7 @@ const appRoutes = readdirSync(APP, { recursive: true, withFileTypes: true })
   .map((entry) => relative(APP, entry.parentPath).split(sep).filter(Boolean));
 
 /** Next's param type for a dynamic folder name: [x] is "d", [...x] "c", [[...x]] "oc". */
-function dynamicSegment(folder: string): [name: string, type: string] | null {
+function dynamicSegment(folder: string): [name: string, type: DynamicParamTypesShort] | null {
   const match = /^\[(\[)?(\.\.\.)?([^\]]+)\]?\]$/.exec(folder);
   if (!match) return null;
   const [, optional, catchAll, name = ""] = match;
@@ -43,7 +44,7 @@ function segmentKeys(segments: string[]): string[] {
   return segments.map((value, i) => {
     const dynamic = route ? dynamicSegment(route[i] ?? "") : null;
     // Same function the router uses to build each part of the request.
-    return createSegmentRequestKeyPart(dynamic ? [dynamic[0], value, dynamic[1]] : value);
+    return createSegmentRequestKeyPart(dynamic ? [dynamic[0], value, dynamic[1], null] : value);
   });
 }
 
