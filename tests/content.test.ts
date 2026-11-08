@@ -4,6 +4,7 @@
  */
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import * as cartComparison from "@/content/cartComparison";
 import * as caseStudiesModule from "@/content/caseStudies";
@@ -12,6 +13,7 @@ import * as education from "@/content/education";
 import * as experience from "@/content/experience";
 import { illustrationKeys } from "@/content/illustrations";
 import * as profile from "@/content/profile";
+import { projectImages } from "@/content/projectImages";
 import * as projectsModule from "@/content/projects";
 import { screenshotTargets } from "@/content/screenshots.config";
 import * as services from "@/content/services";
@@ -148,6 +150,31 @@ describe("screenshot targets", () => {
   it("lists each project once", () => {
     const keys = screenshotTargets.map((t) => t.project);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+});
+
+describe("approved project images", () => {
+  const dir = join(ROOT, "public", "projects");
+  const approved = Object.entries(projectImages);
+
+  it.each(approved)("%s has its file at the stated size", async (key, image) => {
+    const file = join(dir, `${key}.webp`);
+    expect(existsSync(file), `missing public/projects/${key}.webp`).toBe(true);
+    const { width, height, exif, icc, xmp } = await sharp(file).metadata();
+    expect({ width, height }).toEqual({ width: image?.width, height: image?.height });
+    // The capture pipeline strips metadata; a hand-copied file might not.
+    expect({ exif, icc, xmp }).toEqual({ exif: undefined, icc: undefined, xmp: undefined });
+  });
+
+  it.each(approved)("%s has descriptive alt text naming its project", (key, image) => {
+    const project = projects.find((p) => p.illustration === key);
+    expect(project, "no project uses this key").toBeDefined();
+    expect(image?.alt).toBe(`${project?.title} homepage`);
+  });
+
+  it("has an entry for every file in public/projects/", () => {
+    const files = existsSync(dir) ? readdirSync(dir) : [];
+    expect(files.sort()).toEqual(approved.map(([key]) => `${key}.webp`).sort());
   });
 });
 

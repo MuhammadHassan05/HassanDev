@@ -1,7 +1,7 @@
 /**
  * Copies reviewed screenshots from screenshots-pending/ into public/projects/,
- * the only folder the site serves them from. Run it only for images Hassan
- * has approved on the contact sheet.
+ * the only folder the site serves them from. Run it only for images that
+ * passed a visual review on the contact sheet.
  *
  * Usage: npm run screenshots:approve -- pikzels yetti-ai
  *

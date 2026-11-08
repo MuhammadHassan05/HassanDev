@@ -4,13 +4,16 @@
  * skips folders that start with an underscore), the 404 page it serves for
  * missing paths, Google Search Console's ownership file, and the case study
  * pages: one per published case study, none for drafts, and no draft text
- * anywhere. Run with `npm run test:export` after `npm run build`.
+ * anywhere, and every image: served under the base path, sized and lazy.
+ * Run with `npm run test:export` after `npm run build`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { basename, join } from "node:path";
+import { basename, join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "@/content/caseStudies";
+import { projectImages } from "@/content/projectImages";
 import { publishedCaseStudies } from "@/lib/caseStudies";
+import { BASE_PATH, withBasePath } from "@/lib/site";
 
 const OUT = join(__dirname, "..", "..", "out");
 const SEARCH_CONSOLE_FILE = "google17bfe732dc5dcb5b.html";
@@ -105,5 +108,33 @@ describe("JavaScript", () => {
       expect(text, chunk).not.toContain('"trimEnd"in String.prototype');
       expect(text, chunk).not.toContain("Object.hasOwn||");
     }
+  });
+});
+
+describe("images", () => {
+  const pages = textFiles.filter((file) => file.endsWith(".html"));
+  const attr = (tag: string, name: string) => new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1];
+  const images = pages.flatMap((page) =>
+    [...readFileSync(page, "utf8").matchAll(/<img\b[^>]*>/g)].map(
+      ([tag]) => [relative(OUT, page), attr(tag, "src") ?? "(no src)", tag] as const,
+    ),
+  );
+
+  it("shows every approved project image", () => {
+    const sources = images.map(([, src]) => src);
+    for (const key of Object.keys(projectImages)) {
+      expect(sources).toContain(withBasePath(`/projects/${key}.webp`));
+    }
+  });
+
+  // next/image does not add the base path to unoptimized images; without it
+  // GitHub Pages answers every image with a 404.
+  it.each(images)("%s: %s is served, sized and described", (_page, src, tag) => {
+    expect(src.startsWith(`${BASE_PATH}/`), `src without the base path: ${src}`).toBe(true);
+    expect(existsSync(join(OUT, src.slice(BASE_PATH.length))), `missing ${src}`).toBe(true);
+    expect(attr(tag, "alt")).toBeTruthy();
+    expect(Number(attr(tag, "width"))).toBeGreaterThan(0);
+    expect(Number(attr(tag, "height"))).toBeGreaterThan(0);
+    expect(attr(tag, "loading")).toBe("lazy");
   });
 });

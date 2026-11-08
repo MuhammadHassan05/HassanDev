@@ -27,8 +27,9 @@ export function absoluteUrl(path: string): string {
 /**
  * Prefixes a root-relative path with {@link BASE_PATH}.
  *
- * next/link and next/image add the base path on their own, but plain anchors
- * to files in public/ (such as the PDFs) do not, so those links go through here.
+ * next/link adds the base path on its own, but plain anchors to files in
+ * public/ (such as the PDFs) do not, and neither does next/image with
+ * unoptimized images, so those paths go through here.
  *
  * @param path - A root-relative path such as "/docs/resume.pdf".
  * @returns The path as served on GitHub Pages, e.g. "/HassanDev/docs/resume.pdf".

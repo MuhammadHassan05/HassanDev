@@ -1,13 +1,17 @@
 /**
- * Project card: the illustration at the top, then the title, the one-line
- * description, the tags in the secondary text colour, and a text link (or a
- * plain label when there is nothing to open). Projects with a case study also
+ * Project card: an approved screenshot (src/content/projectImages.ts) or the
+ * illustration at the top, then the title, the one-line description, the tags
+ * in the secondary text colour, and a text link (or a plain label when there
+ * is nothing to open). Projects with a case study also
  * get a "Read case study ›" link, once that case study is published.
  */
+import Image from "next/image";
 import { illustrations } from "@/components/illustrations";
 import { caseStudies, caseStudyLabels } from "@/content/caseStudies";
+import { projectImages } from "@/content/projectImages";
 import type { Project } from "@/content/projects";
 import { caseStudyForProject, caseStudyHref, publishedCaseStudies } from "@/lib/caseStudies";
+import { withBasePath } from "@/lib/site";
 import { Button } from "./Button";
 import { Card } from "./Card";
 
@@ -26,15 +30,28 @@ export interface ProjectCardProps {
  */
 export function ProjectCard({ project, headingLevel: Heading = "h4" }: ProjectCardProps) {
   const Illustration = illustrations[project.illustration];
+  const image = projectImages[project.illustration];
   const { footer } = project;
   // Drafts have no page, so only a published case study gets a link.
   const study = caseStudyForProject(publishedCaseStudies(caseStudies), project.illustration);
 
   return (
     <Card as="article" className="flex flex-col overflow-hidden">
-      <div className="flex h-[200px] items-center justify-center border-b border-line">
-        <Illustration />
-      </div>
+      {image ? (
+        // Project grids are always below the fold, so every image loads lazily.
+        <Image
+          src={withBasePath(`/projects/${project.illustration}.webp`)}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          loading="lazy"
+          className="block h-[200px] w-full rounded-t-card border-b border-line object-cover object-top"
+        />
+      ) : (
+        <div className="flex h-[200px] items-center justify-center border-b border-line">
+          <Illustration />
+        </div>
+      )}
       <div className="flex grow flex-col gap-2 p-6">
         <Heading className="m-0 text-[21px] font-semibold tracking-[-0.01em]">
           {project.title}

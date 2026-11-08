@@ -4,7 +4,7 @@
  * sheet (screenshots-review.html) for manual review.
  *
  * This is a local tool. It is never run in CI or the deploy workflow: images
- * are captured here, reviewed by Hassan, and committed, so the site build
+ * are captured here, reviewed by eye, and committed, so the site build
  * never depends on other people's websites being up.
  *
  * Usage:
@@ -17,7 +17,7 @@
  * gitignored and outside public/. Only `npm run screenshots:approve -- <key>`
  * (scripts/approve-screenshots.mjs) copies a reviewed image into public/projects/.
  */
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
@@ -32,8 +32,13 @@ const RESULTS_FILE = join(REVIEW_DIR, "results.json");
 
 const VIEWPORT = { width: 1440, height: 900 };
 const DEVICE_SCALE = 2;
-/** Tallest capture, in CSS pixels; enough for the card's scrolling preview. */
-const MAX_HEIGHT = 2400;
+/**
+ * Captures cover the first screen only: cards show the top of the image with
+ * object-fit cover, so anything further down would never be seen.
+ */
+const MAX_HEIGHT = VIEWPORT.height;
+/** Saved width: twice the widest card at 2x density, with room to spare. */
+const OUTPUT_WIDTH = 960;
 const SETTLE_MS = 1500;
 const NAVIGATION_TIMEOUT_MS = 45_000;
 const IDLE_TIMEOUT_MS = 20_000;
@@ -359,12 +364,14 @@ async function capture(browser, target) {
 
     // sharp drops all metadata (EXIF, ICC, XMP) unless told to keep it.
     const webp = await sharp(png)
-      .resize({ width: VIEWPORT.width, withoutEnlargement: true })
+      .resize({ width: OUTPUT_WIDTH, withoutEnlargement: true })
       .webp({ quality: 80 })
       .toBuffer({ resolveWithObject: true });
 
     result.passed = result.reasons.length === 0;
     await writeFile(join(ROOT, imagePath(result)), webp.data);
+    // A retake that fails must not leave an older passing image waiting for approval.
+    await rm(join(ROOT, imagePath({ ...result, passed: !result.passed })), { force: true });
     result.size = { width: webp.info.width, height: webp.info.height, bytes: webp.data.length };
     return result;
   } finally {
