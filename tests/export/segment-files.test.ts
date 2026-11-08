@@ -7,10 +7,45 @@
  */
 import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
+import {
+  convertSegmentPathToStaticExportFilename,
+  createSegmentRequestKeyPart,
+} from "next/dist/shared/lib/segment-cache/segment-value-encoding";
 import { describe, expect, it } from "vitest";
 
 const OUT = join(__dirname, "..", "..", "out");
+const APP = join(__dirname, "..", "..", "src", "app");
+
+/** Every route in src/app, as its folder segments, e.g. ["case-studies", "[slug]"]. */
+const appRoutes = readdirSync(APP, { recursive: true, withFileTypes: true })
+  .filter((entry) => entry.isFile() && entry.name === "page.tsx")
+  .map((entry) => relative(APP, entry.parentPath).split(sep).filter(Boolean));
+
+/** Next's param type for a dynamic folder name: [x] is "d", [...x] "c", [[...x]] "oc". */
+function dynamicSegment(folder: string): [name: string, type: string] | null {
+  const match = /^\[(\[)?(\.\.\.)?([^\]]+)\]?\]$/.exec(folder);
+  if (!match) return null;
+  const [, optional, catchAll, name = ""] = match;
+  return [name, optional ? "oc" : catchAll ? "c" : "d"];
+}
+
+/**
+ * The segment keys the router uses for an exported route folder. Dynamic
+ * segments are keyed by their param name ("$d$slug"), not by the value, so the
+ * folder is matched to its route in src/app first.
+ */
+function segmentKeys(segments: string[]): string[] {
+  const route = appRoutes.find(
+    (candidate) =>
+      candidate.length === segments.length &&
+      candidate.every((part, i) => part === segments[i] || dynamicSegment(part) !== null),
+  );
+  return segments.map((value, i) => {
+    const dynamic = route ? dynamicSegment(route[i] ?? "") : null;
+    // Same function the router uses to build each part of the request.
+    return createSegmentRequestKeyPart(dynamic ? [dynamic[0], value, dynamic[1]] : value);
+  });
+}
 
 /** Every directory under out/, as paths relative to it ("" is out/ itself). */
 function directories(dir = OUT): string[] {
@@ -46,7 +81,7 @@ describe.skipIf(process.platform === "win32")("static export page-data files", (
       const segments = route.split(sep).filter(Boolean);
       // Same function the router uses to build the request URL.
       const fileName = convertSegmentPathToStaticExportFilename(
-        `/${[...segments, "__PAGE__"].join("/")}`,
+        `/${[...segmentKeys(segments), "__PAGE__"].join("/")}`,
       );
       expect(existsSync(join(OUT, route, fileName)), `missing ${join(route, fileName)}`).toBe(true);
     },
