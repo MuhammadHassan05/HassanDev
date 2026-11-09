@@ -29,7 +29,7 @@ The site is simple and sleek, in the spirit of apple.com: lots of whitespace, bi
 - No pill badges or status chips above headings. No "01 / label" section numbering.
 - Flat solid surfaces. Separation comes from whitespace, a 1px hairline (`--line`) or a change of surface colour.
 - One accent per page: engineer pages use burgundy, studio pages use olive. Use the accent sparingly: primary buttons, links, small highlights. Never as large background areas, except the primary button.
-- Typography: one family. Font stack: `-apple-system, BlinkMacSystemFont, var(--font-inter), "Segoe UI", Roboto, sans-serif`. Apple devices get SF Pro, everyone else gets self-hosted Inter via `next/font`. JetBrains Mono only inside the terminal and code snippets. Bricolage Grotesque, Instrument Serif, Archivo and Space Grotesk are removed.
+- Typography: one family. Font stack: `-apple-system, BlinkMacSystemFont, var(--font-inter), "Segoe UI", Roboto, sans-serif`. Apple devices get SF Pro, everyone else gets self-hosted Inter via `next/font/local`. JetBrains Mono only inside the terminal and code snippets. Bricolage Grotesque, Instrument Serif, Archivo and Space Grotesk are removed.
 - Type scale:
   - Hero name: `clamp(56px, 9vw, 112px)`, weight 600, letter-spacing -0.035em, line-height 1.0.
   - Section titles: `clamp(36px, 5vw, 56px)`, weight 600, letter-spacing -0.025em.
@@ -66,7 +66,7 @@ Most visitors are on phones.
 ## Privacy and network
 
 - Zero requests to third-party domains on the live site. No trackers, cookies, forms or backend.
-- Fonts only via `next/font/google`, which self-hosts them at build time. Never use a `<link>` to Google Fonts or any CDN.
+- Fonts only via `next/font/local`, from the files committed in `src/styles/fonts/` (with their OFL licences). Never `next/font/google`: it downloads fonts during the build, and Google's occasional extensionless font URLs make Turbopack builds fail at random (vercel/next.js#99114). Never use a `<link>` to Google Fonts or any CDN.
 
 ## Content
 

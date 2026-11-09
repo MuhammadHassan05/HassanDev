@@ -17,7 +17,7 @@ The site is also a showcase of engineering standards, so the code is held to the
 | Framework | Next.js (App Router) with `output: "export"`, so the build is plain files |
 | Language  | TypeScript in `strict` mode                                               |
 | Styling   | Tailwind CSS v4, with design tokens in `src/styles/globals.css`           |
-| Fonts     | Inter and JetBrains Mono via `next/font/google`, self-hosted at build     |
+| Fonts     | Inter and JetBrains Mono via `next/font/local`, committed in the repo     |
 | Tests     | Vitest for the logic and content, plus post-build checks of `out/`        |
 | Quality   | ESLint (zero warnings), Prettier, a forbidden-patterns scan, CodeQL       |
 | Hosting   | GitHub Pages, under the `/HassanDev` base path                            |
