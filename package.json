@@ -23,22 +23,22 @@
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:forbidden && npm run test"
   },
   "dependencies": {
-    "next": "16.4.2",
+    "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.3.3",
+    "@tailwindcss/postcss": "4.3.5",
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.4.2",
-    "playwright": "1.64.1",
+    "eslint-config-next": "16.4.5",
+    "playwright": "1.65.0",
     "prettier": "3.9.10",
     "sharp": "0.35.5",
-    "tailwindcss": "4.3.3",
+    "tailwindcss": "4.3.5",
     "typescript": "6.0.3",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }
