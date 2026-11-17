@@ -23,7 +23,7 @@
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run check:forbidden && npm run test"
   },
   "dependencies": {
-    "next": "16.4.2",
+    "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
